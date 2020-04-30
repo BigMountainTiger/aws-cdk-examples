@@ -6,6 +6,8 @@ const s3 = require('@aws-cdk/aws-s3');
 const lambda = require('@aws-cdk/aws-lambda');
 const logs = require('@aws-cdk/aws-logs');
 const cloudtrail = require('@aws-cdk/aws-cloudtrail');
+const events = require('@aws-cdk/aws-events');
+const events_targets = require('@aws-cdk/aws-events-targets');
 
 class CloudTrailCdkStack extends cdk.Stack {
 
@@ -59,9 +61,29 @@ class CloudTrailCdkStack extends cdk.Stack {
       
     };
 
+    const add_expire_rule = () => {
+      const NAME = `${CLOUDTRAIL_NAME}CloudWatchExpireRule`;
+
+      const rule = new events.Rule(this, NAME, {
+        enabled: true,
+        ruleName: NAME,
+        eventPattern: {
+          source: ['aws.logs'],
+          detailType: ['AWS API Call via CloudTrail'],
+          detail: {
+            eventSource: ['logs.amazonaws.com'],
+            eventName: ['CreateLogGroup']
+          }
+        }
+      });
+
+      return rule;
+    };
+
     add_cloudTrail();
     const expire_lambda = add_lambda();
-
+    const expire_rule = add_expire_rule();
+    expire_rule.addTarget(new events_targets.LambdaFunction(expire_lambda));
   }
 }
 

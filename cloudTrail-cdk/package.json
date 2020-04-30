@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@aws-cdk/aws-cloudtrail": "^1.36.1",
+    "@aws-cdk/aws-events": "^1.36.1",
+    "@aws-cdk/aws-events-targets": "^1.36.1",
     "@aws-cdk/aws-iam": "^1.36.1",
     "@aws-cdk/aws-lambda": "^1.36.1",
     "@aws-cdk/aws-logs": "^1.36.1",
