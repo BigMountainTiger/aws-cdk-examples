@@ -1,0 +1,63 @@
+lstCommand.Add("cdk deploy " + STACKNAME + " --require-approval never");
+
+private void ChangeCloudWatchLogExpirationEventRule()
+        {
+            
+            var functionSubscriptio = ChangeCloudWatchLogExpirationEventFunction();
+
+
+            var rule = new Amazon.CDK.AWS.Events.Rule(thisScope, "ChangeCloudWatchLogExpirationEventRule", new Amazon.CDK.AWS.Events.RuleProps()
+            {
+                Enabled = true,
+                RuleName = "ChangeCloudWatchLogExpiration",
+                EventPattern = new Amazon.CDK.AWS.Events.EventPattern()
+                {
+                    Source = new string[] { "aws.logs" },
+                    DetailType = new string[] { "AWS API Call via CloudTrail" },
+                    Detail = new Dictionary<string, object>
+                    {
+                        ["eventSource"] = new string[] { "logs.amazonaws.com" },
+                        ["eventName"] = new string[] { "CreateLogGroup" }
+                    }
+                }
+
+            });
+
+            rule.AddTarget(new Amazon.CDK.AWS.Events.Targets.LambdaFunction(functionSubscriptio));
+
+
+        }
+        private Function ChangeCloudWatchLogExpirationEventFunction()
+        {
+            var projectName = "ChangeCloudWatchLogExpirationEvent";
+            var key = "ChangeCloudWatchLogExpirationEvent.zip";
+
+            var s3Bucket1 = Amazon.CDK.AWS.S3.Bucket.FromBucketName(thisScope, projectName + "_bucket", CodePipelineStack.LAMBDADEPLOYMENTBUCKETNAME);
+            var func = new Function(thisScope, projectName, new FunctionProps()
+            {
+                Code = Code.FromBucket(s3Bucket1, key),
+                Handler = projectName + "::" + projectName + ".Function::FunctionHandler",
+                Runtime = Runtime.DOTNET_CORE_2_1,
+                FunctionName = DmapCoreCdkStack.SERVICE_NAME+ "-cloudwatchlog-change-retentiondays",
+                Timeout = Duration.Seconds(60),
+                Environment = new Dictionary<string, string>()
+                {
+                    ["RETENTION_DAYS"] = "1"
+                }
+            });
+
+            var policyStatement = new Amazon.CDK.AWS.IAM.PolicyStatement();
+            policyStatement.AddAllResources();
+            policyStatement.AddActions(new string[]
+            {
+                "logs:putRetentionPolicy",
+            });
+            func.AddToRolePolicy(policyStatement);
+
+            Tag.Add(func, "Service", DmapCoreCdkStack.SERVICE_NAME);
+
+
+            LambdaFunctionsList.Add(projectName);
+
+            return func;
+        }
