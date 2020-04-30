@@ -1,0 +1,24 @@
+internal CloudtrailResource(Construct scope) {
+
+            var cloudTrailBucket = new Amazon.CDK.AWS.S3.Bucket(scope, "dmap_cloudtrail_logs", new Amazon.CDK.AWS.S3.BucketProps()
+            {
+                PublicReadAccess = false,
+                BlockPublicAccess = Amazon.CDK.AWS.S3.BlockPublicAccess.BLOCK_ALL,
+                LifecycleRules = new Amazon.CDK.AWS.S3.ILifecycleRule[]
+                {
+                    new Amazon.CDK.AWS.S3.LifecycleRule(){
+                        Enabled=true,
+                        Expiration=Duration.Days(1)
+                    }
+                }
+            });
+            new Amazon.CDK.AWS.CloudTrail.Trail(scope, "dmap_cloudtrail", new Amazon.CDK.AWS.CloudTrail.TrailProps()
+            {
+                Bucket = cloudTrailBucket,
+                TrailName = "dmap_cloudtrail",
+                CloudWatchLogsRetention = Amazon.CDK.AWS.Logs.RetentionDays.ONE_DAY,
+                IsMultiRegionTrail = true,
+                ManagementEvents = Amazon.CDK.AWS.CloudTrail.ReadWriteType.ALL,
+                SendToCloudWatchLogs = true
+            });
+        }

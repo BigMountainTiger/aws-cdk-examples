@@ -1,0 +1,11 @@
+{
+  "name": "cloud_trail-cdk",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/aws-cloudtrail": "^1.36.0",
+    "@aws-cdk/aws-logs": "^1.36.0",
+    "@aws-cdk/aws-s3": "^1.36.0",
+    "@aws-cdk/core": "1.36.0"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Lambda Attach",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5000,
+      "localRoot": "${workspaceRoot}/hello-cdk/resources",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false
+    }
+  ]
+}

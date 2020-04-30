@@ -1,0 +1,9 @@
+{
+  "name": "core_dependency",
+  "version": "1.0.0",
+  "description": "Core Dependencies for NodeJS",
+  "private": true,
+  "dependencies": {
+    "temp-units-conv": "^1.0.2"
+  }
+}

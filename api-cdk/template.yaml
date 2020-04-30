@@ -1,0 +1,310 @@
+Resources:
+  ApiCdkStackMyRole2800FBD8:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      RoleName: ApiCdkStackMyRole
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackMyRole/Resource
+  ApiCdkStackMyRoleDefaultPolicy41CF7DE5:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: ApiCdkStackMyRoleDefaultPolicy41CF7DE5
+      Roles:
+        - Ref: ApiCdkStackMyRole2800FBD8
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackMyRole/DefaultPolicy/Resource
+  ApiCdkStackAFunctionC40B7E19:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters324ee804d69eb74a7b1f97ea7d63230ac333892ba57b8a83cf6ba391f66fff89S3Bucket2193620B
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters324ee804d69eb74a7b1f97ea7d63230ac333892ba57b8a83cf6ba391f66fff89S3VersionKey3D43EBD2
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters324ee804d69eb74a7b1f97ea7d63230ac333892ba57b8a83cf6ba391f66fff89S3VersionKey3D43EBD2
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+          - ApiCdkStackMyRole2800FBD8
+          - Arn
+      Runtime: nodejs12.x
+      FunctionName: ApiCdkStackAFunction
+      Timeout: 120
+    DependsOn:
+      - ApiCdkStackMyRoleDefaultPolicy41CF7DE5
+      - ApiCdkStackMyRole2800FBD8
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAFunction/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-cdk/lambda/AFunction
+      aws:asset:property: Code
+  ApiCdkStackAPIGWB891112B:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: ApiCdkStackAPIGW
+      Name: ApiCdkStackAPIGW
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/Resource
+  ApiCdkStackAPIGWDeployment6B01A76044304ab8c34560d7bcf2c72aad633d6c:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: ApiCdkStackAPIGWB891112B
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - ApiCdkStackAPIGWproxyANYAECABD95
+      - ApiCdkStackAPIGWproxy8AD93233
+      - ApiCdkStackAPIGWANY6B82B7F9
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/Deployment/Resource
+  ApiCdkStackAPIGWDeploymentStageprod4BEAB78D:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: ApiCdkStackAPIGWB891112B
+      DeploymentId:
+        Ref: ApiCdkStackAPIGWDeployment6B01A76044304ab8c34560d7bcf2c72aad633d6c
+      StageName: prod
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/DeploymentStage.prod/Resource
+  ApiCdkStackAPIGWCloudWatchRole00E73DCF:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/CloudWatchRole/Resource
+  ApiCdkStackAPIGWAccount9C7F6B5A:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - ApiCdkStackAPIGWCloudWatchRole00E73DCF
+          - Arn
+    DependsOn:
+      - ApiCdkStackAPIGWB891112B
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/Account
+  ApiCdkStackAPIGWproxy8AD93233:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - ApiCdkStackAPIGWB891112B
+          - RootResourceId
+      PathPart: "{proxy+}"
+      RestApiId:
+        Ref: ApiCdkStackAPIGWB891112B
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/Default/{proxy+}/Resource
+  ApiCdkStackAPIGWproxyANYApiPermissionApiCdkStackApiCdkStackAPIGWDCC09F21ANYproxyA8D2FBBA:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - ApiCdkStackAFunctionC40B7E19
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: ApiCdkStackAPIGWB891112B
+            - /
+            - Ref: ApiCdkStackAPIGWDeploymentStageprod4BEAB78D
+            - /*/{proxy+}
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/Default/{proxy+}/ANY/ApiPermission.ApiCdkStackApiCdkStackAPIGWDCC09F21.ANY..{proxy+}
+  ApiCdkStackAPIGWproxyANYApiPermissionTestApiCdkStackApiCdkStackAPIGWDCC09F21ANYproxyF9B4F72E:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - ApiCdkStackAFunctionC40B7E19
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: ApiCdkStackAPIGWB891112B
+            - /test-invoke-stage/*/{proxy+}
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/Default/{proxy+}/ANY/ApiPermission.Test.ApiCdkStackApiCdkStackAPIGWDCC09F21.ANY..{proxy+}
+  ApiCdkStackAPIGWproxyANYAECABD95:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: ANY
+      ResourceId:
+        Ref: ApiCdkStackAPIGWproxy8AD93233
+      RestApiId:
+        Ref: ApiCdkStackAPIGWB891112B
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - ApiCdkStackAFunctionC40B7E19
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/Default/{proxy+}/ANY/Resource
+  ApiCdkStackAPIGWANYApiPermissionApiCdkStackApiCdkStackAPIGWDCC09F21ANYFB373048:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - ApiCdkStackAFunctionC40B7E19
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: ApiCdkStackAPIGWB891112B
+            - /
+            - Ref: ApiCdkStackAPIGWDeploymentStageprod4BEAB78D
+            - /*/
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/Default/ANY/ApiPermission.ApiCdkStackApiCdkStackAPIGWDCC09F21.ANY..
+  ApiCdkStackAPIGWANYApiPermissionTestApiCdkStackApiCdkStackAPIGWDCC09F21ANY166463E4:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - ApiCdkStackAFunctionC40B7E19
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: ApiCdkStackAPIGWB891112B
+            - /test-invoke-stage/*/
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/Default/ANY/ApiPermission.Test.ApiCdkStackApiCdkStackAPIGWDCC09F21.ANY..
+  ApiCdkStackAPIGWANY6B82B7F9:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: ANY
+      ResourceId:
+        Fn::GetAtt:
+          - ApiCdkStackAPIGWB891112B
+          - RootResourceId
+      RestApiId:
+        Ref: ApiCdkStackAPIGWB891112B
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - ApiCdkStackAFunctionC40B7E19
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: ApiCdkStack/ApiCdkStackAPIGW/Default/ANY/Resource
+Parameters:
+  AssetParameters324ee804d69eb74a7b1f97ea7d63230ac333892ba57b8a83cf6ba391f66fff89S3Bucket2193620B:
+    Type: String
+    Description: S3 bucket for asset "324ee804d69eb74a7b1f97ea7d63230ac333892ba57b8a83cf6ba391f66fff89"
+  AssetParameters324ee804d69eb74a7b1f97ea7d63230ac333892ba57b8a83cf6ba391f66fff89S3VersionKey3D43EBD2:
+    Type: String
+    Description: S3 key for asset version "324ee804d69eb74a7b1f97ea7d63230ac333892ba57b8a83cf6ba391f66fff89"
+  AssetParameters324ee804d69eb74a7b1f97ea7d63230ac333892ba57b8a83cf6ba391f66fff89ArtifactHash2DC8FFE8:
+    Type: String
+    Description: Artifact hash for asset "324ee804d69eb74a7b1f97ea7d63230ac333892ba57b8a83cf6ba391f66fff89"
+Outputs:
+  ApiCdkStackAPIGWEndpointB97B2FA0:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: ApiCdkStackAPIGWB891112B
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: ApiCdkStackAPIGWDeploymentStageprod4BEAB78D
+          - /
+
