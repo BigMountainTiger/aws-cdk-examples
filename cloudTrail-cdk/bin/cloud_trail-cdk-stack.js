@@ -25,7 +25,7 @@ class CloudTrailCdkStack extends cdk.Stack {
       const trail = new cloudtrail.Trail(this, CLOUDTRAIL_NAME, {
         trailName: CLOUDTRAIL_NAME,
         cloudWatchLogsRetention: logs.RetentionDays.ONE_DAY,
-        isMultiRegionTrail: true,
+        isMultiRegionTrail: false,
         managementEvents: cloudtrail.ReadWriteType.ALL,
         sendToCloudWatchLogs: true,
         bucket: bucket
