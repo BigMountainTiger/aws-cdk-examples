@@ -61,3 +61,22 @@ private void ChangeCloudWatchLogExpirationEventRule()
 
             return func;
         }
+
+
+        public async Task<object> FunctionHandler(object input, ILambdaContext context)
+        {
+            
+            var logClient = new Amazon.CloudWatchLogs.AmazonCloudWatchLogsClient();
+            JObject json = JObject.Parse(input.ToString());
+            var logGroupName = json["detail"]["requestParameters"]["logGroupName"].ToString();
+
+            var RETENTION_DAYS = Environment.GetEnvironmentVariable("RETENTION_DAYS");
+            var request = new Amazon.CloudWatchLogs.Model.PutRetentionPolicyRequest()
+            {
+                LogGroupName = logGroupName,
+                RetentionInDays = int.Parse(RETENTION_DAYS)
+            };
+
+            await logClient.PutRetentionPolicyAsync(request);
+            return null;
+        }
