@@ -1,0 +1,8 @@
+{
+  "name": "dynamo-cdk",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/core": "1.36.1"
+  }
+}
