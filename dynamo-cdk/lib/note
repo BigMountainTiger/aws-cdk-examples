@@ -1,0 +1,80 @@
+void createDmapServiceDynamoDb()
+        {
+            var table = new Amazon.CDK.AWS.DynamoDB.Table(m_scope, "dmap_service", new Amazon.CDK.AWS.DynamoDB.TableProps()
+            {
+                BillingMode = Amazon.CDK.AWS.DynamoDB.BillingMode.PAY_PER_REQUEST,
+                TableName = "dmap_service",
+                PartitionKey = new Amazon.CDK.AWS.DynamoDB.Attribute()
+                {
+                    Name = "service",
+                    Type = Amazon.CDK.AWS.DynamoDB.AttributeType.STRING,
+                }
+
+            });
+
+
+            new Amazon.CDK.AWS.SSM.StringParameter(m_scope, "dmap_serviceParamdynamodb_table", new Amazon.CDK.AWS.SSM.StringParameterProps()
+            {
+                ParameterName = "/dmpacore/dmap_service_dynamodb_table",
+                StringValue = table.TableName
+            });
+
+            new Amazon.CDK.AWS.SSM.StringParameter(m_scope, "dmap_serviceParamdynamodb_tableArn", new Amazon.CDK.AWS.SSM.StringParameterProps()
+            {
+                ParameterName = "/dmpacore/dmap_service_dynamodb_tableArn",
+                StringValue = table.TableArn
+            });
+
+
+        }
+
+
+public async Task<List<ServiceItem>> GetServices(Construct scope)
+        {
+            var lstServices = new List<ServiceItem>();
+
+            var client = new Amazon.DynamoDBv2.AmazonDynamoDBClient(Amazon.RegionEndpoint.USEast1);
+
+
+            Amazon.DynamoDBv2.DocumentModel.Table dynamotable;
+            Amazon.DynamoDBv2.DocumentModel.Table.TryLoadTable(client, "dmap_service", out dynamotable);
+
+            if (dynamotable != null)
+            {
+
+                Amazon.DynamoDBv2.DocumentModel.Search search = dynamotable.Scan(new Amazon.DynamoDBv2.DocumentModel.ScanOperationConfig()
+                {
+                    AttributesToGet = new List<string> { "service" },
+                    Select = Amazon.DynamoDBv2.DocumentModel.SelectValues.SpecificAttributes
+                });
+
+                List<Amazon.DynamoDBv2.DocumentModel.Document> documentList;
+                do
+                {
+                    documentList = await search.GetNextSetAsync();
+
+                    foreach (var document in documentList)
+                    {
+                        var item = new ServiceItem { ServiceName = document["service"].AsString() };
+                        lstServices.Add(item);
+                    }
+
+                } while (!search.IsDone);
+
+
+                if (lstServices.Count == 0)
+                {
+                    var item = new Amazon.DynamoDBv2.DocumentModel.Document();
+                    item["service"] = "Architecture Management";
+                    item["created_dt"] = DateTime.Now;
+                    item["desc"] = "Architecture Management";
+                    await dynamotable.PutItemAsync(item);
+                    var service = new ServiceItem { ServiceName = item["service"].AsString() };
+
+                    lstServices.Add(service);
+
+                }
+            }
+            return lstServices;
+        }
+
