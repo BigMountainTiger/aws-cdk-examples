@@ -1,0 +1,28 @@
+	class CodeCommitResource
+    {
+        internal CodeCommitResource(Construct scope, List<ServiceItem> ServicesList)
+        {
+
+
+            foreach (var repo in ServicesList)
+            {
+
+                var repository = new CfnRepository(scope, repo.ProjectName, new CfnRepositoryProps()
+                {
+                    RepositoryName = repo.ProjectName,
+                    Code = new CfnRepository.CodeProperty()
+                    {
+                        S3 = new CfnRepository.S3Property()
+                        {
+                            Bucket = CodePipelineStack.REPOTEMP_BUCKETNAME,
+                            Key = repo.ProjectName + ".zip"
+                        }
+                    }
+                });
+
+                Tag.Add(repository, "Service", repo.ServiceName);
+
+            }
+
+        }
+    }
