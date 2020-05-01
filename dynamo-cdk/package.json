@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@aws-cdk/aws-dynamodb": "^1.36.1",
-    "@aws-cdk/core": "1.36.1"
+    "@aws-cdk/core": "1.36.1",
+    "aws-sdk": "^2.667.0"
   }
 }
