@@ -31,6 +31,7 @@ class CognitoCdkStack extends cdk.Stack {
       generateSecret: false,
       authFlows: {
         userPassword: true,
+        userSrp: true,
         refreshToken: true
       }
     });
