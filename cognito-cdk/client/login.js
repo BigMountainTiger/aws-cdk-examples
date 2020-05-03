@@ -12,7 +12,7 @@ global.fetch = require('node-fetch');
 
 const REGION = 'us-east-1';
 const USER_POOL_ID = 'us-east-1_ugjNr5pcN';
-const USER_POOL_CLIENT_ID = '719fmforid2f55kfqv8clnffga';
+const USER_POOL_CLIENT_ID = 'd7mqhchjru0tvl9e0fht1ttdt';
 
 const USER = 'song';
 const PASSWORD = 'Password123';
