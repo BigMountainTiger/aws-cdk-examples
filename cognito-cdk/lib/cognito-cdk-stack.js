@@ -8,6 +8,7 @@ class CognitoCdkStack extends cdk.Stack {
 
     const ID = id;
     const USERPOOL_NAME = `${ID}UserPool`;
+    const USERPOOL_CLIENT_NAME = `${USERPOOL_NAME}Client`;
 
     const add_user_pool = () => {
       const pool = new cognito.UserPool(this, USERPOOL_NAME, {
@@ -23,7 +24,16 @@ class CognitoCdkStack extends cdk.Stack {
       return pool;
     };
 
-    add_user_pool();
+    const pool = add_user_pool();
+
+    pool.addClient(USERPOOL_CLIENT_NAME, {
+      userPoolClientName: USERPOOL_CLIENT_NAME,
+      generateSecret: false,
+      authFlows: {
+        userPassword: true,
+        refreshToken: true
+      }
+    });
   }
 }
 
