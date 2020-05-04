@@ -57,9 +57,10 @@ class CognitoCdkStack extends cdk.Stack {
       return identity_pool;
     }
 
-    const add_api = () => {
+    const add_api = (user_pool) => {
       const API_NAME = `${ID}Api`;
       const LAMBDA_NAME = `${API_NAME}Lambda`;
+      const AUTHORIZER_NAME = `${API_NAME}Authorizer`;
 
       const api = new apigateway.RestApi(this, API_NAME, {
         restApiName: API_NAME,
@@ -73,6 +74,14 @@ class CognitoCdkStack extends cdk.Stack {
         code: lambda.Code.asset('./lambda/function-1'),
         handler: 'index.handler'
       });
+      
+      const authorizer = new apigateway.CfnAuthorizer(this, AUTHORIZER_NAME, {
+        name: AUTHORIZER_NAME,
+        identitySource: 'method.request.header.Authorization',
+        restApiId: api.restApiId,
+        type: apigateway.AuthorizationType.cognito,
+        providerArns: [user_pool.userPoolArn]
+      });
 
       api.root.addMethod("GET", new apigateway.LambdaIntegration(f, { proxy: true }));
 
@@ -83,7 +92,7 @@ class CognitoCdkStack extends cdk.Stack {
     const user_pool_client = add_user_pool_client(user_pool);
     //add_identity_pool(user_pool, user_pool_client);
 
-    add_api();
+    add_api(user_pool);
   }
 }
 
