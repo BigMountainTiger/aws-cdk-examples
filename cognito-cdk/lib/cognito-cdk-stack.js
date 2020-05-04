@@ -1,5 +1,7 @@
 const cdk = require('@aws-cdk/core');
 const cognito = require('@aws-cdk/aws-cognito');
+const apigateway = require('@aws-cdk/aws-apigateway');
+const lambda = require('@aws-cdk/aws-lambda');
 
 class CognitoCdkStack extends cdk.Stack {
 
@@ -55,9 +57,33 @@ class CognitoCdkStack extends cdk.Stack {
       return identity_pool;
     }
 
+    const add_api = () => {
+      const API_NAME = `${ID}Api`;
+      const LAMBDA_NAME = `${API_NAME}Lambda`;
+
+      const api = new apigateway.RestApi(this, API_NAME, {
+        restApiName: API_NAME,
+        description: API_NAME,
+        endpointTypes: [ apigateway.EndpointType.REGIONAL ]
+      });
+
+      const f = new lambda.Function(this, LAMBDA_NAME, {
+        runtime: lambda.Runtime.NODEJS_12_X,
+        functionName: LAMBDA_NAME,
+        code: lambda.Code.asset('./lambda/function-1'),
+        handler: 'index.handler'
+      });
+
+      api.root.addMethod("GET", new apigateway.LambdaIntegration(f, { proxy: true }));
+
+      return api;
+    };
+
     const user_pool = add_user_pool();
     const user_pool_client = add_user_pool_client(user_pool);
-    add_identity_pool(user_pool, user_pool_client);
+    //add_identity_pool(user_pool, user_pool_client);
+
+    add_api();
   }
 }
 

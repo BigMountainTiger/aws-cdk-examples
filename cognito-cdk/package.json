@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-cdk/aws-apigateway": "^1.36.1",
     "@aws-cdk/aws-cognito": "^1.36.1",
+    "@aws-cdk/aws-lambda": "^1.36.1",
     "@aws-cdk/core": "1.36.1",
     "amazon-cognito-identity-js": "^4.2.3",
     "aws-sdk": "^2.668.0",

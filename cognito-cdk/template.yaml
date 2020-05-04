@@ -1,0 +1,219 @@
+Resources:
+  CognitoCdkStackUserPoolsmsRole7F2E9C7B:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                sts:ExternalId: CognitoCdkStackCognitoCdkStackUserPool9404546D
+            Effect: Allow
+            Principal:
+              Service: cognito-idp.amazonaws.com
+        Version: "2012-10-17"
+      Policies:
+        - PolicyDocument:
+            Statement:
+              - Action: sns:Publish
+                Effect: Allow
+                Resource: "*"
+            Version: "2012-10-17"
+          PolicyName: sns-publish
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackUserPool/smsRole/Resource
+  CognitoCdkStackUserPool1DA2C11F:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true
+        InviteMessageTemplate:
+          EmailMessage: >-
+            Hello {username},
+                        you have been invited to join our awesome app! Your temporary password is {####}
+          EmailSubject: Invite to join our awesome app!
+          SMSMessage: >-
+            Hello {username},
+                        your temporary password for our awesome app is {####}
+      EmailVerificationMessage: Hello {username}, Your verification code is {####}
+      EmailVerificationSubject: Verify your new account
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+      SmsConfiguration:
+        ExternalId: CognitoCdkStackCognitoCdkStackUserPool9404546D
+        SnsCallerArn:
+          Fn::GetAtt:
+            - CognitoCdkStackUserPoolsmsRole7F2E9C7B
+            - Arn
+      SmsVerificationMessage: The verification code to your new account is {####}
+      UserPoolName: CognitoCdkStackUserPool
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_CODE
+        EmailMessage: Hello {username}, Your verification code is {####}
+        EmailSubject: Verify your new account
+        SmsMessage: The verification code to your new account is {####}
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackUserPool/Resource
+  CognitoCdkStackUserPoolClientDFBF6277:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId:
+        Ref: CognitoCdkStackUserPool1DA2C11F
+      ClientName: CognitoCdkStackUserPoolClient
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      GenerateSecret: false
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackUserPoolClient/Resource
+  CognitoCdkStackApi1AC9E7A1:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: CognitoCdkStackApi
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: CognitoCdkStackApi
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackApi/Resource
+  CognitoCdkStackApiDeployment89F6E1E7aec38a1ba3ee783c3fbbbecbaf07a365:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: CognitoCdkStackApi1AC9E7A1
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - CognitoCdkStackApiGET3F43505E
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackApi/Deployment/Resource
+  CognitoCdkStackApiDeploymentStageprodE0391B1B:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: CognitoCdkStackApi1AC9E7A1
+      DeploymentId:
+        Ref: CognitoCdkStackApiDeployment89F6E1E7aec38a1ba3ee783c3fbbbecbaf07a365
+      StageName: prod
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackApi/DeploymentStage.prod/Resource
+  CognitoCdkStackApiCloudWatchRoleBCF3A964:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackApi/CloudWatchRole/Resource
+  CognitoCdkStackApiAccount73C1A227:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - CognitoCdkStackApiCloudWatchRoleBCF3A964
+          - Arn
+    DependsOn:
+      - CognitoCdkStackApi1AC9E7A1
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackApi/Account
+  CognitoCdkStackApiGET3F43505E:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId:
+        Fn::GetAtt:
+          - CognitoCdkStackApi1AC9E7A1
+          - RootResourceId
+      RestApiId:
+        Ref: CognitoCdkStackApi1AC9E7A1
+      AuthorizationType: NONE
+      Integration:
+        Type: MOCK
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackApi/Default/GET/Resource
+  CognitoCdkStackApiLambdaServiceRoleAA9DED25:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackApiLambda/ServiceRole/Resource
+  CognitoCdkStackApiLambdaAE384B80:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters8202c0c4b90a0795baf6a35a669d8af99aec7bdb17293c6770bed3d2d863e0f0S3BucketDC35864D
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters8202c0c4b90a0795baf6a35a669d8af99aec7bdb17293c6770bed3d2d863e0f0S3VersionKeyF2E230C7
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters8202c0c4b90a0795baf6a35a669d8af99aec7bdb17293c6770bed3d2d863e0f0S3VersionKeyF2E230C7
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+          - CognitoCdkStackApiLambdaServiceRoleAA9DED25
+          - Arn
+      Runtime: nodejs12.x
+      FunctionName: CognitoCdkStackApiLambda
+    DependsOn:
+      - CognitoCdkStackApiLambdaServiceRoleAA9DED25
+    Metadata:
+      aws:cdk:path: CognitoCdkStack/CognitoCdkStackApiLambda/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/cognito-cdk/lambda/function-1
+      aws:asset:property: Code
+Outputs:
+  CognitoCdkStackApiEndpoint532DEA9D:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: CognitoCdkStackApi1AC9E7A1
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: CognitoCdkStackApiDeploymentStageprodE0391B1B
+          - /
+Parameters:
+  AssetParameters8202c0c4b90a0795baf6a35a669d8af99aec7bdb17293c6770bed3d2d863e0f0S3BucketDC35864D:
+    Type: String
+    Description: S3 bucket for asset "8202c0c4b90a0795baf6a35a669d8af99aec7bdb17293c6770bed3d2d863e0f0"
+  AssetParameters8202c0c4b90a0795baf6a35a669d8af99aec7bdb17293c6770bed3d2d863e0f0S3VersionKeyF2E230C7:
+    Type: String
+    Description: S3 key for asset version "8202c0c4b90a0795baf6a35a669d8af99aec7bdb17293c6770bed3d2d863e0f0"
+  AssetParameters8202c0c4b90a0795baf6a35a669d8af99aec7bdb17293c6770bed3d2d863e0f0ArtifactHashA1869B3D:
+    Type: String
+    Description: Artifact hash for asset "8202c0c4b90a0795baf6a35a669d8af99aec7bdb17293c6770bed3d2d863e0f0"
+
