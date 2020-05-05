@@ -12,6 +12,7 @@ class CognitoCdkStack extends cdk.Stack {
     const USERPOOL_NAME = `${ID}UserPool`;
     const USERPOOL_CLIENT_NAME = `${USERPOOL_NAME}Client`;
     const IDENTITY_POOL_NAME = `${ID}IdentityPool`;
+    const IDENTITY_POOL_ATTACHMENT_NAME = `${IDENTITY_POOL_NAME}Attachment`;
 
     const add_user_pool = () => {
       const user_pool = new cognito.UserPool(this, USERPOOL_NAME, {
@@ -40,7 +41,7 @@ class CognitoCdkStack extends cdk.Stack {
           refreshToken: true
         }
       })
-
+      
       return user_pool_client;
     };
 
@@ -53,6 +54,19 @@ class CognitoCdkStack extends cdk.Stack {
             providerName: user_pool.userPoolProviderName,
           }]
       });
+
+      const identity_provider = `${user_pool.userPoolProviderName}:${user_pool_client.userPoolClientId}`;
+      new cognito.CfnIdentityPoolRoleAttachment(this, IDENTITY_POOL_ATTACHMENT_NAME, {
+        identityPoolId: identity_pool.ref,
+        roleMappings: {
+          userpool1: {
+            identityProvider: identity_provider,
+            type: 'Token',
+            ambiguousRoleResolution: 'Deny'
+          }
+        },
+        roles: {}
+      })
 
       return identity_pool;
     }
@@ -95,7 +109,7 @@ class CognitoCdkStack extends cdk.Stack {
 
     const user_pool = add_user_pool();
     const user_pool_client = add_user_pool_client(user_pool);
-    //add_identity_pool(user_pool, user_pool_client);
+    add_identity_pool(user_pool, user_pool_client);
 
     add_api(user_pool);
   }
