@@ -95,7 +95,7 @@ class CognitoCdkStack extends cdk.Stack {
 
     const user_pool = add_user_pool();
     const user_pool_client = add_user_pool_client(user_pool);
-    add_identity_pool(user_pool, user_pool_client);
+    //add_identity_pool(user_pool, user_pool_client);
 
     add_api(user_pool);
   }
