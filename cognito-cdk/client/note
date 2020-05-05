@@ -1,0 +1,1 @@
+aws cognito-idp admin-initiate-auth --user-pool-id us-east-1_50wBjc9L7 --client-id 3719k34k2qgfdi4238eim58gn0 --auth-flow ADMIN_NO_SRP_AUTH --auth-parameters USERNAME="song",PASSWORD="Password123" 

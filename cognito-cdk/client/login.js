@@ -14,8 +14,8 @@ const jwt = require('jsonwebtoken');
 global.fetch = require('node-fetch');
 
 
-const USER_POOL_ID = 'us-east-1_k1nsaNC2O';
-const USER_POOL_CLIENT_ID = '40ssij3m6p55puuf98qlq6scvo';
+const USER_POOL_ID = 'us-east-1_50wBjc9L7';
+const USER_POOL_CLIENT_ID = '3719k34k2qgfdi4238eim58gn0';
 
 const USER = 'song';
 const PASSWORD = 'Password123';
@@ -110,28 +110,29 @@ const loginSession = async () => {
   await p;
   cognitoUser.getSession(function(err, result) {
 
+    console.log(result);
     AWS.config.region = 'us-east-1';
 
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
       AccountId: '005256505030',
-      IdentityPoolId: 'us-east-1:7cd9b1ee-3d29-4b6a-a01c-bf8727b717a1',
+      IdentityPoolId: 'us-east-1:f8395a2b-e83b-4048-9c11-41c89bd3e2a5',
       Logins: {
-        'cognito-idp:us-east-1.amazonaws.com/us-east-1_k1nsaNC2O': result.getIdToken().getJwtToken()
+        "cognito-idp.us-east-1.amazonaws.com/us-east-1_50wBjc9L7": result.getIdToken().getJwtToken()
       }
     });
 
     console.log(AWS.config.credentials);
 
-    AWS.config.credentials.get(function(err, data){
+    AWS.config.credentials.get(function(err){
       console.log(err);
 
-      const accessKeyId = AWS.config.credentials.accessKeyId;
-      const secretAccessKey = AWS.config.credentials.secretAccessKey;
-      const sessionToken = AWS.config.credentials.sessionToken;
+      const token = {
+        accessKeyId: AWS.config.credentials.accessKeyId,
+        secretAccessKey: AWS.config.credentials.secretAccessKey,
+        sessionToken: AWS.config.credentials.sessionToken
+      };
 
-      console.log(accessKeyId);
-      console.log(secretAccessKey);
-      console.log(sessionToken);
+      console.log(token);
     });
   });
 };
