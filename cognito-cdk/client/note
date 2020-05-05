@@ -1,1 +1,23 @@
 aws cognito-idp admin-initiate-auth --user-pool-id us-east-1_50wBjc9L7 --client-id 3719k34k2qgfdi4238eim58gn0 --auth-flow ADMIN_NO_SRP_AUTH --auth-parameters USERNAME="song",PASSWORD="Password123" 
+
+The policy Statement to access the api gateway
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "cognito-identity:*",
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "execute-api:Invoke",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "apigateway:*",
+            "Resource": "*"
+        }
+    ]
+}
