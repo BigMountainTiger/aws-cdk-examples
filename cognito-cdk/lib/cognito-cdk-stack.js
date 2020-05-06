@@ -12,7 +12,8 @@ class CognitoCdkStack extends cdk.Stack {
     const ID = id;
     const USERPOOL_NAME = `${ID}UserPool`;
     const USERPOOL_GROUP_NAME = `${USERPOOL_NAME}Group`;
-    const USERPOOL_GROUP_POLICY_NAME = `${USERPOOL_GROUP_NAME}Policy`
+    const USERPOOL_GROUP_ROLE_NAME = `${USERPOOL_GROUP_NAME}Role`;
+    const USERPOOL_GROUP_POLICY_NAME = `${USERPOOL_GROUP_NAME}Policy`;
     const USERPOOL_CLIENT_NAME = `${USERPOOL_NAME}Client`;
     const IDENTITY_POOL_NAME = `${ID}IdentityPool`;
     const IDENTITY_POOL_ATTACHMENT_NAME = `${IDENTITY_POOL_NAME}Attachment`;
@@ -111,6 +112,25 @@ class CognitoCdkStack extends cdk.Stack {
     };
 
     const add_user_pool_group = (user_pool, identity_pool) => {
+      const role = new iam.Role(this, USERPOOL_GROUP_ROLE_NAME, {
+        roleName: USERPOOL_GROUP_ROLE_NAME,
+        assumedBy: new iam.FederatedPrincipal('cognito-identity.amazonaws.com', {
+          StringEquals: {
+            'cognito-identity.amazonaws.com:aud': identity_pool.ref
+          }
+        }, 'sts:AssumeRoleWithWebIdentity')
+      });
+
+      const statement = new iam.PolicyStatement();
+      statement.addAllResources();
+      statement.addActions(['cognito-identity:*']);
+      role.addToPolicy(statement);
+
+      new cognito.CfnUserPoolGroup(this, USERPOOL_GROUP_NAME, {
+        groupName: USERPOOL_GROUP_NAME,
+        userPoolId: user_pool.userPoolId,
+        roleArn: role.roleArn
+      });
       
     };
 
