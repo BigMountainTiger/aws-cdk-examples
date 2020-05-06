@@ -21,3 +21,29 @@ The policy Statement to access the api gateway
         }
     ]
 }
+
+
+var admiRole = new Amazon.CDK.AWS.IAM.Role(thisScope, "AdminRole", new Amazon.CDK.AWS.IAM.RoleProps()
+            {
+                AssumedBy = new Amazon.CDK.AWS.IAM.FederatedPrincipal("cognito-identity.amazonaws.com", new Dictionary<string, object>
+                {
+                    ["StringEquals"] = new Dictionary<string, object>
+                    {
+                        ["cognito-identity.amazonaws.com:aud"] = id_pool.Ref
+                    }
+                }, "sts:AssumeRoleWithWebIdentity")
+            });
+            var policyStatement = new Amazon.CDK.AWS.IAM.PolicyStatement();
+            policyStatement.AddAllResources();
+            policyStatement.AddActions(new string[] { "cognito-identity:*" });
+
+            admiRole.AddToPolicy(policyStatement);
+
+            new CfnUserPoolGroup(thisScope, "GroupAdministrator", new CfnUserPoolGroupProps()
+            {
+                GroupName = "Administrator",
+                UserPoolId = userPool.UserPoolId,
+                RoleArn = admiRole.RoleArn
+            });
+
+            return cfnUserPool;

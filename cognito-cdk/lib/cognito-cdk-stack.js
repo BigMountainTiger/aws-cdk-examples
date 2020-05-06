@@ -2,6 +2,7 @@ const cdk = require('@aws-cdk/core');
 const cognito = require('@aws-cdk/aws-cognito');
 const apigateway = require('@aws-cdk/aws-apigateway');
 const lambda = require('@aws-cdk/aws-lambda');
+const iam = require('@aws-cdk/aws-iam');
 
 class CognitoCdkStack extends cdk.Stack {
 
@@ -10,6 +11,8 @@ class CognitoCdkStack extends cdk.Stack {
 
     const ID = id;
     const USERPOOL_NAME = `${ID}UserPool`;
+    const USERPOOL_GROUP_NAME = `${USERPOOL_NAME}Group`;
+    const USERPOOL_GROUP_POLICY_NAME = `${USERPOOL_GROUP_NAME}Policy`
     const USERPOOL_CLIENT_NAME = `${USERPOOL_NAME}Client`;
     const IDENTITY_POOL_NAME = `${ID}IdentityPool`;
     const IDENTITY_POOL_ATTACHMENT_NAME = `${IDENTITY_POOL_NAME}Attachment`;
@@ -107,11 +110,16 @@ class CognitoCdkStack extends cdk.Stack {
       return api;
     };
 
+    const add_user_pool_group = (user_pool, identity_pool) => {
+      
+    };
+
     const user_pool = add_user_pool();
     const user_pool_client = add_user_pool_client(user_pool);
-    add_identity_pool(user_pool, user_pool_client);
-
+    const identity_pool = add_identity_pool(user_pool, user_pool_client);
     add_api(user_pool);
+    add_user_pool_group(user_pool, identity_pool);
+
   }
 }
 
