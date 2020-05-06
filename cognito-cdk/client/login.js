@@ -3,10 +3,10 @@ const AWS = require('aws-sdk');
 global.fetch = require('node-fetch');
 
 const REGION = 'us-east-1';
-const USER_POOL_ID = 'us-east-1_5MnP9qC2W';
-const USER_POOL_CLIENT_ID = '5rblinh9g1lmlbngkl54p8jcvv';
-const IDENTITY_POOL_ID = 'us-east-1:54bf2876-3861-4201-8cb4-a9cc4b50f370';
-const IDENTITY_PROVIDER_NAME = 'cognito-idp.us-east-1.amazonaws.com/us-east-1_5MnP9qC2W'
+const USER_POOL_ID = 'us-east-1_qzRHIZK9W';
+const USER_POOL_CLIENT_ID = '76fduugu2k2pk86ho3l94mf2ju';
+const IDENTITY_POOL_ID = 'us-east-1:79400f5a-1321-45d9-8345-84bf45996d20';
+const IDENTITY_PROVIDER_NAME = 'cognito-idp.us-east-1.amazonaws.com/us-east-1_qzRHIZK9W'
 
 const USER = 'song';
 const PASSWORD = 'Password123';
