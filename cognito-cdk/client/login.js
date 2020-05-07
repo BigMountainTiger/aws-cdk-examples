@@ -104,7 +104,7 @@ const make_api_call = async (identities) => {
 
   try {
     const result = await make_api_call(identities);
-    console.log(result);
+    console.log(result.data);
   } catch(e) {
     console.log(e);
   }
