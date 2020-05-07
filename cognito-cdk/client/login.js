@@ -34,7 +34,6 @@ const login = async () => {
       },
       onFailure: (e) => { rj(e); },
       newPasswordRequired: (userAttributes) => {
-        //console.log(userAttributes);
         delete userAttributes.email_verified;
         cognitoUser.completeNewPasswordChallenge(PASSWORD, userAttributes, callback);
       }
@@ -46,10 +45,7 @@ const login = async () => {
   return await p;
 };
 
-
-(async () => {
-  const token = await login();
-  console.log(token);
+const get_keys = async (token) => {
 
   AWS.config.region = REGION;
   const credential = {
@@ -59,17 +55,30 @@ const login = async () => {
   credential.Logins[IDENTITY_PROVIDER_NAME] = token.id_token;
   AWS.config.credentials = new AWS.CognitoIdentityCredentials(credential);
 
-  AWS.config.credentials.get(function(err, data){
-    if (err) { console.log(err); }
+  const p = new Promise((rs, rj) => {
+    AWS.config.credentials.get(function(err){
+      if (err) { rj(err); return;}
+  
+      const identities = {
+        accessKeyId: AWS.config.credentials.accessKeyId,
+        secretAccessKey: AWS.config.credentials.secretAccessKey,
+        sessionToken: AWS.config.credentials.sessionToken
+      };
+      
+      rs(identities);
+    });
 
-    const identities = {
-      accessKeyId: AWS.config.credentials.accessKeyId,
-      secretAccessKey: AWS.config.credentials.secretAccessKey,
-      sessionToken: AWS.config.credentials.sessionToken
-    };
-    
-    console.log(identities);
   });
+
+  return await p;  
+};
+
+
+(async () => {
+  const token = await login();
+  const identities = await get_keys(token);
+
+  console.log(identities);
 
 })();
 

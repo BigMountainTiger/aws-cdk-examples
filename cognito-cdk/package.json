@@ -10,6 +10,7 @@
     "@aws-cdk/core": "^1.37.0",
     "amazon-cognito-identity-js": "^4.2.3",
     "aws-sdk": "^2.668.0",
+    "axios": "^0.19.2",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.3",
     "node-fetch": "^2.6.0",

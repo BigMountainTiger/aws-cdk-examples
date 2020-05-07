@@ -106,7 +106,9 @@ class CognitoCdkStack extends cdk.Stack {
       //   authorizer: { authorizerId: authorizer.ref }
       // });
 
-      api.root.addMethod("GET", new apigateway.LambdaIntegration(f, { proxy: true }));
+      api.root.addMethod("GET", new apigateway.LambdaIntegration(f, { proxy: true }), {
+        authorizationType: apigateway.AuthorizationType.IAM
+      });
 
       return api;
     };
@@ -121,10 +123,8 @@ class CognitoCdkStack extends cdk.Stack {
         }, 'sts:AssumeRoleWithWebIdentity')
       });
 
-      const statement = new iam.PolicyStatement();
-      statement.addAllResources();
-      statement.addActions(['cognito-identity:*']);
-      role.addToPolicy(statement);
+      role.addToPolicy(new iam.PolicyStatement({ effect: 'Allow', actions: ['cognito-identity:*'], resources: ['*'] }));
+      role.addToPolicy(new iam.PolicyStatement({ effect: 'Allow', actions: ['execute-api:Invoke'], resources: ['*'] }));
 
       new cognito.CfnUserPoolGroup(this, USERPOOL_GROUP_NAME, {
         groupName: USERPOOL_GROUP_NAME,
