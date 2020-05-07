@@ -2,6 +2,9 @@
   "name": "cognito-cdk",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "test": "node client/login.js"
+  },
   "dependencies": {
     "@aws-cdk/aws-apigateway": "^1.37.0",
     "@aws-cdk/aws-cognito": "^1.37.0",
