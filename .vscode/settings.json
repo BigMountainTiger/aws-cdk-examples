@@ -7,6 +7,9 @@
     "**/.DS_Store": true,
     "**/node_modules": true,
     "**/cdk.out": true,
-    "**/asset.*": true
+    "**/asset.*": true,
+    "**/bin": true,
+    "**/obj": true,
+    "**/dist": true
   }
 }
