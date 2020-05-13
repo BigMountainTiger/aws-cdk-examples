@@ -8,8 +8,8 @@
     "**/node_modules": true,
     "**/cdk.out": true,
     "**/asset.*": true,
-    "**/bin": true,
-    "**/obj": true,
-    "**/dist": true
+    "**/dist": true,
+    "dotnet-pipeline/**/bin": true,
+    "dotnet-pipeline/**/obj": true,
   }
 }
