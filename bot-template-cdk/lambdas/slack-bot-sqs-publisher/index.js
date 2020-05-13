@@ -1,5 +1,5 @@
 const SUPPORT_QUEUE_REGION = 'us-east-1';
-const QUEUE_URL = 'https://sqs.us-east-1.amazonaws.com/005256505030/TEST_TECH_SUPPORT_QUEUE';
+const QUEUE_URL = 'https://sqs.us-east-1.amazonaws.com/005256505030/SLACK_TECH_SUPPORT_QUEUE';
 
 const AWS = require('aws-sdk');
 AWS.config.update({region: SUPPORT_QUEUE_REGION});
