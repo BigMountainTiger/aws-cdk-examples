@@ -47,9 +47,25 @@ const add_publisher_lambda = (scope, role, layer) => {
     runtime: lambda.Runtime.NODEJS_12_X,
     functionName: name,
     description: name,
-    timeout: cdk.Duration.seconds(3),
+    timeout: cdk.Duration.seconds(10),
     role: role,
     code: lambda.Code.asset('./lambdas/slack-bot-sqs-publisher'),
+    layers: [layer],
+    handler: 'index.handler'
+  });
+
+  return f;
+};
+
+const add_consumer_lambda = (scope, role, layer) => {
+  const name = NAME.SLACK_BOT_SQS_CONSUMER_NAME;
+  const f = new lambda.Function(scope, name, {
+    runtime: lambda.Runtime.NODEJS_12_X,
+    functionName: name,
+    description: name,
+    timeout: cdk.Duration.minutes(4),
+    role: role,
+    code: lambda.Code.asset('./lambdas/slack-bot-sqs-consumer'),
     layers: [layer],
     handler: 'index.handler'
   });
@@ -60,9 +76,11 @@ const add_publisher_lambda = (scope, role, layer) => {
 module.exports = (scope) => {
   const role = add_lambda_role(scope);
   const layer = add_dependency_layer(scope);
-  const sqs_publisher = add_publisher_lambda(scope, role, layer)
-
+  const sqs_publisher = add_publisher_lambda(scope, role, layer);
+  const sqs_consumer = add_consumer_lambda(scope, role, layer);
+  
   return {
-    sqs_publisher: sqs_publisher
+    sqs_publisher: sqs_publisher,
+    sqs_consumer: sqs_consumer
   };
 };

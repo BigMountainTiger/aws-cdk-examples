@@ -8,8 +8,8 @@ class BotTemplateCdkStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    add_sqs(this);
-    const { sqs_publisher } = add_lambdas(this);
+    const queue = add_sqs(this);
+    const { sqs_publisher, sqs_consumer } = add_lambdas(this);
     add_api(this, sqs_publisher);
   }
 }
