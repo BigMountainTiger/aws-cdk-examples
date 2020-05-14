@@ -5,8 +5,9 @@ const NAME = require('./NAME');
 
 const add_sqs = (scope) => {
 
-  const queue = new sqs.Queue(scope, NAME.SQS_NAME, {
-    queueName: NAME.SQS_NAME,
+  const name = NAME.SQS_NAME;
+  const queue = new sqs.Queue(scope, name, {
+    queueName: name,
     receiveMessageWaitTime: cdk.Duration.seconds(20),
     visibilityTimeout: cdk.Duration.minutes(5)
   });

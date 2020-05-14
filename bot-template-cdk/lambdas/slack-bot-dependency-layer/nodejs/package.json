@@ -1,0 +1,9 @@
+{
+  "name": "slack_bot_dependency_layer",
+  "version": "1.0.0",
+  "description": "Slack bot dependency layer",
+  "private": true,
+  "dependencies": {
+    "temp-units-conv": "^1.0.2"
+  }
+}
