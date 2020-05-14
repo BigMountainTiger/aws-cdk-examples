@@ -30,20 +30,18 @@ const add_lambda_role = (scope) => {
 const add_dependency_layer = (scope) => {
 
   const name = NAME.SLACK_BOT_DEPENDENCY_LAYER_NAME;
-  const l = new lambda.LayerVersion(scope, name, {
+  return new lambda.LayerVersion(scope, name, {
     layerVersionName: name,
     code: lambda.Code.fromAsset('./lambdas/slack-bot-dependency-layer'),
     compatibleRuntimes: [lambda.Runtime.NODEJS_12_X],
     description: name
   });
-
-  return l;
 };
 
 const add_publisher_lambda = (scope, role, layer) => {
 
   const name = NAME.SLACK_BOT_SQS_PUBLISHER_NAME;
-  const f = new lambda.Function(scope, name, {
+  return new lambda.Function(scope, name, {
     runtime: lambda.Runtime.NODEJS_12_X,
     functionName: name,
     description: name,
@@ -53,13 +51,12 @@ const add_publisher_lambda = (scope, role, layer) => {
     layers: [layer],
     handler: 'index.handler'
   });
-
-  return f;
 };
 
 const add_consumer_lambda = (scope, role, layer) => {
+
   const name = NAME.SLACK_BOT_SQS_CONSUMER_NAME;
-  const f = new lambda.Function(scope, name, {
+  return new lambda.Function(scope, name, {
     runtime: lambda.Runtime.NODEJS_12_X,
     functionName: name,
     description: name,
@@ -69,8 +66,6 @@ const add_consumer_lambda = (scope, role, layer) => {
     layers: [layer],
     handler: 'index.handler'
   });
-
-  return f;
 };
 
 module.exports = (scope) => {
