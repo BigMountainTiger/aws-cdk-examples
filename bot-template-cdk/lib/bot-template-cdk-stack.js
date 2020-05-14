@@ -1,6 +1,7 @@
 const cdk = require('@aws-cdk/core');
 const add_sqs = require('./resources/add_sqs');
 const add_lambdas = require('./resources/add_lambdas');
+const add_api = require('./resources/add_api');
 
 class BotTemplateCdkStack extends cdk.Stack {
 
@@ -8,7 +9,8 @@ class BotTemplateCdkStack extends cdk.Stack {
     super(scope, id, props);
 
     add_sqs(this);
-    add_lambdas(this);
+    const { sqs_publisher } = add_lambdas(this);
+    add_api(this, sqs_publisher);
   }
 }
 

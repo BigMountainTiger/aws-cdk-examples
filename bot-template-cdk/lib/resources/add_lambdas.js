@@ -60,5 +60,9 @@ const add_publisher_lambda = (scope, role, layer) => {
 module.exports = (scope) => {
   const role = add_lambda_role(scope);
   const layer = add_dependency_layer(scope);
-  add_publisher_lambda(scope, role, layer)
+  const sqs_publisher = add_publisher_lambda(scope, role, layer)
+
+  return {
+    sqs_publisher: sqs_publisher
+  };
 };
