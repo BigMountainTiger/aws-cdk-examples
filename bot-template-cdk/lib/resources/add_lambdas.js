@@ -49,7 +49,7 @@ const add_publisher_lambda = (scope, role, layer) => {
     role: role,
     code: lambda.Code.asset('./lambdas/slack-bot-sqs-publisher'),
     layers: [layer],
-    handler: 'index.handler'
+    handler: 'app.lambdaHandler'
   });
 };
 
@@ -64,7 +64,7 @@ const add_consumer_lambda = (scope, role, layer) => {
     role: role,
     code: lambda.Code.asset('./lambdas/slack-bot-sqs-consumer'),
     layers: [layer],
-    handler: 'index.handler'
+    handler: 'app.lambdaHandler'
   });
 };
 
