@@ -1,5 +1,4 @@
-const axios = require('axios');
-const CancelToken = axios.CancelToken;
+const ext_axios = require('/opt/nodejs/common/ext-axios');
 const FormData = require('form-data');
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -14,13 +13,10 @@ const attachAFile = async (data) => {
 
   let slack_res = null;
   try {
-    let source = CancelToken.source();
-    setTimeout(() => { source.cancel(); }, 15 * 1000);
 
     const slack_url = file.url_private;
     const options = {
       method: 'GET',
-      cancelToken: source.token,
       headers: {
         Authorization: 'Bearer ' + BOT_TOKEN
       },
@@ -28,7 +24,7 @@ const attachAFile = async (data) => {
       url: slack_url,
     };
 
-    slack_res = await axios(options);
+    slack_res = await ext_axios(options, 20);
 
     // const content_length = slack_res.headers['content-length'];
     // if (!content_length) {
@@ -42,13 +38,9 @@ const attachAFile = async (data) => {
     const form = new FormData();
     form.append('file', slack_res.data);
 
-    let source = CancelToken.source();
-    setTimeout(() => { source.cancel(); }, 30 * 1000);
-
     const jira_url = JIRA_ATTACHMENT_URL.replace('${jiraId}', jiraId);
     const options = {
       method: 'POST',
-      cancelToken: source.token,
       headers: {
         'X-Atlassian-Token': 'nocheck',
         'content-type': `multipart/form-data; boundary=${form._boundary}`
@@ -58,7 +50,7 @@ const attachAFile = async (data) => {
       url: jira_url,
     };
     
-    let jira_res = await axios(options);
+    let jira_res = await ext_axios(options, 40);
   } catch(e) {
     return `Unable to attach *${fileName}*, Check if the Jira Key exists or if the Jira issue *${jiraId}* may have been deleted or your file is too large`;
   }
