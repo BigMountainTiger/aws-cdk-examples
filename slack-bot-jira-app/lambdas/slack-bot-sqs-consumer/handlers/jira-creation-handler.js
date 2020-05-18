@@ -1,5 +1,4 @@
-const axios = require('axios');
-const CancelToken = axios.CancelToken;
+const ext_axios = require('/opt/nodejs/common/ext-axios');
 const jiraMapper = require('./jira-mapper');
 const get_jira_accountId_by_slack_id = require('../utilities/get-jira-accountId-by-slack-id');
 
@@ -60,13 +59,9 @@ const create = async (request) => {
   } catch(e) {
     return 'Unable to understand the issue request - @' + (new Date()).toLocaleString();
   }
-  
-  let source = CancelToken.source();
-  setTimeout(() => { source.cancel(); }, 3 * 1000);
 
   const options = {
     method: 'POST',
-    cancelToken: source.token,
     headers: {
       'X-Atlassian-Token': 'nocheck',
       'content-type': 'application/json'
@@ -78,7 +73,7 @@ const create = async (request) => {
 
   let msgText = '';
   try {
-    const result = await axios(options);
+    const result = await ext_axios(options);
     const key = result.data.key;
     const summary = request.request.summary;
 
