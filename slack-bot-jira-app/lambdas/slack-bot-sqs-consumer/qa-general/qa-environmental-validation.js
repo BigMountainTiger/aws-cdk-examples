@@ -1,7 +1,6 @@
 require('dotenv').config();
 
-const axios = require('axios');
-const CancelToken = axios.CancelToken;
+const ext_axios = require('/opt/nodejs/common/ext-axios');
 
 const AWS = require('aws-sdk');
 AWS.config.update({region: process.env.SUPPORT_QUEUE_REGION});
@@ -12,25 +11,17 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const JIRA_AUTH_EMAIL = process.env.JIRA_AUTH_EMAIL;
 const JIRA_AUTH_TOKEN = process.env.JIRA_AUTH_TOKEN;
 
-const getCancelToken = (seconds) => {
-  let source = CancelToken.source();
-  setTimeout(() => { source.cancel('Timeout'); }, seconds * 1000);
-
-  return source.token;
-};
-
 const validate_slack = async () => {
   const url = 'https://slack.com/api/auth.test';
 
   const options = {
     method: 'GET',
-    cancelToken: getCancelToken(3),
     headers: { Authorization: 'Bearer ' + BOT_TOKEN },
     url: url,
   };
 
   try {
-    const res = await axios(options);
+    const res = await ext_axios(options);
     return res.data
   } catch(e) {
     return {
@@ -74,13 +65,12 @@ const validate_jira = async () => {
 
   const options = {
     method: 'GET',
-    cancelToken: getCancelToken(3),
     auth: { username: JIRA_AUTH_EMAIL, password: JIRA_AUTH_TOKEN },
     url: url,
   };
 
   try {
-    const res = await axios(options);
+    const res = await ext_axios(options);
     const data = res.data[0];
     delete data.avatarUrls;
 
