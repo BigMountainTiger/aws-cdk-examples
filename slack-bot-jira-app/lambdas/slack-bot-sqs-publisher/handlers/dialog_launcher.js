@@ -1,4 +1,4 @@
-const axios = require('axios');
+const ext_axios = require('/opt/nodejs/common/ext-axios');
 const dialog = require('../dialog_blocks/dialog');
 const standardResponses = require('./standard-responses');
 
@@ -22,7 +22,7 @@ const launch = async (trigger_id) => {
 
   let statusText = '';
   try {
-    let res = await axios(options);
+    let res = await ext_axios(options);
     let d = res.data || {};
     if (! d.ok) {
       statusText = 'Slack refuses to open the dialog';
