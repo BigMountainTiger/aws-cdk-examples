@@ -64,6 +64,7 @@ const add_consumer_lambda = (scope, role, layer) => {
     role: role,
     code: lambda.Code.asset('./lambdas/slack-bot-sqs-consumer'),
     layers: [layer],
+    memorySize: 256,
     handler: 'app.lambdaHandler'
   });
 };
