@@ -39,7 +39,25 @@ const add_dependency_layer = (scope) => {
   });
 };
 
+const add_lambda = (scope, role, layer) => {
+
+  const name = NAME.SNOWFLAKE_S3_PIPE_STARTER_NAME;
+  return new lambda.Function(scope, name, {
+    runtime: lambda.Runtime.NODEJS_12_X,
+    functionName: name,
+    description: name,
+    timeout: cdk.Duration.minutes(2),
+    role: role,
+    code: lambda.Code.asset('./lambdas/snowflake-s3-pipe-starter'),
+    layers: [layer],
+    memorySize: 256,
+    handler: 'app.lambdaHandler'
+  });
+};
+
 module.exports = (scope) => {
   const role = add_lambda_role(scope);
   const layer = add_dependency_layer(scope);
+
+  return add_lambda(scope, role, layer);
 };

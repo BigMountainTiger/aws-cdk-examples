@@ -7,8 +7,8 @@ class SnowflakPipeAutomationStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    add_sqs(this);
-    add_lambdas(this);
+    const queue = add_sqs(this);
+    const lambda = add_lambdas(this);
   }
 }
 
