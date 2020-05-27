@@ -1,3 +1,5 @@
+const sf = require('snowflake-sdk');
+
 exports.lambdaHandler = async (event, context) => {
 
   const response = {
