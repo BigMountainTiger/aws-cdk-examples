@@ -1,11 +1,9 @@
-const sf = require('snowflake-sdk');
+const snowflake_command = require('snowflake-command');
 
 exports.lambdaHandler = async (event, context) => {
+  console.log(event);
+  const query = `ALTER TASK IF EXISTS Load_Data_Task RESUME;`;
+  await snowflake_command.issue(query);
 
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify('Hello from Lambda!'),
-  };
-
-  return response;
+  return {};
 };
