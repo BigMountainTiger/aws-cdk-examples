@@ -1,0 +1,9 @@
+{
+  "name": "snowflake-s3-pipe-dependency-layer",
+  "version": "1.0.0",
+  "description": "Snowflake s3 pipe dependency layer",
+  "private": true,
+  "dependencies": {
+    "snowflake-sdk": "^1.5.2"
+  }
+}

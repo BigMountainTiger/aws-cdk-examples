@@ -4,6 +4,9 @@
   "author": "Song Li",
   "private": true,
   "dependencies": {
+    "@aws-cdk/aws-iam": "^1.42.0",
+    "@aws-cdk/aws-lambda": "^1.42.0",
+    "@aws-cdk/aws-sqs": "^1.42.0",
     "@aws-cdk/core": "1.42.0"
   }
 }
