@@ -1,0 +1,19 @@
+#!/bin/bash
+
+files=(Address.txt
+  CorelogicData.txt
+  Deed.txt
+  Lead.txt
+  Loan.txt
+  LoanDetail.txt
+  LoanHistory.txt
+  LoandDetailHistory.txt
+  Person.txt
+  Property.txt
+  UnusedData.txt)
+
+for file in "${files[@]}"
+do
+  echo "------------------------------"
+  A-download "$file" 2000
+done

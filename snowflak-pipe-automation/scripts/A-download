@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd download
+
+file=$1
+size=$2
+echo Downloading "$file"
+aws s3api get-object --bucket mlg-snowpipe --key "$file" --range bytes=0-$2 --profile snowflake "$file"
