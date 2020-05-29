@@ -28,7 +28,10 @@ const get_query_list = (files) => {
 
   const queries = [];
   files.forEach((file) => {
+    const filename = file.includes('.')
+      ? file.split('.').slice(0, -1).join('.').trim() : file.trim();
 
+    console.log(filename);
   });
 
   return queries;
@@ -37,7 +40,7 @@ const get_query_list = (files) => {
 exports.lambdaHandler = async (event, context) => {
 
   const files = get_file_list(event);
-  console.log(files);
+  const queries = get_query_list(files);
 
   // const query = `ALTER TASK IF EXISTS Load_Data_Task RESUME;`;
   // await snowflake_command.issue(query);
