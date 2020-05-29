@@ -31,7 +31,7 @@ const get_query_list = (files) => {
     const filename = file.includes('.')
       ? file.split('.').slice(0, -1).join('.').trim() : file.trim();
 
-    console.log(filename);
+    queries.push(`ALTER TASK IF EXISTS Load_${filename.replace(/-/g, '_')}_Task RESUME;`);
   });
 
   return queries;
@@ -39,11 +39,14 @@ const get_query_list = (files) => {
 
 exports.lambdaHandler = async (event, context) => {
 
-  const files = get_file_list(event);
-  const queries = get_query_list(files);
-
-  // const query = `ALTER TASK IF EXISTS Load_Data_Task RESUME;`;
-  // await snowflake_command.issue(query);
+  try {
+    const files = get_file_list(event);
+    const queries = get_query_list(files);
+    await snowflake_command.issue(queries);
+  } catch (ex) {
+    
+    console.log({ error: ex, event: JSON.stringify(event) });
+  }
 
   return {};
 };

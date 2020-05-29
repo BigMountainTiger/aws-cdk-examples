@@ -24,7 +24,7 @@ const destroyConnection = (cn) => {
   });
 };
 
-exports.issue = async (query) => {
+exports.issue = async (queries) => {
   const cn = sf.createConnection( {
     account: 'gja08302.us-east-1',
     username: 'song_li',
@@ -34,8 +34,16 @@ exports.issue = async (query) => {
     warehouse: 'COMPUTE_WH'
   });
 
-  await establishConnection(cn);
-  await issueQuery(cn, query);
-  await destroyConnection(cn);
-  
+  try {
+    await establishConnection(cn);
+
+    for (let i = 0; i < queries.length; i++) {
+      await issueQuery(cn, queries[i]);
+    }
+  }
+  finally {
+    if (cn.isUp()) {
+      await destroyConnection(cn);
+    }
+  }
 };
