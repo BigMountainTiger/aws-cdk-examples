@@ -1,0 +1,10 @@
+{
+  "name": "miscellaneous",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Song Li",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.689.0"
+  }
+}
