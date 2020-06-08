@@ -1,0 +1,7 @@
+{
+  "name": "s3-handler",
+  "version": "1.0.0",
+  "description": "S3 event handler",
+  "private": true,
+  "author": "Song Li"
+}

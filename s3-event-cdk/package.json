@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-cdk/aws-s3": "^1.44.0",
     "@aws-cdk/core": "1.44.0"
   }
 }
