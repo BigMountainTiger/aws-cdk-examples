@@ -13,9 +13,9 @@ class S3EventCdkStack extends cdk.Stack {
     const bucket = s3_bucket(this);
     const handler = s3_event_lambda_handler(this);
     
-    handler.addEventSource(new s3_event_source.S3EventSource(bucket, {
-      events: [ s3.EventType.OBJECT_CREATED ]
-    }));
+    // handler.addEventSource(new s3_event_source.S3EventSource(bucket, {
+    //   events: [ s3.EventType.OBJECT_CREATED ]
+    // }));
   }
 }
 

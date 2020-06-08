@@ -1,0 +1,38 @@
+{
+  "Records": [
+      {
+          "eventVersion": "2.1",
+          "eventSource": "aws:s3",
+          "awsRegion": "us-east-1",
+          "eventTime": "2020-06-08T22:22:35.535Z",
+          "eventName": "ObjectCreated:Put",
+          "userIdentity": {
+              "principalId": "AWS:AIDAQCOKP43DAAJPTVASG"
+          },
+          "requestParameters": {
+              "sourceIPAddress": "68.134.29.14"
+          },
+          "responseElements": {
+              "x-amz-request-id": "311420EEF5F83A47",
+              "x-amz-id-2": "MBFRvoh1FSklquZKa0Nr6ZLSFT93SEVRwQzaabrY022W8K811T4D814EWh/WYjNiBKYoW8An/G3q0d90yNvK5SwS5Lek7hhB"
+          },
+          "s3": {
+              "s3SchemaVersion": "1.0",
+              "configurationId": "Y2QwMDAxN2ItZjFmMy00MDVkLWI1MmItYzU1OTM0NGVhN2M3",
+              "bucket": {
+                  "name": "s3-event-bucket.huge.head.li",
+                  "ownerIdentity": {
+                      "principalId": "AFZGJLHCXQ75L"
+                  },
+                  "arn": "arn:aws:s3:::s3-event-bucket.huge.head.li"
+              },
+              "object": {
+                  "key": "index.html",
+                  "size": 408,
+                  "eTag": "7c0a465e2a0e74df96fe72ce02e59ade",
+                  "sequencer": "005EDEBA301CFAA159"
+              }
+          }
+      }
+  ]
+}
