@@ -11,11 +11,11 @@ const add_lambda = (scope) => {
     assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
   });
 
-  role.addToPolicy(new iam.PolicyStatement({
-    effect: iam.Effect.ALLOW,
-    resources: ['*'],
-    actions: ['s3:*']
-  }))
+  // role.addToPolicy(new iam.PolicyStatement({
+  //   effect: iam.Effect.ALLOW,
+  //   resources: ['*'],
+  //   actions: ['s3:*']
+  // }))
 
   role.addToPolicy(new iam.PolicyStatement({
     effect: iam.Effect.ALLOW,
