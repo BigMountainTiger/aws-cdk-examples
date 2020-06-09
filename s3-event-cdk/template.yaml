@@ -140,9 +140,6 @@ Resources:
     Properties:
       PolicyDocument:
         Statement:
-          - Action: s3:*
-            Effect: Allow
-            Resource: "*"
           - Action:
               - logs:CreateLogGroup
               - logs:CreateLogStream
@@ -160,7 +157,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fS3BucketCC19E024
+          Ref: AssetParameters7470dbe146868719d57ec3a80972296218345f822760aaa3eedeadc05daa066eS3Bucket6A58C3C6
         S3Key:
           Fn::Join:
             - ""
@@ -168,12 +165,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fS3VersionKey677C1FEE
+                      - Ref: AssetParameters7470dbe146868719d57ec3a80972296218345f822760aaa3eedeadc05daa066eS3VersionKey7AC32341
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fS3VersionKey677C1FEE
+                      - Ref: AssetParameters7470dbe146868719d57ec3a80972296218345f822760aaa3eedeadc05daa066eS3VersionKey7AC32341
       Handler: app.lambdaHandler
       Role:
         Fn::GetAtt:
@@ -190,6 +187,78 @@ Resources:
     Metadata:
       aws:cdk:path: S3-EVENT-CDK-STACK/S3_PRESIGNED_URL_LAMBDA/Resource
       aws:asset:path: /home/song/Sandbox/aws-cdk-examples/s3-event-cdk/lambdas/s3-presigned-url-lambda
+      aws:asset:property: Code
+  S3GETPUTLAMBDAROLE26CE4DF4:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      Description: S3_GET_PUT_LAMBDA_ROLE
+      RoleName: S3_GET_PUT_LAMBDA_ROLE
+    Metadata:
+      aws:cdk:path: S3-EVENT-CDK-STACK/S3_GET_PUT_LAMBDA_ROLE/Resource
+  S3GETPUTLAMBDAROLEDefaultPolicy611B5C19:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+            Effect: Allow
+            Resource: arn:aws:s3:::*
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: S3GETPUTLAMBDAROLEDefaultPolicy611B5C19
+      Roles:
+        - Ref: S3GETPUTLAMBDAROLE26CE4DF4
+    Metadata:
+      aws:cdk:path: S3-EVENT-CDK-STACK/S3_GET_PUT_LAMBDA_ROLE/DefaultPolicy/Resource
+  S3GETPUTLAMBDAF0460A43:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameterse5810f6cc734c08fba29e94deecf6e18a2d31979814ffa89d1bbd3cbe93dde69S3BucketF2FF94A2
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameterse5810f6cc734c08fba29e94deecf6e18a2d31979814ffa89d1bbd3cbe93dde69S3VersionKeyA537DF61
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameterse5810f6cc734c08fba29e94deecf6e18a2d31979814ffa89d1bbd3cbe93dde69S3VersionKeyA537DF61
+      Handler: app.lambdaHandler
+      Role:
+        Fn::GetAtt:
+          - S3GETPUTLAMBDAROLE26CE4DF4
+          - Arn
+      Runtime: nodejs12.x
+      Description: S3_GET_PUT_LAMBDA
+      FunctionName: S3_GET_PUT_LAMBDA
+      MemorySize: 256
+      Timeout: 15
+    DependsOn:
+      - S3GETPUTLAMBDAROLEDefaultPolicy611B5C19
+      - S3GETPUTLAMBDAROLE26CE4DF4
+    Metadata:
+      aws:cdk:path: S3-EVENT-CDK-STACK/S3_GET_PUT_LAMBDA/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/s3-event-cdk/lambdas/s3-get-put-lambda
       aws:asset:property: Code
   BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC:
     Type: AWS::IAM::Role
@@ -316,13 +385,22 @@ Parameters:
   AssetParameters214c14d52aaa4aabbe1fca7629bbcdc933bfab8fda020841204784ebd5eacd6aArtifactHash5DB3CDFC:
     Type: String
     Description: Artifact hash for asset "214c14d52aaa4aabbe1fca7629bbcdc933bfab8fda020841204784ebd5eacd6a"
-  AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fS3BucketCC19E024:
+  AssetParameters7470dbe146868719d57ec3a80972296218345f822760aaa3eedeadc05daa066eS3Bucket6A58C3C6:
     Type: String
-    Description: S3 bucket for asset "bdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0f"
-  AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fS3VersionKey677C1FEE:
+    Description: S3 bucket for asset "7470dbe146868719d57ec3a80972296218345f822760aaa3eedeadc05daa066e"
+  AssetParameters7470dbe146868719d57ec3a80972296218345f822760aaa3eedeadc05daa066eS3VersionKey7AC32341:
     Type: String
-    Description: S3 key for asset version "bdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0f"
-  AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fArtifactHash932A8D84:
+    Description: S3 key for asset version "7470dbe146868719d57ec3a80972296218345f822760aaa3eedeadc05daa066e"
+  AssetParameters7470dbe146868719d57ec3a80972296218345f822760aaa3eedeadc05daa066eArtifactHashE091BCA6:
     Type: String
-    Description: Artifact hash for asset "bdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0f"
+    Description: Artifact hash for asset "7470dbe146868719d57ec3a80972296218345f822760aaa3eedeadc05daa066e"
+  AssetParameterse5810f6cc734c08fba29e94deecf6e18a2d31979814ffa89d1bbd3cbe93dde69S3BucketF2FF94A2:
+    Type: String
+    Description: S3 bucket for asset "e5810f6cc734c08fba29e94deecf6e18a2d31979814ffa89d1bbd3cbe93dde69"
+  AssetParameterse5810f6cc734c08fba29e94deecf6e18a2d31979814ffa89d1bbd3cbe93dde69S3VersionKeyA537DF61:
+    Type: String
+    Description: S3 key for asset version "e5810f6cc734c08fba29e94deecf6e18a2d31979814ffa89d1bbd3cbe93dde69"
+  AssetParameterse5810f6cc734c08fba29e94deecf6e18a2d31979814ffa89d1bbd3cbe93dde69ArtifactHash5F9D3939:
+    Type: String
+    Description: Artifact hash for asset "e5810f6cc734c08fba29e94deecf6e18a2d31979814ffa89d1bbd3cbe93dde69"
 

@@ -1,0 +1,10 @@
+{
+  "name": "s3-get-put-lambda",
+  "version": "1.0.0",
+  "description": "s3-get-put-lambda",
+  "private": true,
+  "author": "Song Li",
+  "dependencies": {
+    "aws-sdk": "^2.692.0"
+  }
+}
