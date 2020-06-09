@@ -1,7 +1,7 @@
 {
-  "name": "s3-presigned-url-lambda",
+  "name": "s3-presigned",
   "version": "1.0.0",
-  "description": "s3-presigned-url-lambda",
+  "description": "s3-presigned",
   "private": true,
   "author": "Song Li",
   "dependencies": {

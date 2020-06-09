@@ -14,6 +14,12 @@ const add_lambda = (scope) => {
   role.addToPolicy(new iam.PolicyStatement({
     effect: iam.Effect.ALLOW,
     resources: ['*'],
+    actions: ['s3:*']
+  }))
+
+  role.addToPolicy(new iam.PolicyStatement({
+    effect: iam.Effect.ALLOW,
+    resources: ['*'],
     actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents']
   }))
 

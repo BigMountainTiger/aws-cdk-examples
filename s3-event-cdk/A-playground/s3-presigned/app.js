@@ -33,10 +33,18 @@ const getUrl = async () => {
   return p;
 }
 
-exports.lambdaHandler = async (event, context) => {
+const lambdaHandler = async (event, context) => {
   
   const url = await getUrl();
   console.log(url);
 
-  return { url: url };
+  return {
+    url: url
+  };
 };
+
+(async () => {
+  await lambdaHandler();
+})();
+
+console.log('Initiated ...');

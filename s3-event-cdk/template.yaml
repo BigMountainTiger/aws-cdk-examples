@@ -140,6 +140,9 @@ Resources:
     Properties:
       PolicyDocument:
         Statement:
+          - Action: s3:*
+            Effect: Allow
+            Resource: "*"
           - Action:
               - logs:CreateLogGroup
               - logs:CreateLogStream
@@ -157,7 +160,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParametersd796c0e9498a9c1ad96e8596c89e1c894c1a6751a1b650120200dc1ec7891801S3BucketA722C13C
+          Ref: AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fS3BucketCC19E024
         S3Key:
           Fn::Join:
             - ""
@@ -165,12 +168,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParametersd796c0e9498a9c1ad96e8596c89e1c894c1a6751a1b650120200dc1ec7891801S3VersionKeyA4DA4178
+                      - Ref: AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fS3VersionKey677C1FEE
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParametersd796c0e9498a9c1ad96e8596c89e1c894c1a6751a1b650120200dc1ec7891801S3VersionKeyA4DA4178
+                      - Ref: AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fS3VersionKey677C1FEE
       Handler: app.lambdaHandler
       Role:
         Fn::GetAtt:
@@ -313,13 +316,13 @@ Parameters:
   AssetParameters214c14d52aaa4aabbe1fca7629bbcdc933bfab8fda020841204784ebd5eacd6aArtifactHash5DB3CDFC:
     Type: String
     Description: Artifact hash for asset "214c14d52aaa4aabbe1fca7629bbcdc933bfab8fda020841204784ebd5eacd6a"
-  AssetParametersd796c0e9498a9c1ad96e8596c89e1c894c1a6751a1b650120200dc1ec7891801S3BucketA722C13C:
+  AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fS3BucketCC19E024:
     Type: String
-    Description: S3 bucket for asset "d796c0e9498a9c1ad96e8596c89e1c894c1a6751a1b650120200dc1ec7891801"
-  AssetParametersd796c0e9498a9c1ad96e8596c89e1c894c1a6751a1b650120200dc1ec7891801S3VersionKeyA4DA4178:
+    Description: S3 bucket for asset "bdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0f"
+  AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fS3VersionKey677C1FEE:
     Type: String
-    Description: S3 key for asset version "d796c0e9498a9c1ad96e8596c89e1c894c1a6751a1b650120200dc1ec7891801"
-  AssetParametersd796c0e9498a9c1ad96e8596c89e1c894c1a6751a1b650120200dc1ec7891801ArtifactHash05D94B40:
+    Description: S3 key for asset version "bdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0f"
+  AssetParametersbdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0fArtifactHash932A8D84:
     Type: String
-    Description: Artifact hash for asset "d796c0e9498a9c1ad96e8596c89e1c894c1a6751a1b650120200dc1ec7891801"
+    Description: Artifact hash for asset "bdcda05393c734b6f821f1784dccc19b569541d01c4d5ab9bf05214e0bee3f0f"
 
