@@ -38,5 +38,10 @@ exports.lambdaHandler = async (event, context) => {
   const url = await getUrl();
   console.log(url);
 
-  return { url: url };
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json'
+    }, body: JSON.stringify({ url: url })
+  };
 };
