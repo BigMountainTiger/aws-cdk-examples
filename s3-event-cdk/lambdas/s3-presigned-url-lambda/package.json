@@ -1,0 +1,11 @@
+{
+  "name": "s3-presigned-url-lambda",
+  "version": "1.0.0",
+  "description": "s3-presigned-url-lambda",
+  "private": true,
+  "author": "Song Li",
+  "dependencies": {
+    "aws-sdk": "^2.692.0",
+    "dotenv": "^8.2.0"
+  }
+}
