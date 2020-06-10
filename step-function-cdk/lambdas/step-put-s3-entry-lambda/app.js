@@ -2,10 +2,9 @@ const AWS = require('aws-sdk');
 
 const bucket = 'step-test-bucket.huge.head.li';
 
-const put_object = async () => {
+const put_object = async (time) => {
   const s3 = new AWS.S3();
   
-  const time = new Date().toISOString();
   const TARGET_KEY = time.replace(/:/g, '-').replace(/\./g, '-');
   const buffer = Buffer.from(time, 'utf8');
 
@@ -22,13 +21,11 @@ const put_object = async () => {
 
 exports.lambdaHandler = async (event, context) => {
   console.log(event);
-  
+
   let result = {};
   
-  const time = new Date().toISOString();
-  const key = time.replace(/:/g, '-').replace(/\./g, '-');
-
-  result = await put_object();
+  const time = event.Payload.time;
+  result = await put_object(time);
 
   return {
     statusCode: 200,

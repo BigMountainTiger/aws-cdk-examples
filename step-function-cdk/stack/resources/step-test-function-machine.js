@@ -17,7 +17,12 @@ const add_state_machine = (scope, step_1_lambda, s3_put_lambda) => {
     outputPath: '$.Payload',
   });
 
-  const definition = step_1.next(step_2);
+  const STEP_WAIT_NAME = 'STEP_TEST_MACHINE_STEP_WAIT';
+  const waitX = new sfn.Wait(scope, STEP_WAIT_NAME, {
+    time: sfn.WaitTime.duration(cdk.Duration.seconds(30))
+  });
+
+  const definition = step_1.next(waitX).next(step_2);
 
   const STATE_MACHINE_NAME = 'STEP_TEST_STATE_MACHINE';
   new sfn.StateMachine(scope, STATE_MACHINE_NAME, {
