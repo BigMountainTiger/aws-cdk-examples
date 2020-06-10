@@ -1,3 +1,5 @@
+// STEPPUTS3ENTRYLAMBDAB74EF8C7
+
 const cdk = require('@aws-cdk/core');
 const iam = require('@aws-cdk/aws-iam');
 const lambda = require('@aws-cdk/aws-lambda');
