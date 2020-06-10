@@ -21,6 +21,8 @@ const put_object = async () => {
 };
 
 exports.lambdaHandler = async (event, context) => {
+  console.log(event);
+  
   let result = {};
   
   const time = new Date().toISOString();
