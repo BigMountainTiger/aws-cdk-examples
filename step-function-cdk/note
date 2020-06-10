@@ -1,6 +1,0 @@
-https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-lambda.html
-https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-lambda.html
-
-
-aws lambda invoke --function-name "S3_GET_PUT_LAMBDA" --endpoint-url "http://127.0.0.1:3001" --no-verify-ssl out.txt
-aws lambda invoke --function-name "S3_PRESIGNED_URL_LAMBDA" --endpoint-url "http://127.0.0.1:3001" --no-verify-ssl out.txt
