@@ -1,6 +1,8 @@
 sam local start-lambda -p 3001
+aws lambda invoke --function-name "STEP_EXAMPLE_STEP_1_LAMBDA" --endpoint-url "http://127.0.0.1:3001" --no-verify-ssl out.txt
 
-docker run -p 8083:8083 amazon/aws-stepfunctions-local --lambda-endpoint http://localhost:3001
+https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-config-options.html
+docker run -p 8083:8083 --network host --env-file aws-stepfunctions-local-credentials.txt amazon/aws-stepfunctions-local
 
 aws stepfunctions --endpoint http://localhost:8083 create-state-machine --definition "{\
   \"StartAt\": \"STEP_TEST_MACHINE_STEP_1\",\
@@ -35,4 +37,5 @@ aws stepfunctions --endpoint http://localhost:8083 create-state-machine --defini
   \"TimeoutSeconds\": 300\
 }" --name "STEP_TEST_STATE_MACHINE" --role-arn "arn:aws:iam::005256505030:role/DummyRole"
 
-aws stepfunctions --endpoint http://localhost:8083 start-execution --state-machine arn:aws:states:us-east-1:005256505030:stateMachine:STEP_TEST_STATE_MACHINE --name test
+aws stepfunctions --endpoint http://localhost:8083 start-execution --state-machine arn:aws:states:us-east-1:123456789012:stateMachine:STEP_TEST_STATE_MACHINE --name test
+aws stepfunctions --endpoint http://localhost:8083 describe-execution --execution-arn arn:aws:states:us-east-1:123456789012:execution:STEP_TEST_STATE_MACHINE:test
