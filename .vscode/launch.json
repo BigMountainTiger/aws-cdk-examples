@@ -2,12 +2,34 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Lambda Attach",
+      "name": "Lambda hello-cdk Attach",
       "type": "node",
       "request": "attach",
       "address": "localhost",
       "port": 5000,
       "localRoot": "${workspaceRoot}/hello-cdk/resources",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false
+    },
+    {
+      "name": "Lambda step-example-step-1-lambda Attach",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5000,
+      "localRoot": "${workspaceRoot}/step-function-cdk/lambdas/step-example-step-1-lambda",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false
+    },
+    {
+      "name": "Lambda step-put-s3-entry-lambda Attach",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5000,
+      "localRoot": "${workspaceRoot}/step-function-cdk/lambdas/step-put-s3-entry-lambda",
       "remoteRoot": "/var/task",
       "protocol": "inspector",
       "stopOnEntry": false
