@@ -45,11 +45,23 @@ class StepFunctionParallelCdkStack extends cdk.Stack {
       handler: 'app.lambdaHandler'
     });
 
+    const passthrough_lambda_name = `${NAME_PREFIX}_PASSTHROUGH_LAMBDA`;
+    const passthrough_lambda = new lambda.Function(this, passthrough_lambda_name, {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      functionName: passthrough_lambda_name,
+      description: passthrough_lambda_name,
+      timeout: cdk.Duration.seconds(60),
+      role: role,
+      code: lambda.Code.asset('./lambdas/sfn-parallel-test-passthrough-lambda'),
+      memorySize: 256,
+      handler: 'app.lambdaHandler'
+    });
+
     const STEP_1_NAME = `${NAME_PREFIX}_STEP_1`;
     const step_1 = new tasks.LambdaInvoke(this, STEP_1_NAME, {
-      lambdaFunction: s3_writter_lambda,
+      lambdaFunction: passthrough_lambda,
       payload: sfn.TaskInput.fromObject({
-        text: 'this'
+        timeout: 20
       }),
       outputPath: '$.Payload',
     });
