@@ -36,8 +36,6 @@ Resources:
               - logs:CreateLogGroup
               - logs:CreateLogStream
               - logs:PutLogEvents
-              - s3:GetObject
-              - s3:PutObject
             Effect: Allow
             Resource: "*"
         Version: "2012-10-17"
@@ -51,7 +49,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0S3Bucket55AF73A9
+          Ref: AssetParametersade23ed4c676bf5a46d6804c16c32728a99f954b5c23b0a3fbdfdf8adad9566aS3Bucket69299F31
         S3Key:
           Fn::Join:
             - ""
@@ -59,12 +57,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0S3VersionKeyB5D8C479
+                      - Ref: AssetParametersade23ed4c676bf5a46d6804c16c32728a99f954b5c23b0a3fbdfdf8adad9566aS3VersionKeyCC6C0F2F
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0S3VersionKeyB5D8C479
+                      - Ref: AssetParametersade23ed4c676bf5a46d6804c16c32728a99f954b5c23b0a3fbdfdf8adad9566aS3VersionKeyCC6C0F2F
       Handler: app.lambdaHandler
       Role:
         Fn::GetAtt:
@@ -83,13 +81,13 @@ Resources:
       aws:asset:path: /home/song/Sandbox/aws-cdk-examples/step-function-parallel-cdk/lambdas/sfn-parallel-test-s3-writter-lambda
       aws:asset:property: Code
 Parameters:
-  AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0S3Bucket55AF73A9:
+  AssetParametersade23ed4c676bf5a46d6804c16c32728a99f954b5c23b0a3fbdfdf8adad9566aS3Bucket69299F31:
     Type: String
-    Description: S3 bucket for asset "314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0"
-  AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0S3VersionKeyB5D8C479:
+    Description: S3 bucket for asset "ade23ed4c676bf5a46d6804c16c32728a99f954b5c23b0a3fbdfdf8adad9566a"
+  AssetParametersade23ed4c676bf5a46d6804c16c32728a99f954b5c23b0a3fbdfdf8adad9566aS3VersionKeyCC6C0F2F:
     Type: String
-    Description: S3 key for asset version "314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0"
-  AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0ArtifactHash227FCAB0:
+    Description: S3 key for asset version "ade23ed4c676bf5a46d6804c16c32728a99f954b5c23b0a3fbdfdf8adad9566a"
+  AssetParametersade23ed4c676bf5a46d6804c16c32728a99f954b5c23b0a3fbdfdf8adad9566aArtifactHash605E5887:
     Type: String
-    Description: Artifact hash for asset "314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0"
+    Description: Artifact hash for asset "ade23ed4c676bf5a46d6804c16c32728a99f954b5c23b0a3fbdfdf8adad9566a"
 

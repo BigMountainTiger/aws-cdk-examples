@@ -2,6 +2,8 @@ const cdk = require('@aws-cdk/core');
 const s3 = require('@aws-cdk/aws-s3');
 const iam = require('@aws-cdk/aws-iam');
 const lambda = require('@aws-cdk/aws-lambda');
+const sfn = require('@aws-cdk/aws-stepfunctions');
+const tasks = require('@aws-cdk/aws-stepfunctions-tasks');
 
 class StepFunctionParallelCdkStack extends cdk.Stack {
 
@@ -31,7 +33,6 @@ class StepFunctionParallelCdkStack extends cdk.Stack {
         's3:GetObject', 's3:PutObject']
     }));
 
-    // sfn-parallel-test-s3-writter-lambda
     const s3_writter_lambda_name = `${NAME_PREFIX}_S3_WRITTER_LAMBDA`;
     const s3_writter_lambda = new lambda.Function(this, s3_writter_lambda_name, {
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -44,7 +45,23 @@ class StepFunctionParallelCdkStack extends cdk.Stack {
       handler: 'app.lambdaHandler'
     });
 
+    const STEP_1_NAME = `${NAME_PREFIX}_STEP_1`;
+    const step_1 = new tasks.LambdaInvoke(this, STEP_1_NAME, {
+      lambdaFunction: s3_writter_lambda,
+      payload: sfn.TaskInput.fromObject({
+        text: 'this'
+      }),
+      outputPath: '$.Payload',
+    });
+
+    const definition = step_1;
+
+    const STATE_MACHINE_NAME = `${NAME_PREFIX}_STATE_MACHINE`;
+    new sfn.StateMachine(this, STATE_MACHINE_NAME, {
+      stateMachineName: STATE_MACHINE_NAME, definition, timeout: cdk.Duration.minutes(5)
+    });
   }
 }
 
+// https://stackoverflow.com/questions/58663076/does-aws-step-functions-have-a-timeout-feature
 module.exports = { StepFunctionParallelCdkStack }
