@@ -57,16 +57,37 @@ class StepFunctionParallelCdkStack extends cdk.Stack {
       handler: 'app.lambdaHandler'
     });
 
-    const STEP_1_NAME = `${NAME_PREFIX}_STEP_1`;
-    const step_1 = new tasks.LambdaInvoke(this, STEP_1_NAME, {
+    const PARALLEL_NAME = `${NAME_PREFIX}_PARALLEL`;
+    const parallel = new sfn.Parallel(this, PARALLEL_NAME);
+
+    const PARELLEL_TIEM_1_NAME = `${PARALLEL_NAME}_ITEM_1`;
+    const item_1 = new tasks.LambdaInvoke(this, PARELLEL_TIEM_1_NAME, {
       lambdaFunction: passthrough_lambda,
       payload: sfn.TaskInput.fromObject({
-        timeout: 20
+        timeout: 5
       }),
       outputPath: '$.Payload',
     });
 
-    const definition = step_1;
+    const PARELLEL_TIEM_2_NAME = `${PARALLEL_NAME}_ITEM_2`;
+    const item_2 = new tasks.LambdaInvoke(this, PARELLEL_TIEM_2_NAME, {
+      lambdaFunction: passthrough_lambda,
+      payload: sfn.TaskInput.fromObject({
+        timeout: 10
+      }),
+      outputPath: '$.Payload',
+    });
+
+    parallel.branch(item_1);
+    parallel.branch(item_2);
+
+    const STEP_2_NAME = `${NAME_PREFIX}_STEP_2`;
+    const step_2 = new tasks.LambdaInvoke(this, STEP_2_NAME, {
+      lambdaFunction: s3_writter_lambda,
+      outputPath: '$',
+    });
+
+    const definition = parallel.next(step_2);
 
     const STATE_MACHINE_NAME = `${NAME_PREFIX}_STATE_MACHINE`;
     new sfn.StateMachine(this, STATE_MACHINE_NAME, {
