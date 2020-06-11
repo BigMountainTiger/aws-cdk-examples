@@ -1,0 +1,95 @@
+Description: STEP-FUNCTION-PARALLEL-CDK-STACK
+Resources:
+  SFNPARALLELTESTBUCKETE387CE66:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: sfn-parallel-test-bucket.huge.head.li
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-PARALLEL-CDK-STACK/SFN_PARALLEL_TEST_BUCKET/Resource
+  SFNPARALLELTESTROLE322ED782:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      Description: SFN_PARALLEL_TEST_ROLE
+      RoleName: SFN_PARALLEL_TEST_ROLE
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-PARALLEL-CDK-STACK/SFN_PARALLEL_TEST_ROLE/Resource
+  SFNPARALLELTESTROLEDefaultPolicy61DAA1CE:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - s3:GetObject
+              - s3:PutObject
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: SFNPARALLELTESTROLEDefaultPolicy61DAA1CE
+      Roles:
+        - Ref: SFNPARALLELTESTROLE322ED782
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-PARALLEL-CDK-STACK/SFN_PARALLEL_TEST_ROLE/DefaultPolicy/Resource
+  SFNPARALLELTESTS3WRITTERLAMBDA4D810B0C:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0S3Bucket55AF73A9
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0S3VersionKeyB5D8C479
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0S3VersionKeyB5D8C479
+      Handler: app.lambdaHandler
+      Role:
+        Fn::GetAtt:
+          - SFNPARALLELTESTROLE322ED782
+          - Arn
+      Runtime: nodejs12.x
+      Description: SFN_PARALLEL_TEST_S3_WRITTER_LAMBDA
+      FunctionName: SFN_PARALLEL_TEST_S3_WRITTER_LAMBDA
+      MemorySize: 256
+      Timeout: 15
+    DependsOn:
+      - SFNPARALLELTESTROLEDefaultPolicy61DAA1CE
+      - SFNPARALLELTESTROLE322ED782
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-PARALLEL-CDK-STACK/SFN_PARALLEL_TEST_S3_WRITTER_LAMBDA/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/step-function-parallel-cdk/lambdas/sfn-parallel-test-s3-writter-lambda
+      aws:asset:property: Code
+Parameters:
+  AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0S3Bucket55AF73A9:
+    Type: String
+    Description: S3 bucket for asset "314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0"
+  AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0S3VersionKeyB5D8C479:
+    Type: String
+    Description: S3 key for asset version "314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0"
+  AssetParameters314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0ArtifactHash227FCAB0:
+    Type: String
+    Description: Artifact hash for asset "314e1351bf6ecd4af508e1fcae67dc267d26814679cd02ddfa20a8f63ce7e2d0"
+
