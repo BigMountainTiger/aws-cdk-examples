@@ -1,5 +1,6 @@
 const cdk = require('@aws-cdk/core');
 const s3 = require('@aws-cdk/aws-s3');
+const iam = require('@aws-cdk/aws-iam');
 
 class S3LambdaTempCdkStack extends cdk.Stack {
   constructor(scope, id, props) {
@@ -13,7 +14,20 @@ class S3LambdaTempCdkStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
     
-    
+    const ROLE_NAME = 'S3_LAMBDA_TEMP_LAMBDA_ROLE';
+    const role = new iam.Role(this, ROLE_NAME, {
+      roleName: ROLE_NAME,
+      description: ROLE_NAME,
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+    });
+
+    role.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      resources: ['*'],
+      actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents', 's3:GetObject', 's3:PutObject']
+    }));
+
+
   }
 }
 
