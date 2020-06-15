@@ -1,5 +1,6 @@
 {
-  "app": "node bin/s3-lambda-temp-cdk.js",
+  "app": "node cdk.js",
+  "versionReporting": false,
   "context": {
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true"
