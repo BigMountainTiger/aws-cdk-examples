@@ -1,6 +1,7 @@
 const cdk = require('@aws-cdk/core');
 const s3 = require('@aws-cdk/aws-s3');
 const iam = require('@aws-cdk/aws-iam');
+const lambda = require('@aws-cdk/aws-lambda');
 
 class S3LambdaTempCdkStack extends cdk.Stack {
   constructor(scope, id, props) {
@@ -27,6 +28,17 @@ class S3LambdaTempCdkStack extends cdk.Stack {
       actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents', 's3:GetObject', 's3:PutObject']
     }));
 
+    const LAMBDA_NAME = 'S3_LAMBDA_TEMP_LAMBDA';
+    new lambda.Function(this, LAMBDA_NAME, {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      functionName: LAMBDA_NAME,
+      description: LAMBDA_NAME,
+      timeout: cdk.Duration.seconds(15),
+      role: role,
+      code: lambda.Code.asset('./lambdas/s3-lambda-temp-lambda'),
+      memorySize: 256,
+      handler: 'app.lambdaHandler'
+    });
 
   }
 }
