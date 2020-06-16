@@ -91,6 +91,9 @@ exports.lambdaHandler = async (event, context) => {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json'
-    }, body: JSON.stringify(result)
+    }, body: JSON.stringify({
+      context: context,
+      result: result
+    })
   };
 };
