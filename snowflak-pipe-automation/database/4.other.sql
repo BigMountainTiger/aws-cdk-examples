@@ -1,0 +1,52 @@
+-- SWAP TABLE
+-- https://docs.snowflake.com/en/sql-reference/sql/alter-table.html
+
+
+-- Check if table exist
+-- https://stackoverflow.com/questions/20582500/how-to-check-if-a-table-exists-in-a-given-schema
+
+
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.Address;
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.CorelogicData;
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.Deed;
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.Lead;
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.Loan;
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.LoanDetail;
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.LoanHistory;
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.LoandDetailHistory;
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.Person;
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.Property;
+SELECT COUNT(*) FROM DATA_INTEGRATIONS.UnusedData;
+
+-- Check the load history and taks
+select * from information_schema.load_history
+  order by last_load_time desc
+  limit 11;
+
+select *
+  from table(information_schema.task_history())
+  order by scheduled_time DESC;
+
+SHOW PROCEDURES;
+SHOW TASKS;
+
+-- Check details on the tables
+SELECT TABLE_NAME, row_count, bytes
+FROM INFORMATION_SCHEMA.tables
+WHERE TABLE_NAME IN (
+  'ADDRESS', 'CORELOGICDATA', 'DEED', 'LEAD', 'LOAN', 'LOANDETAIL',
+  'LOANHISTORY', 'LOANDDETAILHISTORY', 'PERSON', 'PROPERTY', 'UNUSEDDATA'
+);
+
+-- Truncate the tables
+TRUNCATE TABLE DATA_INTEGRATIONS.Address;
+TRUNCATE TABLE DATA_INTEGRATIONS.CorelogicData;
+TRUNCATE TABLE DATA_INTEGRATIONS.Deed;
+TRUNCATE TABLE DATA_INTEGRATIONS.Lead;
+TRUNCATE TABLE DATA_INTEGRATIONS.Loan;
+TRUNCATE TABLE DATA_INTEGRATIONS.LoanDetail;
+TRUNCATE TABLE DATA_INTEGRATIONS.LoanHistory;
+TRUNCATE TABLE DATA_INTEGRATIONS.LoandDetailHistory;
+TRUNCATE TABLE DATA_INTEGRATIONS.Person;
+TRUNCATE TABLE DATA_INTEGRATIONS.Property;
+TRUNCATE TABLE DATA_INTEGRATIONS.UnusedData;

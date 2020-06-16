@@ -27,9 +27,9 @@ const destroyConnection = (cn) => {
 exports.issue = async (queries) => {
   const cn = sf.createConnection( {
     account: 'gja08302.us-east-1',
-    username: 'song_li',
-    password: 'Password-123',
-    database: 'MLG_SNOWFLAKE',
+    username: 'USER_NAME',
+    password: 'USER_PASSWORD',
+    database: 'DATABASE_NAME',
     schema: 'public',
     warehouse: 'COMPUTE_WH'
   });
