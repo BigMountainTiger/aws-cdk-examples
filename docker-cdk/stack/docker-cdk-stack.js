@@ -1,4 +1,5 @@
 // https://aws.amazon.com/getting-started/hands-on/deploy-docker-containers/
+// https://docs.aws.amazon.com/cdk/latest/guide/assets.html
 
 const cdk = require('@aws-cdk/core');
 const ecs = require('@aws-cdk/aws-ecs');
