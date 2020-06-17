@@ -1,16 +1,24 @@
+// https://aws.amazon.com/getting-started/hands-on/deploy-docker-containers/
+
 const cdk = require('@aws-cdk/core');
+const ecs = require('@aws-cdk/aws-ecs');
 
 class DockerCdkStack extends cdk.Stack {
-  /**
-   *
-   * @param {cdk.Construct} scope
-   * @param {string} id
-   * @param {cdk.StackProps=} props
-   */
+
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const TASK_DEFINITION_NAME = `${id}-TASK-DEFINITION`;
+    const taskDefinition = new ecs.FargateTaskDefinition(this, TASK_DEFINITION_NAME, {
+      memoryLimitMiB: 1024,
+      cpu: 512
+    });
+
+    const CONTAINER_NAME = `${TASK_DEFINITION_NAME}-CONTAINER`;
+    taskDefinition.addContainer(CONTAINER_NAME, {
+      image: ecs.ContainerImage.fromAsset('./docker/express-app')
+    });
+    
   }
 }
 
