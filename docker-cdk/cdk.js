@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 const cdk = require('@aws-cdk/core');
-const { DockerCdkStack } = require('./stack/docker-cdk-stack');
+const { ExampleWebDockerCdkStack } = require('./stack/example-web-docker-cdk-stack');
 
 const app = new cdk.App();
-const NAME = 'DOCKER-CDK-STACK';
-new DockerCdkStack(app, NAME, {
+const NAME = 'EXAMPLE-WEB-DOCKER-CDK-STACK';
+new ExampleWebDockerCdkStack(app, NAME, {
   description: NAME
 });

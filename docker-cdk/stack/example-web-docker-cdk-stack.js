@@ -11,7 +11,7 @@ const ec2 = require("@aws-cdk/aws-ec2");
 const ecs = require("@aws-cdk/aws-ecs");
 const ecs_patterns = require("@aws-cdk/aws-ecs-patterns");
 
-class DockerCdkStack extends cdk.Stack {
+class ExampleWebDockerCdkStack extends cdk.Stack {
 
   constructor(scope, id, props) {
     super(scope, id, props);
@@ -36,4 +36,4 @@ class DockerCdkStack extends cdk.Stack {
   }
 }
 
-module.exports = { DockerCdkStack }
+module.exports = { ExampleWebDockerCdkStack }
