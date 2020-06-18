@@ -1,4 +1,4 @@
-FROM node:14
+FROM alpine-node:slim-14.4
 
 WORKDIR /app/node
 
