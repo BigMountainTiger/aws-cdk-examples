@@ -32,6 +32,7 @@ class DockerCdkStack extends cdk.Stack {
       publicLoadBalancer: true
     });
 
+    
   }
 }
 
