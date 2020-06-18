@@ -8,7 +8,7 @@ RUN npm --loglevel=error install
 
 COPY server.js ./
 
-EXPOSE 8080
+EXPOSE 80
 CMD ["node", "server.js"]
 
 # docker build -t express-app .

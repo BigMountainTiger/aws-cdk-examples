@@ -1,6 +1,6 @@
 const express = require("express");
 
-const PORT = 8080;
+const PORT = 80;
 const HOST = "0.0.0.0";
 
 const api = express();
