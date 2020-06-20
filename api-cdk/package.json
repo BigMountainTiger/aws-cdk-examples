@@ -6,9 +6,9 @@
     "cdk": "cdk"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "^1.36.0",
-    "@aws-cdk/aws-iam": "^1.36.0",
-    "@aws-cdk/aws-lambda": "^1.36.0",
-    "@aws-cdk/core": "^1.36.0"
+    "@aws-cdk/aws-apigateway": "^1.45.0",
+    "@aws-cdk/aws-iam": "^1.45.0",
+    "@aws-cdk/aws-lambda": "^1.45.0",
+    "@aws-cdk/core": "^1.45.0"
   }
 }

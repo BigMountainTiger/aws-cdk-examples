@@ -41,14 +41,21 @@ class ApiCdkStack extends cdk.Stack {
     };
 
     const role = add_lambda_role();
-    const func = add_lambda(role);
+    const handler = add_lambda(role);
 
-    new apigateway.LambdaRestApi(this, API_NAME, {
+    const api = new apigateway.RestApi(this, API_NAME, {
       restApiName: API_NAME,
       description: API_NAME,
-      handler: func,
+      binaryMediaTypes: ['application/octet', 'image/jpeg', 'image/png'],
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS
+      },
+      endpointTypes: [apigateway.EndpointType.REGIONAL]
     });
 
+    const attach_endpoint = api.root.addResource('attach').addResource('{key}');
+    attach_endpoint.addMethod('POST', new apigateway.LambdaIntegration(handler, { proxy: true }));
   }
 }
 

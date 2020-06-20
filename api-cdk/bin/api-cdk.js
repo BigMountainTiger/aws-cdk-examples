@@ -3,5 +3,8 @@
 const cdk = require('@aws-cdk/core');
 const { ApiCdkStack } = require('./lib/api-cdk-stack');
 
+const NAME = 'API-CDK-STACK';
 const app = new cdk.App();
-new ApiCdkStack(app, 'ApiCdkStack');
+new ApiCdkStack(app, NAME, {
+  description: NAME
+});
