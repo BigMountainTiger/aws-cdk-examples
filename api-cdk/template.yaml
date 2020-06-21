@@ -35,7 +35,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameters2aff1f276ac13342fc0ab811b2eb4a5a42368aff29e5e3802e93264d985e0e50S3BucketE47F51D2
+          Ref: AssetParameters9e351bed2b1cc95f9e93ac3e9df4dac7f27446b9a7480743147273ddba71e3acS3BucketFFA2469D
         S3Key:
           Fn::Join:
             - ""
@@ -43,12 +43,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters2aff1f276ac13342fc0ab811b2eb4a5a42368aff29e5e3802e93264d985e0e50S3VersionKeyA7361A8F
+                      - Ref: AssetParameters9e351bed2b1cc95f9e93ac3e9df4dac7f27446b9a7480743147273ddba71e3acS3VersionKey100A561C
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters2aff1f276ac13342fc0ab811b2eb4a5a42368aff29e5e3802e93264d985e0e50S3VersionKeyA7361A8F
+                      - Ref: AssetParameters9e351bed2b1cc95f9e93ac3e9df4dac7f27446b9a7480743147273ddba71e3acS3VersionKey100A561C
       Handler: index.handler
       Role:
         Fn::GetAtt:
@@ -67,10 +67,6 @@ Resources:
   APICDKSTACKAPIGWAA193FB7:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      BinaryMediaTypes:
-        - application/octet
-        - image/jpeg
-        - image/png
       Description: API-CDK-STACKAPIGW
       EndpointConfiguration:
         Types:
@@ -107,7 +103,7 @@ Resources:
       - APICDKSTACKAPIGWAA193FB7
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Account
-  APICDKSTACKAPIGWDeployment2FE7C0194b9036aa25dc204bb13317a09692d414:
+  APICDKSTACKAPIGWDeployment2FE7C019880a1d0401f29584a19b02031e52b25e:
     Type: AWS::ApiGateway::Deployment
     Properties:
       RestApiId:
@@ -128,7 +124,7 @@ Resources:
       RestApiId:
         Ref: APICDKSTACKAPIGWAA193FB7
       DeploymentId:
-        Ref: APICDKSTACKAPIGWDeployment2FE7C0194b9036aa25dc204bb13317a09692d414
+        Ref: APICDKSTACKAPIGWDeployment2FE7C019880a1d0401f29584a19b02031e52b25e
       StageName: prod
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/DeploymentStage.prod/Resource
@@ -312,15 +308,15 @@ Resources:
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach/{key}/POST/Resource
 Parameters:
-  AssetParameters2aff1f276ac13342fc0ab811b2eb4a5a42368aff29e5e3802e93264d985e0e50S3BucketE47F51D2:
+  AssetParameters9e351bed2b1cc95f9e93ac3e9df4dac7f27446b9a7480743147273ddba71e3acS3BucketFFA2469D:
     Type: String
-    Description: S3 bucket for asset "2aff1f276ac13342fc0ab811b2eb4a5a42368aff29e5e3802e93264d985e0e50"
-  AssetParameters2aff1f276ac13342fc0ab811b2eb4a5a42368aff29e5e3802e93264d985e0e50S3VersionKeyA7361A8F:
+    Description: S3 bucket for asset "9e351bed2b1cc95f9e93ac3e9df4dac7f27446b9a7480743147273ddba71e3ac"
+  AssetParameters9e351bed2b1cc95f9e93ac3e9df4dac7f27446b9a7480743147273ddba71e3acS3VersionKey100A561C:
     Type: String
-    Description: S3 key for asset version "2aff1f276ac13342fc0ab811b2eb4a5a42368aff29e5e3802e93264d985e0e50"
-  AssetParameters2aff1f276ac13342fc0ab811b2eb4a5a42368aff29e5e3802e93264d985e0e50ArtifactHash2F0324B3:
+    Description: S3 key for asset version "9e351bed2b1cc95f9e93ac3e9df4dac7f27446b9a7480743147273ddba71e3ac"
+  AssetParameters9e351bed2b1cc95f9e93ac3e9df4dac7f27446b9a7480743147273ddba71e3acArtifactHash49764404:
     Type: String
-    Description: Artifact hash for asset "2aff1f276ac13342fc0ab811b2eb4a5a42368aff29e5e3802e93264d985e0e50"
+    Description: Artifact hash for asset "9e351bed2b1cc95f9e93ac3e9df4dac7f27446b9a7480743147273ddba71e3ac"
 Outputs:
   APICDKSTACKAPIGWEndpointF8CFD52F:
     Value:

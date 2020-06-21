@@ -1,0 +1,50 @@
+<html>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script>
+  let binary = '';
+
+  let previewFile = function() {
+    const preview = document.querySelector('img');
+    const file = document.querySelector('input[type=file]').files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener("load", function () {
+      let base64 = reader.result;
+      preview.src = base64;
+
+      let i = base64.indexOf(',');
+      binary = base64.substring(i + 1);
+
+    }, false);
+
+    if (file) { reader.readAsDataURL(file); }
+  };
+
+  let post_data = function() {
+    //const url = 'https://4s6zo9w8p6.execute-api.us-east-1.amazonaws.com/prod/attach/GSD-201';
+    const url = 'http://localhost:3000/attach/GSD-201';
+
+    let call = $.ajax({
+      type: 'POST',
+      url: url,
+      data: binary,
+      contentType: 'text/plain'
+    }).done(function(jqx, status) {
+      console.log('Done');
+      console.log(status);
+      console.log(jqx);
+    }).fail(function(jqx)  {
+      console.log(jqx);
+    });
+
+  };
+</script>
+
+<body>
+  <button onclick="post_data()">Submit</button><input type="file" onchange="previewFile()"><br>
+  <img src="" height="100px" alt="Image preview...">
+</body>
+
+</html>

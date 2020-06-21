@@ -46,7 +46,6 @@ class ApiCdkStack extends cdk.Stack {
     const api = new apigateway.RestApi(this, API_NAME, {
       restApiName: API_NAME,
       description: API_NAME,
-      binaryMediaTypes: ['application/octet', 'image/jpeg', 'image/png'],
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS
@@ -56,6 +55,24 @@ class ApiCdkStack extends cdk.Stack {
 
     const attach_endpoint = api.root.addResource('attach').addResource('{key}');
     attach_endpoint.addMethod('POST', new apigateway.LambdaIntegration(handler, { proxy: true }));
+
+    // attach_endpoint.addMethod('OPTIONS', new apigateway.MockIntegration({
+    //   integrationResponses: [
+    //     {
+    //       statusCode: "200",
+    //       responseParameters: {
+    //         "method.response.header.Access-Control-Allow-Headers": "'*'",
+    //         "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'",
+    //         "method.response.header.Access-Control-Allow-Origin": "'*'"
+    //       },
+    //       responseTemplates: { "application/json": "" }
+    //     }
+    //   ],
+    //   passthroughBehavior: apigateway.PassthroughBehavior.Never,
+    //   requestTemplates: {
+    //     "application/json": "{\"statusCode\": 200}"
+    //   },
+    // }));
   }
 }
 
