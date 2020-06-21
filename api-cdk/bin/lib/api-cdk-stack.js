@@ -48,31 +48,13 @@ class ApiCdkStack extends cdk.Stack {
       description: API_NAME,
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
-        allowMethods: apigateway.Cors.ALL_METHODS
+        allowMethods: apigateway.Cors.ALL_METHODS,
       },
       endpointTypes: [apigateway.EndpointType.REGIONAL]
     });
 
     const attach_endpoint = api.root.addResource('attach').addResource('{key}');
     attach_endpoint.addMethod('POST', new apigateway.LambdaIntegration(handler, { proxy: true }));
-
-    // attach_endpoint.addMethod('OPTIONS', new apigateway.MockIntegration({
-    //   integrationResponses: [
-    //     {
-    //       statusCode: "200",
-    //       responseParameters: {
-    //         "method.response.header.Access-Control-Allow-Headers": "'*'",
-    //         "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'",
-    //         "method.response.header.Access-Control-Allow-Origin": "'*'"
-    //       },
-    //       responseTemplates: { "application/json": "" }
-    //     }
-    //   ],
-    //   passthroughBehavior: apigateway.PassthroughBehavior.Never,
-    //   requestTemplates: {
-    //     "application/json": "{\"statusCode\": 200}"
-    //   },
-    // }));
   }
 }
 
