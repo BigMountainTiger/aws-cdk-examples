@@ -26,9 +26,9 @@ const put_s3_object = async (buffer) => {
 
 exports.handler = async (event, context) => {
   const body = event.body;
-  const buff = Buffer.from(body, 'base64'); 
-
-  await put_s3_object(buff);
+  console.log(body);
+  //const buff = Buffer.from(body, 'base64'); 
+  //await put_s3_object(buff);
 
   return {
     statusCode: 200,

@@ -8,7 +8,6 @@ class ApiCdkStack extends cdk.Stack {
     super(scope, id, props);
 
     const ROLE_NAME = `${id}MyRole`;
-    const FUNCTION_NAME = `${id}AFunction`;
     const API_NAME = `${id}APIGW`;
 
     const add_lambda_role = () => {
@@ -26,14 +25,14 @@ class ApiCdkStack extends cdk.Stack {
       return role;
     };
 
-    const add_lambda = (role) => {
+    const add_lambda = (role, path, FUNCTION_NAME) => {
 
       const func = new lambda.Function(this, FUNCTION_NAME, {
         runtime: lambda.Runtime.NODEJS_12_X,
         functionName: FUNCTION_NAME,
         timeout: cdk.Duration.seconds(120),
         role: role,
-        code: lambda.Code.asset('./lambda/AFunction'),
+        code: lambda.Code.asset(path),
         handler: 'index.handler'
       });
 
@@ -41,7 +40,8 @@ class ApiCdkStack extends cdk.Stack {
     };
 
     const role = add_lambda_role();
-    const handler = add_lambda(role);
+    const handler_base64 = add_lambda(role, './lambda/AFunction-base64', `${id}AFunction-base64`);
+    const handler_multipart = add_lambda(role, './lambda/AFunction-multipart', `${id}AFunction-multipart`);
 
     const api = new apigateway.RestApi(this, API_NAME, {
       restApiName: API_NAME,
@@ -50,11 +50,15 @@ class ApiCdkStack extends cdk.Stack {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS,
       },
+      binaryMediaTypes: ['*~1*'],
       endpointTypes: [apigateway.EndpointType.REGIONAL]
     });
 
-    const attach_endpoint = api.root.addResource('attach').addResource('{key}');
-    attach_endpoint.addMethod('POST', new apigateway.LambdaIntegration(handler, { proxy: true }));
+    const attach_endpoint_base64 = api.root.addResource('attach-base64').addResource('{key}');
+    attach_endpoint_base64.addMethod('POST', new apigateway.LambdaIntegration(handler_base64, { proxy: true }));
+
+    const attach_endpoint_multipart = api.root.addResource('attach-multipart').addResource('{key}');
+    attach_endpoint_multipart.addMethod('POST', new apigateway.LambdaIntegration(handler_multipart, { proxy: true }));
   }
 }
 
