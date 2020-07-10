@@ -4,6 +4,18 @@ const add_cloudfront = (scope, id, bucket) => {
   const NAME = `${id}-CLOUDFRONT`;
 
   const oai = new cf.OriginAccessIdentity(scope, `${id}-OriginAccessIdentity`);
+  const errorConfigurations = [
+    {
+      errorCode: 403,
+      responseCode: 200,
+      responsePagePath: '/index.html'
+    },
+    {
+      errorCode: 404,
+      responseCode: 200,
+      responsePagePath: '/index.html'
+    }
+  ];
 
   const cloudfront = new cf.CloudFrontWebDistribution(scope, NAME, {
     comment: NAME,
@@ -18,18 +30,7 @@ const add_cloudfront = (scope, id, bucket) => {
         ],
       }
     ],
-    errorConfigurations: [
-      {
-        errorCode: 403,
-        responseCode: 200,
-        responsePagePath: '/index.html'
-      },
-      {
-        errorCode: 404,
-        responseCode: 200,
-        responsePagePath: '/index.html'
-      }
-    ]
+    errorConfigurations: errorConfigurations
   });
 
   return cloudfront;
