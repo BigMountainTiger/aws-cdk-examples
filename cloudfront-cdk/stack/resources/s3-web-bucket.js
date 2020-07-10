@@ -6,12 +6,8 @@ const add_bucket = (scope, id) => {
 
   const bucket = new s3.Bucket(scope, name, {
     bucketName: `huge.head.li.${id.toLowerCase().replace(/_/g, '-')}`,
-    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    versioned: false,
     removalPolicy: cdk.RemovalPolicy.DESTROY
   });
-
-  console.log(scope.account);
 
   return bucket;
 };
