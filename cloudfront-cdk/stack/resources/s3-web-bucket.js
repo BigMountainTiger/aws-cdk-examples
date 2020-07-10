@@ -11,6 +11,8 @@ const add_bucket = (scope, id) => {
     removalPolicy: cdk.RemovalPolicy.DESTROY
   });
 
+  console.log(scope.account);
+
   return bucket;
 };
 
