@@ -1,0 +1,158 @@
+static public Bucket createResource(Construct scope) {
+            var enviroment = Amazon.CDK.AWS.SSM.StringParameter.ValueFromLookup(scope, Config.PARAMETER_STORE_AWS_ACCOUNTID_CICD);
+
+            var bucket = new Bucket(scope, "bucketDeployment", new BucketProps()
+            {
+                BucketName = "dmap-"+Config.SERVICE_NAME.ToLower()+"-website-" + Config.DMPABRANCH,
+                RemovalPolicy = RemovalPolicy.DESTROY,
+                WebsiteIndexDocument = "index.html",
+                
+                Cors = new Amazon.CDK.AWS.S3.ICorsRule[] {
+                    new Amazon.CDK.AWS.S3.CorsRule(){
+                        AllowedOrigins=new string[]{"*"},
+                        AllowedMethods=new Amazon.CDK.AWS.S3.HttpMethods[]{
+                            Amazon.CDK.AWS.S3.HttpMethods.GET
+                        }
+                    }
+                }
+
+            });
+
+            bucket.AddToResourcePolicy(new Amazon.CDK.AWS.IAM.PolicyStatement(new Amazon.CDK.AWS.IAM.PolicyStatementProps
+            {
+                Effect = Amazon.CDK.AWS.IAM.Effect.ALLOW,
+                Actions = new string[] { "s3:Get*", "s3:Put*", "s3:DeleteObject" },
+                Resources = new string[] { bucket.BucketArn + "/*" },
+                Principals = new Amazon.CDK.AWS.IAM.IPrincipal[] {
+                     new Amazon.CDK.AWS.IAM.ArnPrincipal("arn:aws:iam::"+enviroment  +":root")
+                    }
+            }));
+
+            bucket.AddToResourcePolicy(new Amazon.CDK.AWS.IAM.PolicyStatement(new Amazon.CDK.AWS.IAM.PolicyStatementProps
+            {
+                Effect = Amazon.CDK.AWS.IAM.Effect.ALLOW,
+                Actions = new string[] { "s3:ListBucket" },
+                Resources = new string[] { bucket.BucketArn },
+                Principals = new Amazon.CDK.AWS.IAM.IPrincipal[] { new Amazon.CDK.AWS.IAM.ArnPrincipal("arn:aws:iam::"+enviroment +":root"),
+             }
+            }));
+
+            return bucket;
+        }
+
+
+
+
+
+
+internal CloudFrontDistributionResource(Construct scope, Amazon.CDK.AWS.S3.Bucket bucket)
+        {
+            var OriginAccessIdentity = new OriginAccessIdentity(scope, "OriginAccessIdentity");
+            
+            new CloudFrontWebDistribution(scope, "Distribution", new CloudFrontWebDistributionProps()
+            {
+                OriginConfigs = new ISourceConfiguration[] {
+                    new SourceConfiguration(){
+                        
+                        S3OriginSource= new  S3OriginConfig()
+                        {
+                            S3BucketSource=  bucket,
+                            OriginAccessIdentity=OriginAccessIdentity
+                        },
+                        Behaviors= new IBehavior[]{
+                            new Behavior(){
+                                IsDefaultBehavior=true
+                            }
+                        },
+                    },
+                },
+                ErrorConfigurations = new CfnDistribution.ICustomErrorResponseProperty[]
+                {
+                    new CfnDistribution.CustomErrorResponseProperty
+                    {
+                        ErrorCode = 403,
+                        ResponseCode = 200,
+                        ResponsePagePath = "/index.html"
+                    },
+                    new CfnDistribution.CustomErrorResponseProperty
+                    {
+                        ErrorCode = 404,
+                        ResponseCode = 200,
+                        ResponsePagePath = "/index.html"
+                    },
+                }
+            });
+            
+            bucket.AddToResourcePolicy(new Amazon.CDK.AWS.IAM.PolicyStatement(new Amazon.CDK.AWS.IAM.PolicyStatementProps
+            {
+                Effect = Amazon.CDK.AWS.IAM.Effect.ALLOW,
+                Actions = new string[] { "s3:GetObject" },
+                Resources = new string[] { bucket.BucketArn + "/*" },
+                Principals = new Amazon.CDK.AWS.IAM.IPrincipal[] {
+                     new Amazon.CDK.AWS.IAM.CanonicalUserPrincipal(OriginAccessIdentity.CloudFrontOriginAccessIdentityS3CanonicalUserId)
+                    }
+            }));
+        }
+
+
+
+
+
+public class ChangeS3ObjectEncryptionLambdaResource
+    {
+        internal ChangeS3ObjectEncryptionLambdaResource(Construct scope, Bucket bucket)
+        {
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "assets/ChangeObjectEncryption.py");
+
+            var projectName = "ChangeObjectEncryption";
+
+
+            var func = new Function(scope, projectName, new FunctionProps()
+            {
+                FunctionName = Config.SERVICE_NAME + "-change-s3-website-object-encryption",
+                Code = Code.FromInline(File.ReadAllText(path, System.Text.Encoding.UTF8)),
+                Handler = "index.lambda_handler",
+                Runtime = Runtime.PYTHON_3_6,
+                Timeout = Duration.Seconds(60),
+                MemorySize = 2000,
+            });
+            var policyStatement = new Amazon.CDK.AWS.IAM.PolicyStatement();
+            policyStatement.AddAllResources();
+            policyStatement.AddActions(new string[] { "s3:*" });
+            func.AddToRolePolicy(policyStatement);
+
+            func.AddPermission("S3AccessLambda", new Permission()
+            {
+                Principal = new Amazon.CDK.AWS.IAM.ServicePrincipal("s3.amazonaws.com"),
+                SourceArn = bucket.BucketArn
+            });
+
+            bucket.AddEventNotification(EventType.OBJECT_CREATED_PUT, new Amazon.CDK.AWS.S3.Notifications.LambdaDestination(func));
+
+        }
+    }
+
+
+import json
+import urllib.parse
+import boto3
+
+
+s3 = boto3.client('s3')
+
+
+def lambda_handler(event, context):
+    #print("Received event: " + json.dumps(event, indent=2))
+
+    # Get the object from the event and show its content type
+    bucket = event['Records'][0]['s3']['bucket']['name']
+    key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
+    try:
+        s3.copy_object(Bucket=bucket,CopySource=bucket + '/' + key,Key=key,ServerSideEncryption='AES256')
+
+    except Exception as e:
+        print(e)
+       
+
+

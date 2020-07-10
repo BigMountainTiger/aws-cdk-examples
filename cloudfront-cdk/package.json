@@ -1,0 +1,9 @@
+{
+  "name": "cloudfront-cdk",
+  "version": "0.1.0",
+  "author": "Song Li",
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/core": "1.51.0"
+  }
+}
