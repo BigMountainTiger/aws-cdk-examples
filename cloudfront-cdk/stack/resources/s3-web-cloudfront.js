@@ -21,6 +21,7 @@ const add_cloudfront = (scope, id, bucket) => {
     comment: NAME,
     originConfigs: [
       {
+        
         s3OriginSource: {
           s3BucketSource: bucket,
           originAccessIdentity: oai
