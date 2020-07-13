@@ -2,7 +2,8 @@ var AWS = require('aws-sdk');
 AWS.config.update({ region: 'us-east-1' });
 
 exports.lambdaHandler = async (event, context) => {
-  
+  console.log(event);
+
   const s3 = event.Records[0].s3;  
   var bucket = s3.bucket.name;
   var key =  decodeURIComponent(s3.object.key.replace(/\+/g, ' '));
@@ -33,7 +34,7 @@ exports.lambdaHandler = async (event, context) => {
         "Pragma": "no-cache",
         "Expires": "-1"
       }),
-      MetadataDirective: 'COPY'
+      MetadataDirective: 'REPLACE'
   };
 
   const result = await new Promise((rs, rj) => {
