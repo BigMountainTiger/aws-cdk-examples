@@ -14,7 +14,7 @@ const meta_lambda = (scope, id) => {
   role.addToPolicy(new iam.PolicyStatement({
     effect: iam.Effect.ALLOW,
     resources: ['*'],
-    actions: ['s3:PutBucketNotification']
+    actions: ['s3:*']
   }))
 
   role.addToPolicy(new iam.PolicyStatement({
