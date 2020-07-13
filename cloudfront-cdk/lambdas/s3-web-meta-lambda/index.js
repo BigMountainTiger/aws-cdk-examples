@@ -8,33 +8,34 @@ exports.lambdaHandler = async (event, context) => {
   var bucket = s3.bucket.name;
   var key =  decodeURIComponent(s3.object.key.replace(/\+/g, ' '));
 
-  let params = {
-    Bucket: bucket,
-    Key: key
-  };
+  // let params = {
+  //   Bucket: bucket,
+  //   Key: key
+  // };
 
-  const o = await new Promise((rs, rj) => {
-    const aws_s3 = new AWS.S3();
+  // const o = await new Promise((rs, rj) => {
+  //   const aws_s3 = new AWS.S3();
 
-    aws_s3.getObject(params, (e, d) => {
-      if (e) { rj(e); } else { rs(d); }
-    });
-  });
+  //   aws_s3.getObject(params, (e, d) => {
+  //     if (e) { rj(e); } else { rs(d); }
+  //   });
+  // });
 
-  const contentType = o.ContentType;
-  const metadata = o.Metadata;
+  // const contentType = o.ContentType;
+  // const metadata = o.Metadata;
   
-  params = {
+  let params = {
       Bucket: bucket,
       Key: key,
       CopySource: encodeURIComponent(`${bucket}/${key}`),
-      ContentType: contentType,
-      Metadata: Object.assign(metadata, {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        "Pragma": "no-cache",
-        "Expires": "-1"
-      }),
-      MetadataDirective: 'REPLACE'
+      //ContentType: contentType,
+      // Metadata: Object.assign(metadata, {
+      //   "Cache-Control": "no-cache, no-store, must-revalidate",
+      //   "Pragma": "no-cache",
+      //   "Expires": "-1"
+      // }),
+      // MetadataDirective: 'COPY',
+      ServerSideEncryption: 'AES256'
   };
 
   const result = await new Promise((rs, rj) => {
