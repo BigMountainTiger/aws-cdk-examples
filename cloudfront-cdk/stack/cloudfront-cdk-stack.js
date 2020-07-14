@@ -15,7 +15,7 @@ class CloudfrontCdkStack extends cdk.Stack {
     const copy_lambda = copylambda(this, id);
     const nocache_lambda = nocachelambda(this, id);
     const bucket = s3_web_bucket(this, id);
-    const cloudfront = s3_web_cloudfront(this, id, bucket);
+    const cloudfront = s3_web_cloudfront(this, id, bucket, nocache_lambda);
 
     copy_lambda.addEventSource(new eventSources.S3EventSource(bucket, {
       events: [s3.EventType.OBJECT_CREATED_PUT]

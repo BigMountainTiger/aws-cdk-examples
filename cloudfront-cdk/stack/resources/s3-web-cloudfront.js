@@ -1,6 +1,6 @@
 const cf = require('@aws-cdk/aws-cloudfront');
 
-const add_cloudfront = (scope, id, bucket) => {
+const add_cloudfront = (scope, id, bucket, nocache_lambda) => {
   const NAME = `${id}-CLOUDFRONT`;
 
   const oai = new cf.OriginAccessIdentity(scope, `${id}-OriginAccessIdentity`);
@@ -28,7 +28,10 @@ const add_cloudfront = (scope, id, bucket) => {
         },
         behaviors: [
           { isDefaultBehavior: true , default_ttl: 31536000, lambdaFunctionAssociations: [
-            
+            {
+              eventType: cf.LambdaEdgeEventType.VIEWER_RESPONSE,
+              lambdaFunction: nocache_lambda.currentVersion
+            }
           ]}
         ],
       }

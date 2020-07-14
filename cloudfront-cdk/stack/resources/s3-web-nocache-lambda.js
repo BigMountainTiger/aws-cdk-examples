@@ -21,16 +21,18 @@ const nocache_lambda = (scope, id) => {
   }))
 
   const lambda_name = `${id}-NOCACHE_LAMBDA_HANDLER`;
-  return new lambda.Function(scope, lambda_name, {
+  const lambda_function = new lambda.Function(scope, lambda_name, {
     runtime: lambda.Runtime.NODEJS_12_X,
     functionName: lambda_name,
     description: lambda_name,
-    timeout: cdk.Duration.seconds(15),
+    timeout: cdk.Duration.seconds(5),
     role: role,
     code: lambda.Code.asset('./lambdas/s3-web-nocache-lambda'),
-    memorySize: 256,
+    memorySize: 128,
     handler: 'index.lambdaHandler'
   });
+
+  return lambda_function;
 };
 
 module.exports = nocache_lambda;
