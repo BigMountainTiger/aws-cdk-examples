@@ -27,7 +27,9 @@ const add_cloudfront = (scope, id, bucket) => {
           originAccessIdentity: oai
         },
         behaviors: [
-          { isDefaultBehavior: true , default_ttl: 31536000 }
+          { isDefaultBehavior: true , default_ttl: 31536000, lambdaFunctionAssociations: [
+            
+          ]}
         ],
       }
     ],

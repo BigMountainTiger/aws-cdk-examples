@@ -21,6 +21,7 @@ class CloudfrontCdkStack extends cdk.Stack {
       events: [s3.EventType.OBJECT_CREATED_PUT]
     }));
     
+    
   }
 }
 
