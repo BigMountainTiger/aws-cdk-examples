@@ -17,8 +17,16 @@ const add_cloudfront = (scope, id, bucket, nocache_lambda) => {
     }
   ];
 
+  let lambda_associations = [];
+  // UNCOMMENT to add the association
+  // lambda_associations = [{
+  //   eventType: cf.LambdaEdgeEventType.VIEWER_RESPONSE,
+  //   lambdaFunction: nocache_lambda.currentVersion
+  // }];
+
   const cloudfront = new cf.CloudFrontWebDistribution(scope, NAME, {
     comment: NAME,
+    priceClass: cf.PriceClass.PRICE_CLASS_100,
     originConfigs: [
       {
         
@@ -27,12 +35,7 @@ const add_cloudfront = (scope, id, bucket, nocache_lambda) => {
           originAccessIdentity: oai
         },
         behaviors: [
-          { isDefaultBehavior: true , default_ttl: 31536000, lambdaFunctionAssociations: [
-            {
-              eventType: cf.LambdaEdgeEventType.VIEWER_RESPONSE,
-              lambdaFunction: nocache_lambda.currentVersion
-            }
-          ]}
+          { isDefaultBehavior: true , default_ttl: 31536000, lambdaFunctionAssociations: lambda_associations}
         ],
       }
     ],
