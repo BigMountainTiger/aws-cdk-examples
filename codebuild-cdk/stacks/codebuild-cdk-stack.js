@@ -1,6 +1,7 @@
 // https://docs.aws.amazon.com/cdk/api/latest/docs/aws-codebuild-readme.html
 
 const cdk = require('@aws-cdk/core');
+const iam = require('@aws-cdk/aws-iam');
 const codebuild = require('@aws-cdk/aws-codebuild');
 
 class CodebuildCdkStack extends cdk.Stack {
@@ -9,7 +10,7 @@ class CodebuildCdkStack extends cdk.Stack {
     super(scope, id, props);
 
     const projectName = `${id}-MY-PROJECT`;
-    new codebuild.Project(this, projectName, {
+    const project = new codebuild.Project(this, projectName, {
       projectName: projectName,
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -18,7 +19,8 @@ class CodebuildCdkStack extends cdk.Stack {
             commands: [
               'ls -la',
               'pwd',
-              'cat /etc/lsb-release'
+              'cat /etc/lsb-release',
+              'aws codepipeline start-pipeline-execution --name CODEPIPELINE-CDK-STACK-PIPELINE'
             ]
           }
         }
@@ -26,6 +28,10 @@ class CodebuildCdkStack extends cdk.Stack {
       environment: codebuild.LinuxBuildImage.STANDARD_4_0
     });
     
+    let policyStatement = new iam.PolicyStatement();
+    policyStatement.addAllResources();
+    policyStatement.addActions(['*']);
+    project.addToRolePolicy(policyStatement);
   }
 }
 
