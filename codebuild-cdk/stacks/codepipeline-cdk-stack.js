@@ -16,8 +16,11 @@ class CodepipelineCdkStack extends cdk.Stack {
 
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     const OWNER = 'BigMountainTiger';
-    const REPOSITORY_NAME = 'aws-codepipeline-example';
-    const sourceOutput = new codepipeline.Artifact();
+    const REPOSITORY_NAME_1 = 'aws-codepipeline-example';
+    const REPOSITORY_NAME_2 = 'python-excercise';
+
+    const sourceOutput_1 = new codepipeline.Artifact('sourceOutput_1');
+    const sourceOutput_2 = new codepipeline.Artifact('sourceOutput_2');
 
     const STEP1_NAME = `${PIPELINENAME}-STEP-1`;
     const step1 = new codebuild.PipelineProject(this, STEP1_NAME, {
@@ -54,12 +57,20 @@ class CodepipelineCdkStack extends cdk.Stack {
           stageName: 'Source',
           actions: [
             new codepipeline_actions.GitHubSourceAction({
-              actionName: 'Github_Source',
+              actionName: 'Github_Source_1',
               oauthToken: cdk.SecretValue.plainText(GITHUB_TOKEN),
               owner: OWNER,
-              repo: REPOSITORY_NAME,
+              repo: REPOSITORY_NAME_1,
               trigger: codepipeline_actions.GitHubTrigger.NONE,
-              output: sourceOutput
+              output: sourceOutput_1
+            }),
+            new codepipeline_actions.GitHubSourceAction({
+              actionName: 'Github_Source_2',
+              oauthToken: cdk.SecretValue.plainText(GITHUB_TOKEN),
+              owner: OWNER,
+              repo: REPOSITORY_NAME_2,
+              trigger: codepipeline_actions.GitHubTrigger.NONE,
+              output: sourceOutput_2
             })
           ]
         },
@@ -67,9 +78,14 @@ class CodepipelineCdkStack extends cdk.Stack {
           stageName: 'Step_1',
           actions: [
             new codepipeline_actions.CodeBuildAction({
-              actionName: 'PIPELINE_STEP_1',
+              actionName: 'PIPELINE_STEP_1_ACTION_1',
               project: step1,
-              input: sourceOutput
+              input: sourceOutput_1
+            }),
+            new codepipeline_actions.CodeBuildAction({
+              actionName: 'PIPELINE_STEP_1_ACTION_2',
+              project: step2,
+              input: sourceOutput_2
             })
           ]
         },
@@ -79,7 +95,7 @@ class CodepipelineCdkStack extends cdk.Stack {
             new codepipeline_actions.CodeBuildAction({
               actionName: 'PIPELINE_STEP_2',
               project: step2,
-              input: sourceOutput
+              input: sourceOutput_2
             })
           ]
         }
