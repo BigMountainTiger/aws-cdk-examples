@@ -18,7 +18,7 @@ class CodeCommitCdkStack extends cdk.Stack {
     role.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       resources: ['*'],
-      actions: ['events:PutEvents']
+      actions: ['events:PutEvents', 'SQS:*']
     }))
     
     const RULE_NAME = `${id}-EVENT_RULE`;
@@ -38,8 +38,8 @@ class CodeCommitCdkStack extends cdk.Stack {
         },
         Targets: [{
             Id: 'Target0',
-            RoleArn: role.roleArn,
-            Arn: 'https://sqs.us-east-1.amazonaws.com/005256505030/Test-SQS'
+            //RoleArn: role.roleArn,
+            Arn: 'arn:aws:sqs:us-east-1:005256505030:Test-SQS'
         }]
       }
     });
