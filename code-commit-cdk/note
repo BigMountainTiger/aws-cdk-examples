@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Amazon.CDK;
+namespace PearlsEnvironmentInitialSetupCdk.Resources.EventRules
+{
+    public class CodeCommitTriggerCiCDEventRuleResource
+    {
+        //  "arn:aws:iam::426574273287:role/Dmap_TeamLeads"
+
+        public static void Create(Construct scope)
+        {
+
+            var role = new Amazon.CDK.AWS.IAM.Role(scope, "CodeCommitTriggerCiCDEventRuleResourceRole", new Amazon.CDK.AWS.IAM.RoleProps()
+            {
+                RoleName = "Dmap_CodeCommitTriggerCiCDEventRuleResourceRole",
+                AssumedBy = new Amazon.CDK.AWS.IAM.ServicePrincipal("events.amazonaws.com")
+            }
+            );
+
+            var policyStatement = new Amazon.CDK.AWS.IAM.PolicyStatement();
+
+
+            policyStatement.AddResources(new string[]
+            {
+                "arn:aws:events:us-east-1:"+Config.AWS_ACCOUNTID_CICD_ENV+":event-bus/default"
+            });
+            policyStatement.AddActions(new string[]
+            {
+                "events:PutEvents"
+            });
+
+            role.AddToPolicy(policyStatement);
+
+            new CfnResource(scope, "CodeCommitPushTriggerCiC", new CfnResourceProps()
+            {
+                Type = "AWS::Events::Rule",
+                Properties = new Dictionary<string, object>
+                {
+                    ["Name"] = "CodeCommitEventRule",
+                    ["Description"] = "CodeCommitPushTriggerCiCD",
+                    ["EventPattern"] = new Dictionary<string, object>
+                    {
+                        ["source"] = new string[] { "aws.codecommit" },
+                        ["detail-type"] = new string[] { "CodeCommit Repository State Change" },
+                        ["detail"] = new Dictionary<string, object>
+                        {
+                            ["referenceType"] = new string[] { "branch" },
+                            ["event"] = new string[] { "referenceCreated", "referenceUpdated" },
+                            ["referenceName"] = new string[] { "master", "qa", "develop", "staging", "uat" }
+                        },
+                    },
+                    ["Targets"] = new object[]
+                    {
+                        new Dictionary<string, object>
+                        {
+                            ["Arn"]= "arn:aws:events:us-east-1:"+Config.AWS_ACCOUNTID_CICD_ENV+":event-bus/default",
+                            ["Id"]= "Target0",
+                            ["RoleArn"]=role.RoleArn
+                        }
+                    }
+                }
+            });
+        }
+    }
+}
