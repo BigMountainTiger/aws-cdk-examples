@@ -20,7 +20,11 @@ class CodebuildCdkStack extends cdk.Stack {
               'ls -la',
               'pwd',
               'cat /etc/lsb-release',
-              'aws codepipeline start-pipeline-execution --name CODEPIPELINE-CDK-STACK-PIPELINE'
+              'echo $A',
+              'echo "${B} world"  > abcd',
+              'ls -l',
+              'cat abcd'
+              //'aws codepipeline start-pipeline-execution --name CODEPIPELINE-CDK-STACK-PIPELINE'
             ]
           }
         }

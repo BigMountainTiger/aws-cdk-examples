@@ -29,7 +29,7 @@ class CodepipelineCdkStack extends cdk.Stack {
         version: '0.2',
         phases: {
           build: {
-            commands: [`echo "STEP 1"`, 'ls -la']
+            commands: [`echo "STEP 1"`, 'ls -la', 'echo $A']
           }
         }
       }),
