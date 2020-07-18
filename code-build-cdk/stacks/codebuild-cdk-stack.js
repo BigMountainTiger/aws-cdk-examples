@@ -23,7 +23,8 @@ class CodebuildCdkStack extends cdk.Stack {
               'echo $A',
               'echo "${B} world"  > abcd',
               'ls -l',
-              'cat abcd'
+              'cat abcd',
+              'echo $AWS_ACCESS_KEY_ID'
               //'aws codepipeline start-pipeline-execution --name CODEPIPELINE-CDK-STACK-PIPELINE'
             ]
           }
