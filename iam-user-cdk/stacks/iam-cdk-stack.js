@@ -1,3 +1,6 @@
+// https://docs.aws.amazon.com/cli/latest/reference/iam/create-access-key.html
+// aws iam create-access-key --user-name Bob
+
 const cdk = require('@aws-cdk/core');
 const iam = require('@aws-cdk/aws-iam');
 
