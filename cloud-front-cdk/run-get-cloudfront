@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cf_list_raw=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=Name,Values=Second-CFront --resource-type-filters 'cloudfront')
+cf_list=$(echo $cf_list_raw | jq '.ResourceTagMappingList')
+cf_arn=$(echo $cf_list | jq 'if length == 1 then .[0].ResourceARN else empty end')
+
+if [[ -n $cf_arn ]]; then
+  cf_id=$(echo $cf_arn | sed 's/.*\///' | sed 's/"$//')
+  aws cloudfront create-invalidation --distribution-id $cf_id --paths '/*' | grep Id | xargs
+fi
