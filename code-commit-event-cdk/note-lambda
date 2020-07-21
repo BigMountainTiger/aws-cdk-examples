@@ -1,0 +1,85 @@
+using Amazon.CDK;
+using Amazon.CDK.AWS.Lambda;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+
+namespace CidcdEnvironmentInitialSetupCdk.Resources.EventRule
+{
+    class CodeCommitTriggerLambdaEventRuleSource
+    {
+        Construct scope;
+        internal CodeCommitTriggerLambdaEventRuleSource(Construct scope)
+        {
+
+            this.scope = scope;
+            
+            CreateEventRule();
+        }
+        private void CreateEventRule()
+        {
+
+
+            var rule = new Amazon.CDK.AWS.Events.Rule(scope, "CodeCommitEventRule", new Amazon.CDK.AWS.Events.RuleProps()
+            {
+                Enabled = true,
+                RuleName = "CodeCommitEventRule",
+                EventPattern = new Amazon.CDK.AWS.Events.EventPattern()
+                {
+                    Source = new string[] { "aws.codecommit" },
+                    DetailType = new string[] { "CodeCommit Repository State Change" },
+                    Detail = new Dictionary<string, object>
+                    {
+                        ["referenceType"] = new string[] { "branch" },
+                        ["event"] = new string[] { "referenceCreated", "referenceUpdated" },
+                        ["referenceName"] = new string[] { "master", "qa","develop","staging","uat" }
+                    }
+                }
+                
+            });
+
+            rule.AddTarget(new Amazon.CDK.AWS.Events.Targets.LambdaFunction(TriggerCodeBuildOnCodeCommit()));
+
+
+        }
+        private Function TriggerCodeBuildOnCodeCommit()
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "assets/TriggerCodeBuildOnCommitFunction.py");
+
+            var projectName = "TriggerCodeBuildOnCodeCommit";
+            
+            
+            var func = new Function(scope, projectName, new FunctionProps()
+            {
+                FunctionName = "trigger-codebuild",
+                Code =Code.FromInline(File.ReadAllText( path, System.Text.Encoding.UTF8)),
+                Handler = "index.lambda_handler",
+                Runtime = Runtime.PYTHON_3_6,
+                Timeout = Duration.Seconds(60),
+                MemorySize = 2000,
+                Environment = new Dictionary<string, string>()
+                {
+                    ["PARAMETER_STORE_CODE_BUILD_PROJECT"] = Config.PARAMETER_STORE_CODEBUILD_DEPLOYER_PROJECTNAME,
+                    ["AWS_10PEARLS_ENVIRONMENT_ACCOUNTID"] = Config.AWS_ACCOUNTID_10PEARLS_ENV 
+
+                }
+            });
+
+            var policyStatement = new Amazon.CDK.AWS.IAM.PolicyStatement();
+            policyStatement.AddAllResources();
+            policyStatement.AddActions(new string[]
+            {
+                "codebuild:*",
+                "ssm:*",
+            });
+            func.AddToRolePolicy(policyStatement);
+
+            Tag.Add(func, "Service", Config.SERVICE_NAME);
+
+
+            return func;
+        }
+    }
+}
