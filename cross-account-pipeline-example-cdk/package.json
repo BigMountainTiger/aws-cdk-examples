@@ -1,0 +1,15 @@
+{
+  "name": "cross-account-pipeline-example",
+  "version": "0.1.0",
+  "author": "Song Li",
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/aws-codebuild": "^1.49.0",
+    "@aws-cdk/aws-codecommit": "^1.49.0",
+    "@aws-cdk/aws-codepipeline": "^1.49.0",
+    "@aws-cdk/aws-codepipeline-actions": "^1.49.0",
+    "@aws-cdk/aws-iam": "^1.49.0",
+    "@aws-cdk/aws-s3": "^1.49.0",
+    "@aws-cdk/core": "1.49.0"
+  }
+}

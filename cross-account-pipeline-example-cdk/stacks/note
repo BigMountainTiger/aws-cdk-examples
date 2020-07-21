@@ -1,0 +1,126 @@
+#!/bin/bash
+bucketname="$1"
+stackname="$2"
+servicename="$3"
+cd Functions
+for i in  */
+do
+		
+        f=${i%*/}
+
+        fileName=`openssl rand -hex 12`
+		fileName=${f}${fileName}.zip
+		lambda=${f}.zip
+		
+        cd $i
+		dotnet lambda package
+		aws s3 cp bin/Release/netcoreapp3.1/$f.zip s3://$bucketname/$fileName
+		sed -i 's/'$lambda'/'$fileName'/g' ../../$servicename.CDK/dist/$stackname.template.json
+        
+		
+		cd ../
+done
+
+
+
+var CodeBuildStage = new StageProps
+            {
+                StageName = "Build",
+                Actions = new[]
+                        {
+                            new CodeBuildAction(new CodeBuildActionProps
+                            {
+                                ActionName = "CodeBuild",
+                                Project = codeBuild,
+                                Input = sourceOutput,
+                                  Outputs = new Artifact_[]{
+                                        cdkBuildOutput
+                                    }
+                            })
+                        }
+            };
+
+
+public static PipelineProject CreateBuildProject(Construct scope)
+        {
+            
+            var lambdaDeploymemtBucketName = Amazon.CDK.AWS.SSM.StringParameter.ValueForStringParameter(scope, Config.PARAMETER_STORE_S3_BUCKETNAME_LAMBDA_DEPLOYMENT);
+
+
+            var keyArn = Amazon.CDK.AWS.SSM.StringParameter.ValueForStringParameter(scope, Config.PARAMETER_STORE_KMS_ARN_CICD);
+            var key = Amazon.CDK.AWS.KMS.Key.FromKeyArn(scope, "kmskey", keyArn);
+
+            var lstCommand = new List<string>();
+
+
+
+            lstCommand.Add("cd " + Config.SERVICE_NAME + ".CDK");
+            lstCommand.Add("dotnet build src");
+            lstCommand.Add("cdk synth --o dist");
+
+            lstCommand.Add("cd ../");
+            lstCommand.Add("chmod 777 lib/scripts/package_lambda.sh");
+            lstCommand.Add("lib/scripts/package_lambda.sh " + lambdaDeploymemtBucketName + " " + Config.SERVICE_NAME + " " + Config.SERVICE_NAME);
+
+
+            var project = new PipelineProject(scope, Config.SERVICE_NAME + "CodeBuild", new PipelineProjectProps
+            {
+                EncryptionKey = key,
+                ProjectName = Config.SERVICE_NAME + Config.BRANCH ,
+                BuildSpec = BuildSpec.FromObject(new Dictionary<string, object>
+                {
+                    ["version"] = "0.2",
+                    ["phases"] = new Dictionary<string, object>
+                    {
+                        ["install"] = new Dictionary<string, object>
+                        {
+                            ["runtime-versions"] = new Dictionary<string, string>
+                            {
+                                ["dotnet"] = "3.1"
+                            },
+                            ["commands"] = new string[] {
+                                    "dotnet tool install --global Amazon.Lambda.Tools",
+                                            "npm install  -g aws-cdk"
+                                            }
+
+                        },
+                        ["build"] = new Dictionary<string, object>
+                        {
+                            ["commands"] = lstCommand.ToArray()
+                        }
+                    },
+
+
+                    ["artifacts"] = new Dictionary<string, object>
+                    {
+                        ["base-directory"] = Config.SERVICE_NAME + ".CDK/dist",
+                        ["files"] = "**/*"
+
+                    }
+
+                }),
+                Environment = new BuildEnvironment
+                {
+                    BuildImage = LinuxBuildImage.AMAZON_LINUX_2_3
+                }
+            });
+
+
+var artifactBucket = Amazon.CDK.AWS.S3.Bucket.FromBucketName(scope, "artifact", artifactBucketName);
+
+
+
+
+{
+          stageName: 'Source',
+          actions: [
+            new codepipeline_actions.GitHubSourceAction({
+              actionName: 'Checkout',
+              output: sourceOutput,
+              owner: "evayde",
+              repo: "cdk-api-pipeline",
+              oauthToken: SecretValue.plainText(props.githubToken),
+              trigger: codepipeline_actions.GitHubTrigger.WEBHOOK,
+            }),
+          ],
+        }
