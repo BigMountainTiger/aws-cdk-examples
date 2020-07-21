@@ -1,0 +1,38 @@
+using Amazon.CDK;
+
+
+namespace CidcdEnvironmentInitialSetupCdk.Resources.EventBus
+{
+    class EventBusResource
+    {
+        internal EventBusResource(Construct scope)
+        {
+            SetEventBus(scope);
+        }
+        void SetEventBus(Construct scope)
+        {
+            
+            var eventBusArn = "arn:aws:events:us-east-1:" + Config.AWS_ACCOUNTID_CICD_ENV  + ":event-bus/default";
+            var eventBus = Amazon.CDK.AWS.Events.EventBus.FromEventBusArn(scope, "eventBusArn", eventBusArn);
+
+            new Amazon.CDK.AWS.Events.CfnEventBusPolicy(scope, "CfnEventBusPolicy", new Amazon.CDK.AWS.Events.CfnEventBusPolicyProps()
+            {
+                Action = "events:PutEvents",
+                Principal = Config.AWS_ACCOUNTID_CODE_ENV,
+                StatementId = "myStatement",
+                EventBusName = eventBus.EventBusName
+            });
+
+            new Amazon.CDK.AWS.Events.CfnEventBusPolicy(scope, "PearlCfnEventBusPolicy", new Amazon.CDK.AWS.Events.CfnEventBusPolicyProps()
+            {
+                Action = "events:PutEvents",
+                Principal = Config.AWS_ACCOUNTID_10PEARLS_ENV ,
+                StatementId = "myStatementPearl",
+                EventBusName = eventBus.EventBusName
+            });
+
+
+
+        }
+    }
+}
