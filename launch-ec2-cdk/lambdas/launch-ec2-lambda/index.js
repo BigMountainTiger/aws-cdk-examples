@@ -20,6 +20,10 @@ exports.lambdaHandler = async (event, context) => {
 
     const ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
     result = await ec2.runInstances(instanceParams).promise();
+    
+    // A lambda is unable to wait the instance to start. there must be some other ways to check the status
+    // result = await ec2.waitFor('instanceRunning', {InstanceIds: [result.Instances[0].InstanceId]}).promise();
+
   } catch(ex) {
     
     console.log('Failed');

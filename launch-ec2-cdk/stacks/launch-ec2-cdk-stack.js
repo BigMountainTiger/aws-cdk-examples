@@ -21,8 +21,16 @@ class LaunchEc2CdkStack extends cdk.Stack {
         role.addToPolicy(new iam.PolicyStatement({
           effect: iam.Effect.ALLOW,
           resources: ['*'],
-          actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents', 'ec2:RunInstances', 'iam:PassRole']
+          actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents']
         }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          resources: ['*'],
+          actions: ['ec2:RunInstances']
+        }));
+
+        return role;
       };
 
       const role = create_role(id, scope);
