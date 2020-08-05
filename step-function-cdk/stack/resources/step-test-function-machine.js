@@ -4,9 +4,12 @@ const tasks = require('@aws-cdk/aws-stepfunctions-tasks');
 
 const add_state_machine = (scope, step_1_lambda, s3_put_lambda) => {
 
+  // The "$" is the input/output of the task, not the lambda,
+  // the "$.Payload" is a property of the response from the task, which is the response of the lambda.
   const STEP_1_NAME = 'STEP_TEST_MACHINE_STEP_1';
   const step_1 = new tasks.LambdaInvoke(scope, STEP_1_NAME, {
     lambdaFunction: step_1_lambda,
+    inputPath: '$',
     outputPath: '$.Payload',
   });
 
