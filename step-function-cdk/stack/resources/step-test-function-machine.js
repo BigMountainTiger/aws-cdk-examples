@@ -1,3 +1,5 @@
+// Step function choices - https://stackoverflow.com/questions/53587097/is-there-a-way-to-create-step-functions-graph-using-cdk
+
 const cdk = require('@aws-cdk/core');
 const sfn = require('@aws-cdk/aws-stepfunctions');
 const tasks = require('@aws-cdk/aws-stepfunctions-tasks');
