@@ -1,0 +1,9 @@
+{
+  "name": "test-client",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Song Li",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

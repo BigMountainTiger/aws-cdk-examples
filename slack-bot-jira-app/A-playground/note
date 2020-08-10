@@ -1,0 +1,20 @@
+Test Slack auth:
+https://slack.com/api/auth.test
+
+aws s3 rm s3://sam.huge.head.li --recursive
+
+
+1. Add issue type dropdown => GO TO TRIAGE By default
+2. Add a label. Platform, Agency, R&D
+
+Feature
+Bug
+Support
+
+Label Mapping:
+
+DMAP => Agency
+ALL others => Platform
+N/A => R&D
+
+Is this correct?

@@ -1,0 +1,28 @@
+{
+  "Records": [
+    {
+      "messageId": "0530e44b-9b00-4bf5-8f56-04a7122c4011",
+      "receiptHandle": "AQEBPg/ay+F2GyCxuykAcjeAqAR/WSAm/givNVkbQlGHjmSU4xMPAkOCjdHatWNtjAnH4atV9NRN+QlSTU1Ze02nBFLvsxxjmmB8V3TmjkbwzITKQYWHGYtREgrVMX6thfj2hLMudIDUbeBOsWVVKnuW25CQH/OwlivhIx81c2WHuE1W2qXHOogMFnyPoTI3j9zgnZFbjRUPSgN20hpqcf/sasp6P3OYkrKmACeVUVXbP/f2/Qf6WXsOqQOwNjAR1jptPq2fLQ88O3jcbn0KwNagZFr1RMhxcVW3U5zZ7HYP7lUfRuHB6ElcogHQpvh5JPdkI5q37ANLuiGWbAX4dULPqYnfxTNndEeGuNUDIAgBogQyU4MvB1W3YSsUnrAUiZ8q58ls7cxEKQTsu199pe81+w==",
+      "body": "{\"type\":\"ATTACHMENT\",\"user\":{\"id\":\"U01023BN1MX\"},\"jiraId\":\"GSD-130\",\"files\":[{\"name\":\"Selection_001.png\",\"size\":54110,\"url_private\":\"https://files.slack.com/files-pri/T010BMADEAY-F011DJKE5AS/selection_001.png\",\"url_private_download\":\"https://files.slack.com/files-pri/T010BMADEAY-F011DJKE5AS/download/selection_001.png\"}]}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "SentTimestamp": "1585443585604",
+        "SenderId": "AROAQCOKP43DG33QEGL4J:SlackSupportBotFunction",
+        "ApproximateFirstReceiveTimestamp": "1585443585625"
+      },
+      "messageAttributes": {
+        "Type": {
+          "stringValue": "TECH_SUPPORT_REQUEST",
+          "stringListValues": [],
+          "binaryListValues": [],
+          "dataType": "String"
+        }
+      },
+      "md5OfMessageAttributes": "df4a6632d410e84a5cc7d19fa3494138",
+      "md5OfBody": "861eb365a8b2ddea7014d18f540c75da",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:us-east-1:005256505030:TECH_SUPPORT_QUEUE",
+      "awsRegion": "us-east-1"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "httpMethod": "POST",
+  "body": "{\n  \"type\": \"CREATE\",\n  \"user\": {\n    \"email\": \"song@monsterlg.com\"\n  },\n  \"request\": {\n    \"summary\": \"Test - Please Ignore\",\n    \"description\": \"This is a test Jira ticket, please ignore it\",\n    \"request_type\": \"Feature\",\n    \"affected_application\": \"CRM\",\n    \"priority\": \"CRITICAL\",\n    \"duedate\": \"1/23/2021\",\n    \"justification\": \"please ignore - Required if duedate is given - A string of length <= 3000\"\n  }\n}",
+  "resource": "/service-desk/create",
+  "requestContext": {
+    "resourceId": "123456",
+    "apiId": "1234567890",
+    "resourcePath": "/service-desk/create",
+    "httpMethod": "POST",
+    "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+    "accountId": "123456789012",
+    "stage": "prod",
+    "identity": {
+      "apiKey": null,
+      "userArn": null,
+      "cognitoAuthenticationType": null,
+      "caller": null,
+      "userAgent": "Custom User Agent String",
+      "user": null,
+      "cognitoIdentityPoolId": null,
+      "cognitoAuthenticationProvider": null,
+      "sourceIp": "127.0.0.1",
+      "accountId": null
+    },
+    "extendedRequestId": null,
+    "path": "/service-desk/create"
+  },
+  "queryStringParameters": null,
+  "multiValueQueryStringParameters": null,
+  "headers": {
+    "Content-Type": "text/plain",
+    "User-Agent": "PostmanRuntime/7.25.0",
+    "Accept": "*/*",
+    "Postman-Token": "ed68b3a8-d0e9-4be8-9179-6b2ed6cdcfd0",
+    "Host": "localhost:3000",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Content-Length": "418",
+    "X-Forwarded-Proto": "http",
+    "X-Forwarded-Port": "3000"
+  },
+  "multiValueHeaders": {
+    "Content-Type": [
+      "text/plain"
+    ],
+    "User-Agent": [
+      "PostmanRuntime/7.25.0"
+    ],
+    "Accept": [
+      "*/*"
+    ],
+    "Postman-Token": [
+      "ed68b3a8-d0e9-4be8-9179-6b2ed6cdcfd0"
+    ],
+    "Host": [
+      "localhost:3000"
+    ],
+    "Accept-Encoding": [
+      "gzip, deflate, br"
+    ],
+    "Connection": [
+      "keep-alive"
+    ],
+    "Content-Length": [
+      "418"
+    ],
+    "X-Forwarded-Proto": [
+      "http"
+    ],
+    "X-Forwarded-Port": [
+      "3000"
+    ]
+  },
+  "pathParameters": null,
+  "stageVariables": null,
+  "path": "/service-desk/create",
+  "isBase64Encoded": false
+}
