@@ -1,8 +1,0 @@
-{
-  "app": "node cdk.js",
-  "versionReporting": false,
-  "context": {
-    "@aws-cdk/core:enableStackNameDuplicates": "true",
-    "aws-cdk:enableDiffNoFail": "true"
-  }
-}
