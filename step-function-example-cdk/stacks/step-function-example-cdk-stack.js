@@ -1,6 +1,8 @@
 const cdk = require('@aws-cdk/core');
 const iam = require('@aws-cdk/aws-iam');
 const lambda = require('@aws-cdk/aws-lambda');
+const sfn = require('@aws-cdk/aws-stepfunctions');
+const tasks = require('@aws-cdk/aws-stepfunctions-tasks');
 
 class StepFunctionExampleCdkStack extends cdk.Stack {
 
@@ -20,11 +22,7 @@ class StepFunctionExampleCdkStack extends cdk.Stack {
       role.addToPolicy(new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         resources: ['*'],
-        actions: [
-          'logs:CreateLogGroup',
-          'logs:CreateLogStream',
-          'logs:PutLogEvents'
-        ]
+        actions: [ 'logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents' ]
       }));
 
       return role;
@@ -50,6 +48,30 @@ class StepFunctionExampleCdkStack extends cdk.Stack {
       './lambdas/sum-lambda/');
     const square_lambda = create_lambda('SQUARE_LAMBDA',
       './lambdas/square-lambda/');
+
+    const STEP_1_NAME = `${PREFIX}_STEP_1_SUM`;
+    const step_1 = new tasks.LambdaInvoke(this, STEP_1_NAME, {
+      lambdaFunction: sum_lambda, inputPath: '$', outputPath: '$.Payload',
+    });
+  
+    const STEP_2_NAME = `${PREFIX}_STEP_1_SQUARE`;
+    const step_2 = new tasks.LambdaInvoke(this, STEP_2_NAME, {
+      lambdaFunction: square_lambda, inputPath: '$', outputPath: '$.Payload',
+    });
+  
+    const STEP_WAIT_NAME = `${PREFIX}_STEP_WAIT`;
+    const waitX = new sfn.Wait(this, STEP_WAIT_NAME, {
+      time: sfn.WaitTime.duration(cdk.Duration.seconds(3))
+    });
+  
+    const definition = step_1.next(waitX).next(step_2);
+  
+    const STATE_MACHINE_NAME = `${PREFIX}_STATE_MACHINE`;
+    new sfn.StateMachine(this, STATE_MACHINE_NAME, {
+      stateMachineName: STATE_MACHINE_NAME,
+      definition: definition,
+      timeout: cdk.Duration.minutes(5)
+    });
 
   }
 }
