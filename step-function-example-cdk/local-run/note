@@ -3,12 +3,11 @@ https://docs.aws.amazon.com/cdk/api/latest/docs/aws-stepfunctions-readme.html
 https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-lambda.html
 https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-lambda.html
 
-
-
 sam local start-lambda -p 3001
-aws lambda invoke --function-name "STEP_EXAMPLE_STEP_1_LAMBDA" --endpoint-url "http://127.0.0.1:3001" --no-verify-ssl out.txt
+aws lambda invoke --function-name "STEP_FUNCTION_EXAMPLE_SUM_LAMBDA" --endpoint-url "http://127.0.0.1:3001" --no-verify-ssl out.txt
 
 https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-config-options.html
+
 docker run -p 8083:8083 --network host --env-file aws-stepfunctions-local-credentials.txt amazon/aws-stepfunctions-local
 
 aws stepfunctions --endpoint http://localhost:8083 create-state-machine --definition "{\
