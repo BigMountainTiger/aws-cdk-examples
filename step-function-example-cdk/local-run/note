@@ -1,0 +1,48 @@
+https://docs.aws.amazon.com/cdk/api/latest/docs/aws-stepfunctions-readme.html
+
+https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-lambda.html
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-lambda.html
+
+
+
+sam local start-lambda -p 3001
+aws lambda invoke --function-name "STEP_EXAMPLE_STEP_1_LAMBDA" --endpoint-url "http://127.0.0.1:3001" --no-verify-ssl out.txt
+
+https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-config-options.html
+docker run -p 8083:8083 --network host --env-file aws-stepfunctions-local-credentials.txt amazon/aws-stepfunctions-local
+
+aws stepfunctions --endpoint http://localhost:8083 create-state-machine --definition "{\
+  \"StartAt\": \"STEP_TEST_MACHINE_STEP_1\",\
+  \"States\": {\
+    \"STEP_TEST_MACHINE_STEP_1\": {\
+      \"Next\": \"STEP_TEST_MACHINE_STEP_WAIT\",\
+      \"Type\": \"Task\",\
+      \"OutputPath\": \"$.Payload\",\
+      \"Resource\": \"arn:aws:states:::lambda:invoke\",\
+      \"Parameters\": {\
+        \"FunctionName\": \"arn:aws:lambda:us-east-1:005256505030:function:STEP_EXAMPLE_STEP_1_LAMBDA\",\
+        \"Payload.$\": \"$\"\
+      }\
+    },\
+    \"STEP_TEST_MACHINE_STEP_WAIT\": {\
+      \"Type\": \"Wait\",\
+      \"Seconds\": 30,\
+      \"Next\": \"STEP_TEST_MACHINE_STEP_2\"\
+    },\
+    \"STEP_TEST_MACHINE_STEP_2\": {\
+      \"End\": true,\
+      \"Type\": \"Task\",\
+      \"InputPath\": \"$\",\
+      \"OutputPath\": \"$.Payload\",\
+      \"Resource\": \"arn:aws:states:::lambda:invoke\",\
+      \"Parameters\": {\
+        \"FunctionName\": \"arn:aws:lambda:us-east-1:005256505030:function:STEP_PUT_S3_ENTRY_LAMBDA\",\
+        \"Payload.$\": \"$\"\
+      }\
+    }\
+  },\
+  \"TimeoutSeconds\": 300\
+}" --name "STEP_TEST_STATE_MACHINE" --role-arn "arn:aws:iam::005256505030:role/DummyRole"
+
+aws stepfunctions --endpoint http://localhost:8083 start-execution --state-machine arn:aws:states:us-east-1:123456789012:stateMachine:STEP_TEST_STATE_MACHINE --name test
+aws stepfunctions --endpoint http://localhost:8083 describe-execution --execution-arn arn:aws:states:us-east-1:123456789012:execution:STEP_TEST_STATE_MACHINE:test
