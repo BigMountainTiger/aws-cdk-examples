@@ -1,7 +1,9 @@
 def lambda_handler(event, context):
-      
+  
+  sum = event['sum']
+
   return {
     'Payload': {
-      'Time': 'Time'
+      'result': sum * sum
     } 
   }

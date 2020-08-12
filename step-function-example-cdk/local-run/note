@@ -4,11 +4,18 @@ https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-lambda.html
 https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-lambda.html
 
 sam local start-lambda -p 3001
-aws lambda invoke --function-name "STEP_FUNCTION_EXAMPLE_SUM_LAMBDA" --endpoint-url "http://127.0.0.1:3001" --no-verify-ssl out.txt
+aws lambda invoke --function-name STEP_FUNCTION_EXAMPLE_SUM_LAMBDA \
+	--cli-binary-format raw-in-base64-out \
+	--payload '{ "x": 3, "y": 2 }' \
+	--endpoint-url http://127.0.0.1:3001 \
+	--no-verify-ssl out.txt && cat out.txt && echo && rm out.txt
 
 https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-config-options.html
 
-docker run -p 8083:8083 --network host --env-file aws-stepfunctions-local-credentials.txt amazon/aws-stepfunctions-local
+docker run -p 8083:8083 -d \
+  --network host \
+  --env-file aws-stepfunctions-local-credentials.txt \
+  amazon/aws-stepfunctions-local
 
 aws stepfunctions --endpoint http://localhost:8083 create-state-machine --definition "{\
   \"StartAt\": \"STEP_FUNCTION_EXAMPLE_STEP_1_SUM\",\
@@ -32,7 +39,7 @@ aws stepfunctions --endpoint http://localhost:8083 create-state-machine --defini
     \"STEP_FUNCTION_EXAMPLE_STEP_1_SQUARE\": {\
       \"End\": true,\
       \"Type\": \"Task\",\
-      \"InputPath\": \"$\",\
+      \"InputPath\": \"$.Payload\",\
       \"OutputPath\": \"$.Payload\",\
       \"Resource\": \"arn:aws:states:::lambda:invoke\",\
       \"Parameters\": {\
@@ -44,5 +51,15 @@ aws stepfunctions --endpoint http://localhost:8083 create-state-machine --defini
   \"TimeoutSeconds\": 300\
 }" --name "STEP_TEST_STATE_MACHINE" --role-arn "arn:aws:iam::123456789012:role/DummyRole"
 
-aws stepfunctions --endpoint http://localhost:8083 start-execution --state-machine arn:aws:states:us-east-1:123456789012:stateMachine:STEP_TEST_STATE_MACHINE --name test
-aws stepfunctions --endpoint http://localhost:8083 describe-execution --execution-arn arn:aws:states:us-east-1:123456789012:execution:STEP_TEST_STATE_MACHINE:test
+aws stepfunctions --endpoint http://localhost:8083 start-execution \
+	--state-machine arn:aws:states:us-east-1:123456789012:stateMachine:STEP_TEST_STATE_MACHINE \
+	--input '{"x": 3, "y": 5}' \
+	--name test
+
+aws stepfunctions --endpoint http://localhost:8083 describe-execution \
+	--execution-arn arn:aws:states:us-east-1:123456789012:execution:STEP_TEST_STATE_MACHINE:test
+
+https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
+docker system prune -a
+docker container stop $(docker container ls -a -q)
+docker container rm -f $(docker container ls -a -q)

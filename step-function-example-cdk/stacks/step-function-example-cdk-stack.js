@@ -56,7 +56,7 @@ class StepFunctionExampleCdkStack extends cdk.Stack {
   
     const STEP_2_NAME = `${PREFIX}_STEP_1_SQUARE`;
     const step_2 = new tasks.LambdaInvoke(this, STEP_2_NAME, {
-      lambdaFunction: square_lambda, inputPath: '$', outputPath: '$.Payload',
+      lambdaFunction: square_lambda, inputPath: '$.Payload', outputPath: '$.Payload',
     });
   
     const STEP_WAIT_NAME = `${PREFIX}_STEP_WAIT`;
