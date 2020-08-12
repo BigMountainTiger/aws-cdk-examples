@@ -11,7 +11,7 @@ class StepFunctionExampleCdkStack extends cdk.Stack {
 
     const PREFIX = 'STEP_FUNCTION_EXAMPLE';
 
-    const create_role = () => {
+    const create_lambda_role = () => {
       const role_name = `${PREFIX}_LAMBDA_ROLE`;
       const role = new iam.Role(this, role_name, {
         roleName: role_name,
@@ -28,7 +28,7 @@ class StepFunctionExampleCdkStack extends cdk.Stack {
       return role;
     };
 
-    const role = create_role();
+    const lambda_role = create_lambda_role();
     const create_lambda = (name, path) => {
       const lambda_name = `${PREFIX}_${name}`;
 
@@ -37,7 +37,7 @@ class StepFunctionExampleCdkStack extends cdk.Stack {
         functionName: lambda_name,
         description: lambda_name,
         timeout: cdk.Duration.seconds(15),
-        role: role,
+        role: lambda_role,
         code: lambda.Code.asset(path),
         memorySize: 256,
         handler: 'app.lambda_handler'
