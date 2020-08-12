@@ -66,7 +66,7 @@ class StepFunctionExampleCdkStack extends cdk.Stack {
   
     const definition = step_1.next(waitX).next(step_2);
   
-    const STATE_MACHINE_NAME = `${PREFIX}_STATE_MACHINE`;
+    const STATE_MACHINE_NAME = `${PREFIX}_STEP_FUNCTION`;
     new sfn.StateMachine(this, STATE_MACHINE_NAME, {
       stateMachineName: STATE_MACHINE_NAME,
       definition: definition,

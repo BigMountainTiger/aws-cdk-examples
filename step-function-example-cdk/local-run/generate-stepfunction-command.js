@@ -1,29 +1,30 @@
 let sfn = `{
-  "StartAt": "STEP_TEST_MACHINE_STEP_1",
+  "StartAt": "STEP_FUNCTION_EXAMPLE_STEP_1_SUM",
   "States": {
-    "STEP_TEST_MACHINE_STEP_1": {
-      "Next": "STEP_TEST_MACHINE_STEP_WAIT",
+    "STEP_FUNCTION_EXAMPLE_STEP_1_SUM": {
+      "Next": "STEP_FUNCTION_EXAMPLE_STEP_WAIT",
       "Type": "Task",
+      "InputPath": "$",
       "OutputPath": "$.Payload",
       "Resource": "arn:aws:states:::lambda:invoke",
       "Parameters": {
-        "FunctionName": "arn:aws:lambda:us-east-1:005256505030:function:STEP_EXAMPLE_STEP_1_LAMBDA",
+        "FunctionName": "arn:aws:lambda:us-east-1:123456789012:function:STEP_FUNCTION_EXAMPLE_SUM_LAMBDA",
         "Payload.$": "$"
       }
     },
-    "STEP_TEST_MACHINE_STEP_WAIT": {
+    "STEP_FUNCTION_EXAMPLE_STEP_WAIT": {
       "Type": "Wait",
-      "Seconds": 30,
-      "Next": "STEP_TEST_MACHINE_STEP_2"
+      "Seconds": 3,
+      "Next": "STEP_FUNCTION_EXAMPLE_STEP_1_SQUARE"
     },
-    "STEP_TEST_MACHINE_STEP_2": {
+    "STEP_FUNCTION_EXAMPLE_STEP_1_SQUARE": {
       "End": true,
       "Type": "Task",
       "InputPath": "$",
       "OutputPath": "$.Payload",
       "Resource": "arn:aws:states:::lambda:invoke",
       "Parameters": {
-        "FunctionName": "arn:aws:lambda:us-east-1:005256505030:function:STEP_PUT_S3_ENTRY_LAMBDA",
+        "FunctionName": "arn:aws:lambda:us-east-1:123456789012:function:STEP_FUNCTION_EXAMPLE_SQUARE_LAMBDA",
         "Payload.$": "$"
       }
     }
@@ -35,7 +36,7 @@ sfn = sfn.replace(/"/g, '\\"');
 sfn = sfn.split('\n').join('\\\n');
 
 let command = `aws stepfunctions --endpoint http://localhost:8083 create-state-machine --definition "${sfn}"`;
-command = `${command} --name "STEP_TEST_STATE_MACHINE" --role-arn "arn:aws:iam::005256505030:role/DummyRole"`;
+command = `${command} --name "STEP_TEST_STATE_MACHINE" --role-arn "arn:aws:iam::123456789012:role/DummyRole"`;
 
 console.log(command);
 
