@@ -4,6 +4,7 @@ https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-lambda.html
 https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-lambda.html
 
 sam local start-lambda -p 3001
+
 aws lambda invoke --function-name STEP_FUNCTION_EXAMPLE_SUM_LAMBDA \
 	--cli-binary-format raw-in-base64-out \
 	--payload '{ "x": 3, "y": 2 }' \
