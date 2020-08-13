@@ -14,7 +14,7 @@ https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-config-option
 
 docker run -p 8083:8083 -d \
   --network host \
-  --env-file aws-stepfunctions-local-credentials.txt \
+  --env-file ./local-run/aws-stepfunctions-local-credentials.txt \
   amazon/aws-stepfunctions-local
 
 aws stepfunctions --endpoint http://localhost:8083 create-state-machine --definition "{\
