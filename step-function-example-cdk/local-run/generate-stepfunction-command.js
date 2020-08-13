@@ -20,7 +20,7 @@ let sfn = `{
     "STEP_FUNCTION_EXAMPLE_STEP_1_SQUARE": {
       "End": true,
       "Type": "Task",
-      "InputPath": "$",
+      "InputPath": "$.Payload",
       "OutputPath": "$.Payload",
       "Resource": "arn:aws:states:::lambda:invoke",
       "Parameters": {
