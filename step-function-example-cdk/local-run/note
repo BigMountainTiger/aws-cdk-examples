@@ -8,7 +8,9 @@ aws lambda invoke --function-name STEP_FUNCTION_EXAMPLE_SUM_LAMBDA \
 	--cli-binary-format raw-in-base64-out \
 	--payload '{ "x": 3, "y": 2 }' \
 	--endpoint-url http://127.0.0.1:3001 \
-	--no-verify-ssl out.txt && cat out.txt && echo && rm out.txt
+	--no-verify-ssl sam-local-response-out.txt && \
+    cat sam-local-response-out.txt && echo && \
+    rm sam-local-response-out.txt
 
 https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-config-options.html
 
