@@ -22,7 +22,11 @@ class StepFunctionExampleCdkStack extends cdk.Stack {
       role.addToPolicy(new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         resources: ['*'],
-        actions: [ 'logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents' ]
+        actions: [
+          'logs:CreateLogGroup',
+          'logs:CreateLogStream',
+          'logs:PutLogEvents'
+        ]
       }));
 
       return role;
@@ -51,12 +55,14 @@ class StepFunctionExampleCdkStack extends cdk.Stack {
 
     const STEP_1_NAME = `${PREFIX}_STEP_1_SUM`;
     const step_1 = new tasks.LambdaInvoke(this, STEP_1_NAME, {
-      lambdaFunction: sum_lambda, inputPath: '$', outputPath: '$.Payload',
+      lambdaFunction: sum_lambda, inputPath: '$',
+      outputPath: '$.Payload'
     });
   
     const STEP_2_NAME = `${PREFIX}_STEP_1_SQUARE`;
     const step_2 = new tasks.LambdaInvoke(this, STEP_2_NAME, {
-      lambdaFunction: square_lambda, inputPath: '$.Payload', outputPath: '$.Payload',
+      lambdaFunction: square_lambda, inputPath: '$.Payload',
+      outputPath: '$.Payload'
     });
   
     const STEP_WAIT_NAME = `${PREFIX}_STEP_WAIT`;
