@@ -15,6 +15,7 @@ aws lambda invoke --function-name STEP_FUNCTION_EXAMPLE_SUM_LAMBDA \
 https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-config-options.html
 
 docker run -p 8083:8083 -d \
+  --rm \
   --network host \
   --env-file ./local-run/aws-stepfunctions-local-credentials.txt \
   amazon/aws-stepfunctions-local
