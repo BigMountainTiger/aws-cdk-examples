@@ -4,11 +4,11 @@
   "author": "Song Li",
   "private": true,
   "dependencies": {
-    "@aws-cdk/aws-ec2": "^1.45.0",
-    "@aws-cdk/aws-ecs": "^1.45.0",
-    "@aws-cdk/aws-ecs-patterns": "^1.45.0",
-    "@aws-cdk/aws-stepfunctions": "^1.45.0",
-    "@aws-cdk/aws-stepfunctions-tasks": "^1.45.0",
-    "@aws-cdk/core": "1.45.0"
+    "@aws-cdk/aws-ec2": "^1.59.0",
+    "@aws-cdk/aws-ecs": "^1.59.0",
+    "@aws-cdk/aws-ecs-patterns": "^1.59.0",
+    "@aws-cdk/aws-stepfunctions": "^1.59.0",
+    "@aws-cdk/aws-stepfunctions-tasks": "^1.59.0",
+    "@aws-cdk/core": "1.59.0"
   }
 }

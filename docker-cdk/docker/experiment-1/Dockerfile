@@ -1,3 +1,5 @@
+# https://hackernoon.com/incorporate-aws-fargate-into-step-functions-8003d688d027
+
 FROM node:14.4.0-alpine
 
 WORKDIR /app/node
