@@ -1,4 +1,5 @@
 # https://hackernoon.com/incorporate-aws-fargate-into-step-functions-8003d688d027
+# https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/ECS.html
 
 FROM node:14.4.0-alpine
 
