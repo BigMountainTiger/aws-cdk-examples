@@ -26,12 +26,12 @@ class FargateTaskCdkStack extends cdk.Stack {
         image: ecs.ContainerImage.fromAsset('./docker/experiment-1')
     });
 
-    const SERVICE_NAME = `${id}-SERVICE`;
-    new ecs.FargateService(this, SERVICE_NAME, {
-      serviceName: SERVICE_NAME,
-      cluster,
-      taskDefinition: fargateTaskDefinition
-    });
+    // const SERVICE_NAME = `${id}-SERVICE`;
+    // new ecs.FargateService(this, SERVICE_NAME, {
+    //   serviceName: SERVICE_NAME,
+    //   cluster,
+    //   taskDefinition: fargateTaskDefinition
+    // });
 
   }
 }
