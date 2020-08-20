@@ -1,0 +1,17 @@
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_AWSCLI_Fargate.html
+
+aws ecs list-services
+
+aws ecs list-services \
+  --cluster FARGATE-TASK-CDK-STACK-FARGATETASKCDKSTACKCLUSTER7A59C073-nddg8LKeVir0
+
+aws ecs describe-services \
+  --cluster FARGATE-TASK-CDK-STACK-FARGATETASKCDKSTACKCLUSTER7A59C073-nddg8LKeVir0 \
+  --services FARGATE-TASK-CDK-STACK-SERVICE
+
+
+aws ecs run-task \
+  --task-definitio FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB \
+  --launch-type FARGATE \
+  --cluster FARGATE-TASK-CDK-STACK-FARGATETASKCDKSTACKCLUSTER7A59C073-nddg8LKeVir0 \
+  --network-configuration "awsvpcConfiguration={subnets=[subnet-067a14606616fef19],securityGroups=[sg-01509d014e6ad2975]}"
