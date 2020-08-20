@@ -18,7 +18,8 @@ class FargateTaskCdkStack extends cdk.Stack {
     const FARGATE_NAME = `${id}-FARGATE`;
     const fargateTaskDefinition = new ecs.FargateTaskDefinition(this,
       FARGATE_NAME, {
-        memoryMiB: "512", cpu: "256"
+        memoryMiB: "512",
+        cpu: "256"
     });
 
     const CONTAINER_NAME = `${id}-CONTAINER`;
