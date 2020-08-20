@@ -1,5 +1,5 @@
 const argv = process.argv;
-const delay = 10;
+const delay = 1;
 
 (async () => {
 
