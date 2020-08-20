@@ -3,15 +3,13 @@ const delay = 10;
 
 (async () => {
 
-  const p = new Promise((rs, rj) => {
+  const r = await new Promise((rs, rj) => {
     setTimeout(() => {
       rs(argv);
     }, delay * 1000);
   });
 
-  const r = await p;
-
-  console.log(r);
+  console.log(r[2]);
   console.log('End.')
 })();
 
