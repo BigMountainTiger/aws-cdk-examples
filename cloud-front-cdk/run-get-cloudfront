@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script use tag to find the distribution id, and then issue an invalidate to it
+
 cf_list_raw=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=Name,Values=Second-CFront --resource-type-filters 'cloudfront')
 cf_list=$(echo $cf_list_raw | jq '.ResourceTagMappingList')
 cf_arn=$(echo $cf_list | jq 'if length == 1 then .[0].ResourceARN else empty end')
