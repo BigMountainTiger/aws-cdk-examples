@@ -5,7 +5,7 @@ FROM node:14.4.0-alpine
 
 WORKDIR /app/node
 
-COPY app.js .
+COPY / .
 
 ENTRYPOINT [ "node",  "app.js" ]
 CMD []

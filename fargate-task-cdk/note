@@ -13,10 +13,10 @@ aws ecs describe-services \
 aws ecs run-task \
   --task-definition FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB \
   --launch-type FARGATE \
-  --cluster FARGATE-TASK-CDK-STACK-FARGATETASKCDKSTACKCLUSTER7A59C073-nddg8LKeVir0 \
-  --network-configuration "awsvpcConfiguration={subnets=[subnet-061cd059],securityGroups=[sg-b81e829a]}"
+  --cluster FARGATE-TASK-CDK-STACK-CLUSTER \
+  --network-configuration "awsvpcConfiguration={subnets=[subnet-00ba7f70d09a55a20],securityGroups=[sg-053039d8d51e34ca1]}"
 
 
 aws ecs describe-tasks \
-  --cluster FARGATE-TASK-CDK-STACK-FARGATETASKCDKSTACKCLUSTER7A59C073-nddg8LKeVir0 \
-  --tasks 0f8c1736-0c8a-4bfd-8ed8-01185e4b8a7f > status.txt
+  --cluster FARGATE-TASK-CDK-STACK-CLUSTER \
+  --tasks e471892e-08e2-435c-82b7-4486e1891f7f > status.txt

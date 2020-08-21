@@ -3,6 +3,7 @@
 const cdk = require('@aws-cdk/core');
 const ec2 = require("@aws-cdk/aws-ec2");
 const ecs = require("@aws-cdk/aws-ecs");
+const iam = require('@aws-cdk/aws-iam');
 
 class FargateTaskCdkStack extends cdk.Stack {
 
@@ -15,11 +16,26 @@ class FargateTaskCdkStack extends cdk.Stack {
     const CLUSTER_NAME = `${id}-CLUSTER`;
     const cluster = new ecs.Cluster(this, CLUSTER_NAME, { vpc, clusterName: CLUSTER_NAME });
     
+
+    const TASK_ROLE_NAME = `${id}-TASK-ROLE`;
+    const task_role = new iam.Role(this, TASK_ROLE_NAME, {
+      roleName: TASK_ROLE_NAME,
+      description: TASK_ROLE_NAME,
+      assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
+    });
+
+    task_role.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      resources: ['*'],
+      actions: ['s3:GetObject', 's3:PutObject']
+    }));
+
     const FARGATE_NAME = `${id}-FARGATE`;
     const fargateTaskDefinition = new ecs.FargateTaskDefinition(this,
       FARGATE_NAME, {
         memoryMiB: "512",
-        cpu: "256"
+        cpu: "256",
+        taskRole: task_role
     });
 
     const CONTAINER_NAME = `${id}-CONTAINER`;

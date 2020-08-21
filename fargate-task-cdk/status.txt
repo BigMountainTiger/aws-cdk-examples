@@ -1,0 +1,86 @@
+{
+    "tasks": [
+        {
+            "attachments": [
+                {
+                    "id": "71e549e0-25fc-4d55-bcd1-573e001e2bbf",
+                    "type": "ElasticNetworkInterface",
+                    "status": "DELETED",
+                    "details": [
+                        {
+                            "name": "subnetId",
+                            "value": "subnet-00ba7f70d09a55a20"
+                        },
+                        {
+                            "name": "networkInterfaceId",
+                            "value": "eni-02dd4efefffe87f05"
+                        },
+                        {
+                            "name": "macAddress",
+                            "value": "02:b7:c8:ab:db:43"
+                        },
+                        {
+                            "name": "privateIPv4Address",
+                            "value": "10.0.222.183"
+                        }
+                    ]
+                }
+            ],
+            "availabilityZone": "us-east-1b",
+            "clusterArn": "arn:aws:ecs:us-east-1:005256505030:cluster/FARGATE-TASK-CDK-STACK-CLUSTER",
+            "connectivity": "CONNECTED",
+            "connectivityAt": "2020-08-21T10:03:54-04:00",
+            "containers": [
+                {
+                    "containerArn": "arn:aws:ecs:us-east-1:005256505030:container/d398a663-3492-4271-8b0e-8a37d2995659",
+                    "taskArn": "arn:aws:ecs:us-east-1:005256505030:task/e471892e-08e2-435c-82b7-4486e1891f7f",
+                    "name": "FARGATE-TASK-CDK-STACK-CONTAINER",
+                    "image": "005256505030.dkr.ecr.us-east-1.amazonaws.com/aws-cdk/assets:5751275d7470bff83d69ef27b7debf4a7ffce989b3705e99a56a367ec096fb2a",
+                    "imageDigest": "sha256:4011e794a644fa27472573649675038081ba2a0b7e8f6f1faf2077e12352f4a3",
+                    "runtimeId": "404f82fc6eb01a9d14d5e21a7791986cc76782756e184ab5f7af431d9ebb781c",
+                    "lastStatus": "STOPPED",
+                    "exitCode": 0,
+                    "networkBindings": [],
+                    "networkInterfaces": [
+                        {
+                            "attachmentId": "71e549e0-25fc-4d55-bcd1-573e001e2bbf",
+                            "privateIpv4Address": "10.0.222.183"
+                        }
+                    ],
+                    "healthStatus": "UNKNOWN",
+                    "cpu": "0"
+                }
+            ],
+            "cpu": "256",
+            "createdAt": "2020-08-21T10:03:48.688000-04:00",
+            "desiredStatus": "STOPPED",
+            "executionStoppedAt": "2020-08-21T10:04:17-04:00",
+            "group": "family:FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB",
+            "healthStatus": "UNKNOWN",
+            "lastStatus": "STOPPED",
+            "launchType": "FARGATE",
+            "memory": "512",
+            "overrides": {
+                "containerOverrides": [
+                    {
+                        "name": "FARGATE-TASK-CDK-STACK-CONTAINER"
+                    }
+                ],
+                "inferenceAcceleratorOverrides": []
+            },
+            "platformVersion": "1.3.0",
+            "pullStartedAt": "2020-08-21T10:04:01.286000-04:00",
+            "pullStoppedAt": "2020-08-21T10:04:05.286000-04:00",
+            "startedAt": "2020-08-21T10:04:07.286000-04:00",
+            "stopCode": "EssentialContainerExited",
+            "stoppedAt": "2020-08-21T10:04:41.199000-04:00",
+            "stoppedReason": "Essential container in task exited",
+            "stoppingAt": "2020-08-21T10:04:27.641000-04:00",
+            "tags": [],
+            "taskArn": "arn:aws:ecs:us-east-1:005256505030:task/e471892e-08e2-435c-82b7-4486e1891f7f",
+            "taskDefinitionArn": "arn:aws:ecs:us-east-1:005256505030:task-definition/FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB:2",
+            "version": 6
+        }
+    ],
+    "failures": []
+}

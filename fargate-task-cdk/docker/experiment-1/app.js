@@ -1,3 +1,5 @@
+const AWS = require('aws-sdk');
+
 const argv = process.argv;
 const delay = 10;
 
