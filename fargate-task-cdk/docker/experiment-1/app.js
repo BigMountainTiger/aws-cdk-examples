@@ -5,6 +5,7 @@ const delay = 1;
 
 const bucket = 'logs.huge.head.li';
 
+// This is not needed when running on AWS
 // AWS.config.update(
 //   {
 //       accessKeyId: '',
