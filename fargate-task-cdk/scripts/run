@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$1" == "run" ]
+then
+  aws ecs run-task \
+  --task-definition FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB \
+  --launch-type FARGATE \
+  --cluster FARGATE-TASK-CDK-STACK-CLUSTER \
+  --network-configuration "awsvpcConfiguration={subnets=[subnet-00ba7f70d09a55a20],securityGroups=[sg-053039d8d51e34ca1]}"
+fi
