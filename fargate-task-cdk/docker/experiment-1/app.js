@@ -14,6 +14,9 @@ const bucket = 'logs.huge.head.li';
 //   }
 // );
 
+const user = require("os").userInfo().username;
+console.log(user);
+
 const put_s3_object = async () => {
   const s3 = new AWS.S3();
   
