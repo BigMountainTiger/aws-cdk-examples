@@ -11,7 +11,7 @@ aws ecs describe-services \
 
 
 aws ecs run-task \
-  --task-definitio FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB \
+  --task-definition FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB \
   --launch-type FARGATE \
   --cluster FARGATE-TASK-CDK-STACK-FARGATETASKCDKSTACKCLUSTER7A59C073-nddg8LKeVir0 \
   --network-configuration "awsvpcConfiguration={subnets=[subnet-061cd059],securityGroups=[sg-b81e829a]}"

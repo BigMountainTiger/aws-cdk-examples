@@ -13,7 +13,7 @@ class FargateTaskCdkStack extends cdk.Stack {
     const vpc = new ec2.Vpc(this, VPC_NAME, { maxAZs: 2 });
 
     const CLUSTER_NAME = `${id}-CLUSTER`;
-    const cluster = new ecs.Cluster(this, CLUSTER_NAME, { vpc });
+    const cluster = new ecs.Cluster(this, CLUSTER_NAME, { vpc, clusterName: CLUSTER_NAME });
     
     const FARGATE_NAME = `${id}-FARGATE`;
     const fargateTaskDefinition = new ecs.FargateTaskDefinition(this,
