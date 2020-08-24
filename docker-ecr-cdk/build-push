@@ -1,0 +1,14 @@
+#!/bin/bash
+
+tag=$1
+repository=experiment
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 005256505030.dkr.ecr.us-east-1.amazonaws.com
+
+docker system prune -a -f
+docker build -t $repository:$tag -f ./docker/Dockerfile .
+docker tag $repository:$tag 005256505030.dkr.ecr.us-east-1.amazonaws.com/$repository:$tag
+
+docker push 005256505030.dkr.ecr.us-east-1.amazonaws.com/$repository:$tag
+
+docker system prune -a -f
