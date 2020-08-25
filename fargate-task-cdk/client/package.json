@@ -1,0 +1,10 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "Fargate test client",
+  "author": "Song Li",
+  "private": true,
+  "dependencies": {
+    "aws-sdk": "^2.739.0"
+  }
+}
