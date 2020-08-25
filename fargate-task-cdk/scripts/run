@@ -7,7 +7,7 @@ then
     --launch-type FARGATE \
     --cluster FARGATE-TASK-CDK-STACK-CLUSTER \
     --network-configuration \
-      "awsvpcConfiguration={subnets=[subnet-03a918bd8b069a863],securityGroups=[sg-0c678492913ace795],assignPublicIp=DISABLED}")
+      "awsvpcConfiguration={subnets=[subnet-00418f8693296c8c7],securityGroups=[sg-0e49477fd400db151],assignPublicIp=DISABLED}")
 
   taskArn=$(echo $task_raw | jq '.tasks[0].taskArn')
 
