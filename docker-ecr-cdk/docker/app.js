@@ -17,7 +17,7 @@ const put_s3_object = async () => {
   const params = {
     Bucket: bucket,
     Key: TARGET_KEY,
-    Body: time
+    Body: `${time} OK`
   };
 
   const result = await s3.putObject(params).promise(); 
