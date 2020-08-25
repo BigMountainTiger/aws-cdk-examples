@@ -5,6 +5,7 @@ AWS.config.update({region:'us-east-1'});
   const ecs = new AWS.ECS();
 
   // Subnet needs a NAT, not IGW, unless publicIp is assigned
+  // So the fargate can pull the image from the repository
   const params = {
     taskDefinition: 'FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB',
     cluster: 'FARGATE-TASK-CDK-STACK-CLUSTER',
