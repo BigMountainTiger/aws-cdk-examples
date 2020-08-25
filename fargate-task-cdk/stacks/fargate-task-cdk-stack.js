@@ -3,6 +3,7 @@
 const cdk = require('@aws-cdk/core');
 const ec2 = require("@aws-cdk/aws-ec2");
 const ecs = require("@aws-cdk/aws-ecs");
+const ecr = require('@aws-cdk/aws-ecr');
 const iam = require('@aws-cdk/aws-iam');
 
 class FargateTaskCdkStack extends cdk.Stack {
@@ -38,9 +39,16 @@ class FargateTaskCdkStack extends cdk.Stack {
         taskRole: task_role
     });
 
+    const REPOSITORY_ID = `${id}-REPOSITORY`;
+    const REPOSITORY_NAME = `fargate-experiment`;
+    const repository = new ecr.Repository(this, REPOSITORY_ID, {
+      repositoryName: REPOSITORY_NAME,
+      removalPolicy: cdk.RemovalPolicy.DESTROY
+    })
+
     const CONTAINER_NAME = `${id}-CONTAINER`;
     fargateTaskDefinition.addContainer(CONTAINER_NAME, {
-        image: ecs.ContainerImage.fromAsset('./docker/experiment-1')
+        image: ecs.ContainerImage.fromEcrRepository(repository, '1.0.0')
     });
 
     // const SERVICE_NAME = `${id}-SERVICE`;
