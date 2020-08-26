@@ -8,11 +8,17 @@ class VpcExampleCdkStack extends cdk.Stack {
 
     const VPC_NAME = `${id}-VPC`;
     const vpc = new ec2.Vpc(this, VPC_NAME, {
-      maxAZs: 1,
-      natGateways: 1,
-      vpnGateway: false
+      maxAZs: 2,
+      subnetConfiguration: [
+        {
+          cidrMask: 24,
+          name: 'PUBLIC-SUBNET-CONFIG',
+          subnetType: ec2.SubnetType.PUBLIC
+        }
+      ]
     });
 
+    cdk.Tag.add(vpc, 'Name', 'My-VPC');
   }
 }
 
