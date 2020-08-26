@@ -51,12 +51,30 @@ class FargateTaskCdkStack extends cdk.Stack {
         image: ecs.ContainerImage.fromEcrRepository(repository, '1.0.0')
     });
 
-    // const SERVICE_NAME = `${id}-SERVICE`;
-    // new ecs.FargateService(this, SERVICE_NAME, {
-    //   serviceName: SERVICE_NAME,
-    //   cluster,
-    //   taskDefinition: fargateTaskDefinition
-    // });
+    const TASK_LAUNCHER_ROLE_NAME = `${id}-TASK-LAUNCHER-LAMBDA_ROLE`;
+    const task_launcher_role = new iam.Role(scope, TASK_LAUNCHER_ROLE_NAME, {
+      roleName: TASK_LAUNCHER_ROLE_NAME,
+      description: TASK_LAUNCHER_ROLE_NAME,
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+    });
+
+    task_launcher_role.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      resources: ['*'],
+      actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents']
+    }));
+
+    const TASK_LAUNCHER_LAMBDA_NAME = `${id}-TASK-LAUNCHER`;
+    new lambda.Function(scope, TASK_LAUNCHER_LAMBDA_NAME, {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      functionName: TASK_LAUNCHER_LAMBDA_NAME,
+      description: TASK_LAUNCHER_LAMBDA_NAME,
+      timeout: cdk.Duration.seconds(15),
+      role: task_launcher_role,
+      code: lambda.Code.asset('./lambdas/task-launcher'),
+      memorySize: 256,
+      handler: 'app.lambdaHandler'
+    });
 
   }
 }
