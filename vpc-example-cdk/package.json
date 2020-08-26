@@ -4,6 +4,7 @@
   "author": "Song Li",
   "private": true,
   "dependencies": {
+    "@aws-cdk/aws-ec2": "^1.60.0",
     "@aws-cdk/core": "1.60.0"
   }
 }
