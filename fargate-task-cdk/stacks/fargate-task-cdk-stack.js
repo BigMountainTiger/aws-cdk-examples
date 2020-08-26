@@ -5,6 +5,7 @@ const ec2 = require("@aws-cdk/aws-ec2");
 const ecs = require("@aws-cdk/aws-ecs");
 const ecr = require('@aws-cdk/aws-ecr');
 const iam = require('@aws-cdk/aws-iam');
+const lambda = require('@aws-cdk/aws-lambda');
 
 class FargateTaskCdkStack extends cdk.Stack {
 
@@ -52,7 +53,7 @@ class FargateTaskCdkStack extends cdk.Stack {
     });
 
     const TASK_LAUNCHER_ROLE_NAME = `${id}-TASK-LAUNCHER-LAMBDA_ROLE`;
-    const task_launcher_role = new iam.Role(scope, TASK_LAUNCHER_ROLE_NAME, {
+    const task_launcher_role = new iam.Role(this, TASK_LAUNCHER_ROLE_NAME, {
       roleName: TASK_LAUNCHER_ROLE_NAME,
       description: TASK_LAUNCHER_ROLE_NAME,
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -65,7 +66,7 @@ class FargateTaskCdkStack extends cdk.Stack {
     }));
 
     const TASK_LAUNCHER_LAMBDA_NAME = `${id}-TASK-LAUNCHER`;
-    new lambda.Function(scope, TASK_LAUNCHER_LAMBDA_NAME, {
+    new lambda.Function(this, TASK_LAUNCHER_LAMBDA_NAME, {
       runtime: lambda.Runtime.NODEJS_12_X,
       functionName: TASK_LAUNCHER_LAMBDA_NAME,
       description: TASK_LAUNCHER_LAMBDA_NAME,
