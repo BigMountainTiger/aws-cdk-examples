@@ -11,8 +11,8 @@ exports.lambdaHandler = async (event, context) => {
     launchType: 'FARGATE',
     networkConfiguration: {
         awsvpcConfiguration: {
-            subnets: ['subnet-0ca6298b7ebe790a8'],
-            securityGroups: ['sg-00bfe081c5db3a3ed'],
+            subnets: ['subnet-039c9e616b3058a7a'],
+            securityGroups: ['sg-0aa764a240b688476'],
             assignPublicIp: 'DISABLED'
         }
     }

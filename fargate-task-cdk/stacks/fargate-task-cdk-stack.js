@@ -65,6 +65,12 @@ class FargateTaskCdkStack extends cdk.Stack {
       actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents']
     }));
 
+    task_launcher_role.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      resources: ['*'],
+      actions: ['ecs:RunTask', 'iam:PassRole']
+    }));
+
     const TASK_LAUNCHER_LAMBDA_NAME = `${id}-TASK-LAUNCHER`;
     new lambda.Function(this, TASK_LAUNCHER_LAMBDA_NAME, {
       runtime: lambda.Runtime.NODEJS_12_X,

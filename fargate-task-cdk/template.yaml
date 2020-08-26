@@ -1,0 +1,479 @@
+Description: FARGATE-TASK-CDK-STACK
+Resources:
+  FARGATETASKCDKSTACKVPC1C993660:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/Resource
+  FARGATETASKCDKSTACKVPCPublicSubnet1Subnet5358A645:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/18
+      VpcId:
+        Ref: FARGATETASKCDKSTACKVPC1C993660
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet1
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet1/Subnet
+  FARGATETASKCDKSTACKVPCPublicSubnet1RouteTableC4D705EE:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: FARGATETASKCDKSTACKVPC1C993660
+      Tags:
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet1
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet1/RouteTable
+  FARGATETASKCDKSTACKVPCPublicSubnet1RouteTableAssociationADF54941:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: FARGATETASKCDKSTACKVPCPublicSubnet1RouteTableC4D705EE
+      SubnetId:
+        Ref: FARGATETASKCDKSTACKVPCPublicSubnet1Subnet5358A645
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet1/RouteTableAssociation
+  FARGATETASKCDKSTACKVPCPublicSubnet1DefaultRouteDE578EB1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: FARGATETASKCDKSTACKVPCPublicSubnet1RouteTableC4D705EE
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: FARGATETASKCDKSTACKVPCIGW3BA8207C
+    DependsOn:
+      - FARGATETASKCDKSTACKVPCVPCGW5103588D
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet1/DefaultRoute
+  FARGATETASKCDKSTACKVPCPublicSubnet1EIPD73019FB:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet1
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet1/EIP
+  FARGATETASKCDKSTACKVPCPublicSubnet1NATGateway2FBF3431:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - FARGATETASKCDKSTACKVPCPublicSubnet1EIPD73019FB
+          - AllocationId
+      SubnetId:
+        Ref: FARGATETASKCDKSTACKVPCPublicSubnet1Subnet5358A645
+      Tags:
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet1
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet1/NATGateway
+  FARGATETASKCDKSTACKVPCPublicSubnet2Subnet0CE03713:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.64.0/18
+      VpcId:
+        Ref: FARGATETASKCDKSTACKVPC1C993660
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet2
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet2/Subnet
+  FARGATETASKCDKSTACKVPCPublicSubnet2RouteTableF7F707F1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: FARGATETASKCDKSTACKVPC1C993660
+      Tags:
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet2
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet2/RouteTable
+  FARGATETASKCDKSTACKVPCPublicSubnet2RouteTableAssociation7F1150C0:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: FARGATETASKCDKSTACKVPCPublicSubnet2RouteTableF7F707F1
+      SubnetId:
+        Ref: FARGATETASKCDKSTACKVPCPublicSubnet2Subnet0CE03713
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet2/RouteTableAssociation
+  FARGATETASKCDKSTACKVPCPublicSubnet2DefaultRoute2A42E99D:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: FARGATETASKCDKSTACKVPCPublicSubnet2RouteTableF7F707F1
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: FARGATETASKCDKSTACKVPCIGW3BA8207C
+    DependsOn:
+      - FARGATETASKCDKSTACKVPCVPCGW5103588D
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet2/DefaultRoute
+  FARGATETASKCDKSTACKVPCPublicSubnet2EIP9471F0E1:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet2
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet2/EIP
+  FARGATETASKCDKSTACKVPCPublicSubnet2NATGatewayC2D0BF8A:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - FARGATETASKCDKSTACKVPCPublicSubnet2EIP9471F0E1
+          - AllocationId
+      SubnetId:
+        Ref: FARGATETASKCDKSTACKVPCPublicSubnet2Subnet0CE03713
+      Tags:
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet2
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PublicSubnet2/NATGateway
+  FARGATETASKCDKSTACKVPCPrivateSubnet1Subnet37C2AB87:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.128.0/18
+      VpcId:
+        Ref: FARGATETASKCDKSTACKVPC1C993660
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet1/Subnet
+  FARGATETASKCDKSTACKVPCPrivateSubnet1RouteTableF261C35D:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: FARGATETASKCDKSTACKVPC1C993660
+      Tags:
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet1/RouteTable
+  FARGATETASKCDKSTACKVPCPrivateSubnet1RouteTableAssociation58EE44BC:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: FARGATETASKCDKSTACKVPCPrivateSubnet1RouteTableF261C35D
+      SubnetId:
+        Ref: FARGATETASKCDKSTACKVPCPrivateSubnet1Subnet37C2AB87
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet1/RouteTableAssociation
+  FARGATETASKCDKSTACKVPCPrivateSubnet1DefaultRoute3B4E5286:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: FARGATETASKCDKSTACKVPCPrivateSubnet1RouteTableF261C35D
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: FARGATETASKCDKSTACKVPCPublicSubnet1NATGateway2FBF3431
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet1/DefaultRoute
+  FARGATETASKCDKSTACKVPCPrivateSubnet2Subnet5F29D5E7:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.192.0/18
+      VpcId:
+        Ref: FARGATETASKCDKSTACKVPC1C993660
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet2/Subnet
+  FARGATETASKCDKSTACKVPCPrivateSubnet2RouteTableD3965FA8:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: FARGATETASKCDKSTACKVPC1C993660
+      Tags:
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet2/RouteTable
+  FARGATETASKCDKSTACKVPCPrivateSubnet2RouteTableAssociationC952CE3D:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: FARGATETASKCDKSTACKVPCPrivateSubnet2RouteTableD3965FA8
+      SubnetId:
+        Ref: FARGATETASKCDKSTACKVPCPrivateSubnet2Subnet5F29D5E7
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet2/RouteTableAssociation
+  FARGATETASKCDKSTACKVPCPrivateSubnet2DefaultRoute9435435C:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: FARGATETASKCDKSTACKVPCPrivateSubnet2RouteTableD3965FA8
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: FARGATETASKCDKSTACKVPCPublicSubnet2NATGatewayC2D0BF8A
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/PrivateSubnet2/DefaultRoute
+  FARGATETASKCDKSTACKVPCIGW3BA8207C:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/IGW
+  FARGATETASKCDKSTACKVPCVPCGW5103588D:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: FARGATETASKCDKSTACKVPC1C993660
+      InternetGatewayId:
+        Ref: FARGATETASKCDKSTACKVPCIGW3BA8207C
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-VPC/VPCGW
+  FARGATETASKCDKSTACKCLUSTER7A59C073:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: FARGATE-TASK-CDK-STACK-CLUSTER
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-CLUSTER/Resource
+  FARGATETASKCDKSTACKTASKROLE3631DB1D:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+      Description: FARGATE-TASK-CDK-STACK-TASK-ROLE
+      RoleName: FARGATE-TASK-CDK-STACK-TASK-ROLE
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-TASK-ROLE/Resource
+  FARGATETASKCDKSTACKTASKROLEDefaultPolicy7EABDBF4:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: FARGATETASKCDKSTACKTASKROLEDefaultPolicy7EABDBF4
+      Roles:
+        - Ref: FARGATETASKCDKSTACKTASKROLE3631DB1D
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-TASK-ROLE/DefaultPolicy/Resource
+  FARGATETASKCDKSTACKFARGATE5081CC2A:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Essential: true
+          Image:
+            Fn::Join:
+              - ""
+              - - Fn::Select:
+                    - 4
+                    - Fn::Split:
+                        - ":"
+                        - Fn::GetAtt:
+                            - FARGATETASKCDKSTACKREPOSITORY4A860FEC
+                            - Arn
+                - .dkr.ecr.
+                - Fn::Select:
+                    - 3
+                    - Fn::Split:
+                        - ":"
+                        - Fn::GetAtt:
+                            - FARGATETASKCDKSTACKREPOSITORY4A860FEC
+                            - Arn
+                - "."
+                - Ref: AWS::URLSuffix
+                - /
+                - Ref: FARGATETASKCDKSTACKREPOSITORY4A860FEC
+                - :1.0.0
+          Name: FARGATE-TASK-CDK-STACK-CONTAINER
+      Cpu: "256"
+      ExecutionRoleArn:
+        Fn::GetAtt:
+          - FARGATETASKCDKSTACKFARGATEExecutionRoleF0976F0F
+          - Arn
+      Family: FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      TaskRoleArn:
+        Fn::GetAtt:
+          - FARGATETASKCDKSTACKTASKROLE3631DB1D
+          - Arn
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-FARGATE/Resource
+  FARGATETASKCDKSTACKFARGATEExecutionRoleF0976F0F:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-FARGATE/ExecutionRole/Resource
+  FARGATETASKCDKSTACKFARGATEExecutionRoleDefaultPolicyA0E13844:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - ecr:BatchCheckLayerAvailability
+              - ecr:GetDownloadUrlForLayer
+              - ecr:BatchGetImage
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - FARGATETASKCDKSTACKREPOSITORY4A860FEC
+                - Arn
+          - Action: ecr:GetAuthorizationToken
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: FARGATETASKCDKSTACKFARGATEExecutionRoleDefaultPolicyA0E13844
+      Roles:
+        - Ref: FARGATETASKCDKSTACKFARGATEExecutionRoleF0976F0F
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-FARGATE/ExecutionRole/DefaultPolicy/Resource
+  FARGATETASKCDKSTACKREPOSITORY4A860FEC:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: fargate-experiment
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-REPOSITORY/Resource
+  FARGATETASKCDKSTACKTASKLAUNCHERLAMBDAROLED63CDD18:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      Description: FARGATE-TASK-CDK-STACK-TASK-LAUNCHER-LAMBDA_ROLE
+      RoleName: FARGATE-TASK-CDK-STACK-TASK-LAUNCHER-LAMBDA_ROLE
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-TASK-LAUNCHER-LAMBDA_ROLE/Resource
+  FARGATETASKCDKSTACKTASKLAUNCHERLAMBDAROLEDefaultPolicy77BAB3F1:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: FARGATETASKCDKSTACKTASKLAUNCHERLAMBDAROLEDefaultPolicy77BAB3F1
+      Roles:
+        - Ref: FARGATETASKCDKSTACKTASKLAUNCHERLAMBDAROLED63CDD18
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-TASK-LAUNCHER-LAMBDA_ROLE/DefaultPolicy/Resource
+  FARGATETASKCDKSTACKTASKLAUNCHERFD3D8AF0:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParametersa205fc4e34d475b56ce26908f2742ad012dbff4aa9d5a40fa246fd846c67e92fS3Bucket6E897D81
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersa205fc4e34d475b56ce26908f2742ad012dbff4aa9d5a40fa246fd846c67e92fS3VersionKeyB1E37B94
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersa205fc4e34d475b56ce26908f2742ad012dbff4aa9d5a40fa246fd846c67e92fS3VersionKeyB1E37B94
+      Handler: app.lambdaHandler
+      Role:
+        Fn::GetAtt:
+          - FARGATETASKCDKSTACKTASKLAUNCHERLAMBDAROLED63CDD18
+          - Arn
+      Runtime: nodejs12.x
+      Description: FARGATE-TASK-CDK-STACK-TASK-LAUNCHER
+      FunctionName: FARGATE-TASK-CDK-STACK-TASK-LAUNCHER
+      MemorySize: 256
+      Timeout: 15
+    DependsOn:
+      - FARGATETASKCDKSTACKTASKLAUNCHERLAMBDAROLEDefaultPolicy77BAB3F1
+      - FARGATETASKCDKSTACKTASKLAUNCHERLAMBDAROLED63CDD18
+    Metadata:
+      aws:cdk:path: FARGATE-TASK-CDK-STACK/FARGATE-TASK-CDK-STACK-TASK-LAUNCHER/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/fargate-task-cdk/lambdas/task-launcher
+      aws:asset:property: Code
+Parameters:
+  AssetParametersa205fc4e34d475b56ce26908f2742ad012dbff4aa9d5a40fa246fd846c67e92fS3Bucket6E897D81:
+    Type: String
+    Description: S3 bucket for asset "a205fc4e34d475b56ce26908f2742ad012dbff4aa9d5a40fa246fd846c67e92f"
+  AssetParametersa205fc4e34d475b56ce26908f2742ad012dbff4aa9d5a40fa246fd846c67e92fS3VersionKeyB1E37B94:
+    Type: String
+    Description: S3 key for asset version "a205fc4e34d475b56ce26908f2742ad012dbff4aa9d5a40fa246fd846c67e92f"
+  AssetParametersa205fc4e34d475b56ce26908f2742ad012dbff4aa9d5a40fa246fd846c67e92fArtifactHashDA019B10:
+    Type: String
+    Description: Artifact hash for asset "a205fc4e34d475b56ce26908f2742ad012dbff4aa9d5a40fa246fd846c67e92f"
+
