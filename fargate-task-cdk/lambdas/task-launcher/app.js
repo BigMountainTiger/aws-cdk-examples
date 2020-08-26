@@ -20,5 +20,5 @@ exports.lambdaHandler = async (event, context) => {
 
   const result = await ecs.runTask(params).promise();
   
-  return {result};
+  return result;
 };
