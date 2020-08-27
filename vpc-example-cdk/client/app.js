@@ -10,6 +10,7 @@ const VPC_TAG = {
 
   const tag_api = new AWS.ResourceGroupsTaggingAPI();
   const vpcs = await tag_api.getResources({
+    //ResourceTypeFilters: ['internet-gateway'],
     TagFilters: [
       {
         Key: VPC_TAG.key,
