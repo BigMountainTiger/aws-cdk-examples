@@ -13,7 +13,19 @@ class FargateTaskCdkStack extends cdk.Stack {
     super(scope, id, props);
 
     const VPC_NAME = `${id}-VPC`;
-    const vpc = new ec2.Vpc(this, VPC_NAME, { maxAZs: 2 });
+    const vpc = new ec2.Vpc(this, VPC_NAME, {
+      maxAZs: 2,
+      subnetConfiguration: [
+        {
+          cidrMask: 24,
+          name: 'PUBLIC-SUBNET-CONFIG',
+          subnetType: ec2.SubnetType.PUBLIC
+        }
+      ]
+    });
+
+    // Tag the VPC
+    cdk.Tags.of(vpc).add('VPC-TAG', 'FARGATE-VPC');
 
     const CLUSTER_NAME = `${id}-CLUSTER`;
     const cluster = new ecs.Cluster(this, CLUSTER_NAME, { vpc, clusterName: CLUSTER_NAME });
@@ -68,7 +80,14 @@ class FargateTaskCdkStack extends cdk.Stack {
     task_launcher_role.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       resources: ['*'],
-      actions: ['ecs:RunTask', 'iam:PassRole']
+      actions: [
+        'ecs:RunTask',
+        'iam:PassRole',
+        'tag:GetResources',
+        'ec2:DescribeSecurityGroups',
+        'ec2:DescribeSubnets',
+        'ec2:DescribeVpcs'
+      ]
     }));
 
     const TASK_LAUNCHER_LAMBDA_NAME = `${id}-TASK-LAUNCHER`;
