@@ -2,8 +2,8 @@ const AWS = require('aws-sdk');
 AWS.config.update({region:'us-east-1'});
 
 const VPC_TAG = {
-  key: 'aws-cdk:subnet-name',
-  value: 'PUBLIC-SUBNET-CONFIG'
+  key: 'VPC-TAG',
+  value: 'FARGATE-VPC'
 };
 
 (async () => {

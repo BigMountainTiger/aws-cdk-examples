@@ -18,19 +18,8 @@ class VpcExampleCdkStack extends cdk.Stack {
       ],
     });
 
-    const SG_NAME = `${id}-SG`;
-    const sg = new ec2.SecurityGroup(this, SG_NAME, {
-      name: SG_NAME,
-      description: SG_NAME,
-      vpc: vpc,
-      allowAllOutbound: true,
-    })
-
-    vpc.publicSubnets.forEach(subnet => {
-      cdk.Tag.add(subnet, 'MY-TAG', 'This is a bullshit subnet');
-    });
-
-    cdk.Tag.add(sg, 'MY-TAG', 'This is a bullshit SG');
+    cdk.Tag.add(vpc, 'VPC-TAG', 'FARGATE-VPC');
+    
   }
 }
 
