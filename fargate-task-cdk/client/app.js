@@ -26,9 +26,9 @@ const getResourcesByTag = async (tag, type) => {
   return filterResourcesByType(resources.ResourceTagMappingList || []);
 };
 
-const getAwsvpcConfiguration = async (vpc_tag) => {
+const getAwsvpcConfiguration = async (tag) => {
 
-  const vpc = (await getResourcesByTag(vpc_tag, 'vpc'))[0];
+  const vpc = (await getResourcesByTag(tag, 'vpc'))[0];
 
   const ec2 = new AWS.EC2();
   const filters = [ { Name: 'vpc-id', Values: [vpc.id] } ];
