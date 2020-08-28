@@ -12,9 +12,9 @@ const getResourcesByTag = async (tag, type) => {
       // Split by '/' first and then by ':'
       const arn = resources[i].ResourceARN;
       const entries = arn.split('/');
-      const resource = { type: entries[0].split(':').pop(), id: entries[1], arn: arn };
-  
-      if (resource.type === type) { result.push(resource); }
+      const resource = { type: entries[0].split(':').pop(), id: entries[1], resource: resources[i] };
+
+      if (!type || (resource.type === type)) { result.push(resource); }
     }
   
     return result;
@@ -53,19 +53,21 @@ const getAwsvpcConfiguration = async (tag) => {
 (async () => {
 
   const tag = { key: 'VPC-TAG', value: 'FARGATE-VPC' };
-  const awsvpcConfiguration = await getAwsvpcConfiguration(tag);
 
-  const ecs = new AWS.ECS();
+  const awsvpcConfiguration = await getAwsvpcConfiguration(tag);
+  const cluster = (await getResourcesByTag(tag, 'cluster'))[0];
+  const taskDefinition = (await getResourcesByTag(tag, 'task-definition'))[0];
 
   // Subnet needs a NAT, not IGW, unless publicIp is assigned
   // So the fargate can pull the image from the repository
   const params = {
-    taskDefinition: 'FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB',
-    cluster: 'FARGATE-TASK-CDK-STACK-CLUSTER',
+    taskDefinition: taskDefinition.id,
+    cluster: cluster.id,
     launchType: 'FARGATE',
     networkConfiguration: { awsvpcConfiguration: awsvpcConfiguration }
   };
 
+  const ecs = new AWS.ECS();
   const result = await ecs.runTask(params).promise();
 
   console.log(result);
