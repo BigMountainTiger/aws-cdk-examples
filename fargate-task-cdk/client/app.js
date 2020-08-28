@@ -1,35 +1,32 @@
 const AWS = require('aws-sdk');
 AWS.config.update({region:'us-east-1'});
 
-const getAwsvpcConfiguration = async (vpc_tag) => {
+const getResourcesByTag = async (tag, type) => {
 
-  const getResourcesByTag = async (tag, type) => {
+  const filterResourcesByType = (resources) => {
+    const result = [];
+  
+    const length = resources.length;
+    for (let i = 0; i < length; i++) {
 
-    const filterResourcesByType = (resources) => {
-      const result = [];
-    
-      const length = resources.length;
-      for (let i = 0; i < length; i++) {
-        const arn = resources[i].ResourceARN;
-        const last_entry = arn.split(':').pop();
-        const items = last_entry.split('/');
-    
-        const resource = { type: items[0], id: items[1], arn: arn };
-    
-        if (resource.type === type) { result.push(resource); }
-      }
-    
-      return result;
-    };
+      // Split by '/' first and then by ':'
+      const arn = resources[i].ResourceARN;
+      const entries = arn.split('/');
+      const resource = { type: entries[0].split(':').pop(), id: entries[1], arn: arn };
   
-    const tag_api = new AWS.ResourceGroupsTaggingAPI();
-    const resources = await tag_api.getResources({
-      ResourceTypeFilters: [],
-      TagFilters: [ { Key: tag.key, Values: [tag.value] } ]
-    }).promise();
+      if (resource.type === type) { result.push(resource); }
+    }
   
-    return filterResourcesByType(resources.ResourceTagMappingList || []);
+    return result;
   };
+
+  const tag_api = new AWS.ResourceGroupsTaggingAPI();
+  const resources = await tag_api.getResources({ ResourceTypeFilters: [], TagFilters: [ { Key: tag.key, Values: [tag.value] } ]}).promise();
+
+  return filterResourcesByType(resources.ResourceTagMappingList || []);
+};
+
+const getAwsvpcConfiguration = async (vpc_tag) => {
 
   const vpc = (await getResourcesByTag(vpc_tag, 'vpc'))[0];
 
