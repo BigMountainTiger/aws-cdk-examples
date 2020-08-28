@@ -1,37 +1,34 @@
 const AWS = require('aws-sdk');
 AWS.config.update({region:'us-east-1'});
 
-const getAwsvpcConfiguration = async (tag) => {
+const getResourcesByTag = async (tag, type) => {
 
-  const getResourcesByTag = async (type) => {
+  const filterResourcesByType = (resources) => {
+    const result = [];
+  
+    const length = resources.length;
+    for (let i = 0; i < length; i++) {
 
-    const filterResourcesByType = (resources) => {
-      const result = [];
-    
-      const length = resources.length;
-      for (let i = 0; i < length; i++) {
-        const arn = resources[i].ResourceARN;
-        const last_entry = arn.split(':').pop();
-        const items = last_entry.split('/');
-    
-        const resource = { type: items[0], id: items[1], arn: arn };
-    
-        if (resource.type === type) { result.push(resource); }
-      }
-    
-      return result;
-    };
+      // Split by '/' first and then by ':'
+      const arn = resources[i].ResourceARN;
+      const entries = arn.split('/');
+      const resource = { type: entries[0].split(':').pop(), id: entries[1], resource: resources[i] };
+
+      if (!type || (resource.type === type)) { result.push(resource); }
+    }
   
-    const tag_api = new AWS.ResourceGroupsTaggingAPI();
-    const resources = await tag_api.getResources({
-      ResourceTypeFilters: [],
-      TagFilters: [ { Key: tag.key, Values: [tag.value] } ]
-    }).promise();
-  
-    return filterResourcesByType(resources.ResourceTagMappingList || []);
+    return result;
   };
 
-  const vpc = (await getResourcesByTag('vpc'))[0];
+  const tag_api = new AWS.ResourceGroupsTaggingAPI();
+  const resources = await tag_api.getResources({ ResourceTypeFilters: [], TagFilters: [ { Key: tag.key, Values: [tag.value] } ]}).promise();
+
+  return filterResourcesByType(resources.ResourceTagMappingList || []);
+};
+
+const getAwsvpcConfiguration = async (tag) => {
+
+  const vpc = (await getResourcesByTag(tag, 'vpc'))[0];
 
   const ec2 = new AWS.EC2();
   const filters = [ { Name: 'vpc-id', Values: [vpc.id] } ];
@@ -56,11 +53,16 @@ const getAwsvpcConfiguration = async (tag) => {
 exports.lambdaHandler = async (event, context) => {
 
   const tag = { key: 'VPC-TAG', value: 'FARGATE-VPC' };
-  const awsvpcConfiguration = await getAwsvpcConfiguration(tag);
 
+  const awsvpcConfiguration = await getAwsvpcConfiguration(tag);
+  const cluster = (await getResourcesByTag(tag, 'cluster'))[0];
+  const taskDefinition = (await getResourcesByTag(tag, 'task-definition'))[0];
+
+  // Subnet needs a NAT, not IGW, unless publicIp is assigned
+  // So the fargate can pull the image from the repository
   const params = {
-    taskDefinition: 'FARGATETASKCDKSTACKFARGATETASKCDKSTACKFARGATE5599BAAB',
-    cluster: 'FARGATE-TASK-CDK-STACK-CLUSTER',
+    taskDefinition: taskDefinition.id,
+    cluster: cluster.id,
     launchType: 'FARGATE',
     networkConfiguration: { awsvpcConfiguration: awsvpcConfiguration }
   };
