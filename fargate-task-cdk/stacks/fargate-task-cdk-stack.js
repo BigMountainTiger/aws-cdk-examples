@@ -12,6 +12,11 @@ class FargateTaskCdkStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
+    const tagResource = (resource) => {
+      const tag = { key: 'VPC-TAG', value: 'FARGATE-VPC' };
+      cdk.Tags.of(resource).add(tag.key, tag.value);
+    };
+
     const VPC_NAME = `${id}-VPC`;
     const vpc = new ec2.Vpc(this, VPC_NAME, {
       maxAZs: 2,
@@ -25,11 +30,11 @@ class FargateTaskCdkStack extends cdk.Stack {
     });
 
     // Tag the VPC
-    cdk.Tags.of(vpc).add('VPC-TAG', 'FARGATE-VPC');
+    tagResource(vpc);
 
     const CLUSTER_NAME = `${id}-CLUSTER`;
     const cluster = new ecs.Cluster(this, CLUSTER_NAME, { vpc, clusterName: CLUSTER_NAME });
-    
+    tagResource(cluster);    
 
     const TASK_ROLE_NAME = `${id}-TASK-ROLE`;
     const task_role = new iam.Role(this, TASK_ROLE_NAME, {
@@ -51,6 +56,7 @@ class FargateTaskCdkStack extends cdk.Stack {
         cpu: "256",
         taskRole: task_role
     });
+    tagResource(fargateTaskDefinition);
 
     const REPOSITORY_ID = `${id}-REPOSITORY`;
     const REPOSITORY_NAME = `fargate-experiment`;
