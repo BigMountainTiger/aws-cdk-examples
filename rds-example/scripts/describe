@@ -1,0 +1,7 @@
+#!/bin/bash
+
+R=$(aws rds describe-db-instances \
+  --db-instance-identifier rds-mariadb \
+  | grep LatestRestorableTime)
+
+echo -e $R
