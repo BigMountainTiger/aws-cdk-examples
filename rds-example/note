@@ -5,3 +5,9 @@ https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIT.html
 https://docs.aws.amazon.com/cli/latest/reference/rds/describe-db-instances.html
 
 https://docs.amazonaws.cn/en_us/AmazonRDS/latest/UserGuide/USER_DeleteInstance.html
+
+
+aws rds delete-db-instance \
+    --db-instance-identifier rds-mariadb \
+    --skip-final-snapshot \
+    --delete-automated-backups
