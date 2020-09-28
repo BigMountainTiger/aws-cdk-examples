@@ -4,7 +4,5 @@ exports.handler = async (event, context) => {
   //console.log(event);
 
   await send_msg();
-
-  console.log('Before return');
   return { statusCode: 200, body: 'OK' };
 };

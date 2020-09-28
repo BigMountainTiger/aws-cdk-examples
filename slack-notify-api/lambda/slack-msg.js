@@ -42,11 +42,11 @@ module.exports = async () => {
 
   const msg = {
     channel: 'U0101CPEW5U',
-    text: 'This is the message'
+    text: 'Callback received'
   };
 
   try {
-    
+
     await send_msg(msg);
     console.log('MSG sent\n' + JSON.stringify(msg));
 
