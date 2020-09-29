@@ -1,1 +1,2 @@
+find . -name "node_modules" -type d -prune -print | xargs du -chs
 find . -name 'node_modules' -type d -prune -print -exec echo '{}' \;
