@@ -1,5 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
+const { WebClient } = require('@slack/web-api');
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const SLACK_CHAT_POSTMESSAGE_URL = process.env.SLACK_CHAT_POSTMESSAGE_URL;
@@ -38,15 +39,28 @@ const send_msg = async (msg) => {
 
 };
 
+const send_msg_slack_web_client = async (msg) => {
+  const client = new WebClient(BOT_TOKEN);
+  await client.chat.postMessage(msg);
+};
+
 (async () => {
 
-  try {
-    await send_msg({
-      channel: 'U0101CPEW5U',
-      text: 'This is the message'
-    });
+  const msgText = `*You can no longer submit support request here*\n\n`
+      + `*To submit a request:*\n`
+      + `Type in "*/techsupport*" (no quote) in slack and hit enter, a form will be displayed.\n`
+      + `You can submit the request through the form.`;
 
+  const msg = {
+    channel: 'U0101CPEW5U',
+    text: msgText
+  };
+
+  try {
+    //await send_msg(msg);
+    await send_msg_slack_web_client(msg);
   } catch(e) {
+    console.log(e);
     console.error('Unable to send the message to slack\n' + JSON.stringify(msg));
   }
 
