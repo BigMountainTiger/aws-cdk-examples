@@ -1,8 +1,9 @@
 const cdk = require('@aws-cdk/core');
 const iam = require('@aws-cdk/aws-iam');
 const lambda = require('@aws-cdk/aws-lambda');
+const tasks = require('@aws-cdk/aws-stepfunctions-tasks');
 
-const get_step_1_lambda = (scope) => {
+const create_step_1_lambda_task = (scope) => {
 
   const role_name = 'STEP_EXAMPLE_STEP_1_LAMBDA_ROLE';
   const role = new iam.Role(scope, role_name, {
@@ -18,7 +19,7 @@ const get_step_1_lambda = (scope) => {
   }));
 
   const lambda_name = 'STEP_EXAMPLE_STEP_1_LAMBDA';
-  return new lambda.Function(scope, lambda_name, {
+  const step_1_lambda = new lambda.Function(scope, lambda_name, {
     runtime: lambda.Runtime.NODEJS_12_X,
     functionName: lambda_name,
     description: lambda_name,
@@ -28,6 +29,13 @@ const get_step_1_lambda = (scope) => {
     memorySize: 256,
     handler: 'app.lambdaHandler'
   });
+
+  const STEP_1_NAME = 'STEP_TEST_MACHINE_STEP_1';
+  return new tasks.LambdaInvoke(scope, STEP_1_NAME, {
+    lambdaFunction: step_1_lambda,
+    inputPath: '$',
+    outputPath: '$.Payload',
+  });
 };
 
-module.exports = get_step_1_lambda;
+module.exports = create_step_1_lambda_task;
