@@ -1,0 +1,22 @@
+#!/bin/bash
+
+cd docker/experiment-1
+
+if [ -n "$1" ]; then
+  tag=$1
+else
+  tag=1.0.0
+fi
+
+repository=fargate-experiment
+arn=005256505030.dkr.ecr.us-east-1.amazonaws.com
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $arn
+
+docker system prune -a -f
+docker build -t $repository:$tag -f Dockerfile .
+docker tag $repository:$tag $arn/$repository:$tag
+
+docker push $arn/$repository:$tag
+
+docker system prune -a -f

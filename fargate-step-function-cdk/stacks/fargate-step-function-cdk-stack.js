@@ -4,7 +4,7 @@ class FargateStepFunctionCdkStack extends cdk.Stack {
 
   constructor(scope, id, props) {
     super(scope, id, props);
-
+    
   }
 }
 
