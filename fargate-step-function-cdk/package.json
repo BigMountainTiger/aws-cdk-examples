@@ -5,6 +5,10 @@
   "private": true,
   "dependencies": {
     "@aws-cdk/aws-ecr": "^1.64.1",
+    "@aws-cdk/aws-iam": "^1.64.1",
+    "@aws-cdk/aws-lambda": "^1.64.1",
+    "@aws-cdk/aws-stepfunctions": "^1.64.1",
+    "@aws-cdk/aws-stepfunctions-tasks": "^1.64.1",
     "@aws-cdk/core": "1.64.1"
   }
 }
