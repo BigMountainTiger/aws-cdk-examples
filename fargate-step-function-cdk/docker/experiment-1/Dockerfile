@@ -16,6 +16,7 @@ CMD []
 
 # docker build -t experiment-1:0.0.1 .
 # docker run -v $HOME/.aws:/root/.aws:ro --rm experiment-1:0.0.1
+# docker run -v $HOME/.aws:/root/.aws:ro -e EXEID='This is the variable' --rm experiment-1:0.0.1
 # docker run -v $HOME/.aws:/root/.aws:ro --rm experiment-1:0.0.1 "SONG is stupid"
 
 # https://docs.aws.amazon.com/step-functions/latest/dg/sample-project-container-task-notification.html

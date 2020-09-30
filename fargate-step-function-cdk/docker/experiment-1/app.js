@@ -36,6 +36,10 @@ const put_s3_object = async () => {
 
 (async () => {
 
+  const execution_id = process.env.EXEID;
+
+  console.log(execution_id);
+
   const r = await new Promise((rs, rj) => {
     setTimeout(async () => {
 
