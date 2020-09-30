@@ -9,7 +9,7 @@ const tasks = require('@aws-cdk/aws-stepfunctions-tasks');
 const create_step_3_fargate_task = (scope) => {
 
   const cluster = create_cluster(scope);
-  const fargate_definition = create_fargate_task_definition(scope);
+  const { containerDefinition, fargateTaskDefinition } = create_fargate_task_definition(scope);
 
   const STEP_NAME = 'STEP_TEST_FARGATE_TASK';
 
@@ -18,13 +18,21 @@ const create_step_3_fargate_task = (scope) => {
     assignPublicIp: true,
     integrationPattern: sfn.IntegrationPattern.RUN_JOB,
     cluster: cluster,
-    taskDefinition: fargate_definition
+    taskDefinition: fargateTaskDefinition,
+    containerOverrides: [
+      {
+        containerDefinition: containerDefinition,
+        environment: [
+          {
+            name: 'EXEID',
+            value: sfn.JsonPath.stringAt("$.Payload.EXEID")
+          }
+        ]
+      }
+    ]
   });
 
   return task;
-  // return new sfn.Wait(scope, STEP_NAME, {
-  //   time: sfn.WaitTime.duration(cdk.Duration.seconds(3))
-  // });
 };
 
 const create_cluster = (scope) => {
@@ -63,7 +71,7 @@ const create_fargate_task_definition = (scope) => {
   })
 
   const CONTAINER_NAME = `STEP_TEST_FARGATE-CONTAINER`;
-  fargateTaskDefinition.addContainer(CONTAINER_NAME, {
+  const containerDefinition = fargateTaskDefinition.addContainer(CONTAINER_NAME, {
       image: ecs.ContainerImage.fromEcrRepository(repository, '1.0.0')
   });
 
@@ -72,7 +80,7 @@ const create_fargate_task_definition = (scope) => {
   policy.addActions(['s3:*']);
   fargateTaskDefinition.addToTaskRolePolicy(policy);
 
-  return fargateTaskDefinition;
+  return { containerDefinition, fargateTaskDefinition };
 };
 
 module.exports = create_step_3_fargate_task;
