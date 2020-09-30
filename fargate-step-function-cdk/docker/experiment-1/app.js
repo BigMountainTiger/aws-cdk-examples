@@ -20,13 +20,16 @@ console.log(user);
 const put_s3_object = async () => {
   const s3 = new AWS.S3();
   
+  const execution_id = process.env.EXEID || 'Not received';
+  console.log(execution_id);
+
   const time = new Date().toISOString();
   const TARGET_KEY = time.replace(/:/g, '-').replace(/\./g, '-');
 
   const params = {
     Bucket: bucket,
     Key: TARGET_KEY,
-    Body: time
+    Body: `${time} - EXEID - ${execution_id}`
   };
 
   const result = await s3.putObject(params).promise(); 
@@ -35,10 +38,6 @@ const put_s3_object = async () => {
 
 
 (async () => {
-
-  const execution_id = process.env.EXEID;
-
-  console.log(execution_id);
 
   const r = await new Promise((rs, rj) => {
     setTimeout(async () => {
