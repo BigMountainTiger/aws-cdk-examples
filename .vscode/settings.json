@@ -11,5 +11,7 @@
     "**/dist": true,
     "dotnet-pipeline/**/bin": true,
     "dotnet-pipeline/**/obj": true,
+    "dotnet-entityframework-dependencyinjection/**/bin": true,
+    "ddotnet-entityframework-dependencyinjection/**/obj": true
   }
 }
