@@ -59,7 +59,7 @@ class FargateTaskParameterStore {
     return awsvpcConfiguration;
   }
 
-  async GetFargateTaskParameter() {
+  async GetFargateTaskParameter(payload) {
     await this.LoadAllResouces();
 
     const awsvpcConfiguration = await this.getAwsvpcConfiguration();
@@ -72,7 +72,20 @@ class FargateTaskParameterStore {
       launchType: 'FARGATE',
       networkConfiguration: { awsvpcConfiguration: awsvpcConfiguration },
       cluster: cluster.id,
-      taskDefinition: taskDefinition.id
+      taskDefinition: taskDefinition.id,
+      overrides: {
+        containerOverrides: [
+          {
+            name: 'FARGATE-TASK-CDK-STACK-CONTAINER',
+            environment: [
+              {
+                name: 'JSONDATA',
+                value: payload
+              }
+            ]
+          }
+        ]
+      }
     };
 
     return params;
@@ -83,10 +96,42 @@ class FargateTaskParameterStore {
 
   const tag = { key: 'VPC-TAG', value: 'FARGATE-VPC' };
   const store = new FargateTaskParameterStore(tag);
-  const params = await store.GetFargateTaskParameter();
+
+  const items = [
+    {
+      'quantity': 12,
+      'description': 'Item description No.0',
+      'unitprice': 12000.3,
+      'linetotal': 20
+    }
+  ];
+
+  for (let x = 0; x < 50; x++) {
+    items.push({
+      'quantity': 1290,
+      'description': `Item description No.${x}`,
+      'unitprice': 12.3,
+      'linetotal': 20000
+    });
+  }
+
+  const data = {
+    'items': items,
+    'total': 50000000.01
+  };
+
+  const str_data = JSON.stringify(data);
+  const params = await store.GetFargateTaskParameter(str_data);
 
   const ecs = new AWS.ECS();
-  const result = await ecs.runTask(params).promise();
+  let result = null;
+  
+  try {
+    result = await ecs.runTask(params).promise();
+  }
+  catch(e) {
+    console.log(e);
+  }
 
   console.log(result);
   console.log('Done');
