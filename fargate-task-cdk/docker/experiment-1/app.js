@@ -23,10 +23,12 @@ const put_s3_object = async () => {
   const time = new Date().toISOString();
   const TARGET_KEY = time.replace(/:/g, '-').replace(/\./g, '-');
 
+  const env_data = process.env.JSONDATA || 'N/A'
+
   const params = {
     Bucket: bucket,
     Key: TARGET_KEY,
-    Body: time
+    Body: env_data
   };
 
   const result = await s3.putObject(params).promise(); 

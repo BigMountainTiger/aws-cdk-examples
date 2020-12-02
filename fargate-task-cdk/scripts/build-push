@@ -19,4 +19,4 @@ docker tag $repository:$tag $arn/$repository:$tag
 
 docker push $arn/$repository:$tag
 
-docker system prune -a -f
+docker system prune -f
