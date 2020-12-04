@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd Word2pdf
+
+dotnet publish -c Release -o publish
