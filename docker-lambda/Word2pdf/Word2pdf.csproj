@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
 
@@ -9,9 +9,9 @@
     <PackageReference Include="Amazon.Lambda.Core" Version="1.1.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="1.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <!-- <PackageReference Include="Aspose.Words" Version="20.11.0" />
+    <PackageReference Include="Aspose.Words" Version="20.11.0" />
     <PackageReference Include="FreeSpire.Doc" Version="7.11.0" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.0" /> -->
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
   </ItemGroup>
 </Project>
 

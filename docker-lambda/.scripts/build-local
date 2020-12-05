@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd Word2pdf
+
+DIR=publish
+if [ -d "$DIR" ]; then
+    printf '%s\n' "Removing ($DIR)"
+    rm -rf "$DIR"
+fi
+
+dotnet publish -c Release -o $DIR
+
+docker build -t word2pdf-lambda:0.0.1 .
+docker system prune -f
