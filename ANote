@@ -1,2 +1,5 @@
+https://stackoverflow.com/questions/42950501/delete-node-modules-folder-recursively-from-a-specified-path-using-command-line
+
+
 find . -name "node_modules" -type d -prune -print | xargs du -chs
-find . -name 'node_modules' -type d -prune -print -exec echo '{}' \;
+find . -name 'node_modules' -type d -prune -print -exec rm -r '{}' \;
