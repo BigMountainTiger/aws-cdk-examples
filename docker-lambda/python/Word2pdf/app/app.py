@@ -1,4 +1,4 @@
 import sys
 
 def lambdaHandler(event, context): 
-    return 'This is stupid'
+    return f'{event} is received'
