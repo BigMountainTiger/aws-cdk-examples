@@ -15,8 +15,8 @@ namespace word_pdf
             // var word_file = args[0];
             // var pdf_file = args[1];
 
-            var word_file = "./result/result.docx";
-            var pdf_file = "./result/result.pdf";
+            var word_file = "/app/result/result.docx";
+            var pdf_file = "/app/result/result.pdf";
 
             Console.WriteLine(word_file);
             Console.WriteLine(pdf_file);

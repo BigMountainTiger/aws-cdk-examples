@@ -29,10 +29,22 @@ COPY ${DEP_DIR}/aws-lambda-rie /usr/bin/aws-lambda-rie
 RUN chmod 755 /usr/bin/aws-lambda-rie
 
 COPY ${DEP_DIR}/entry.sh /
-COPY app/* .
+
+COPY app/reqirement.txt .
+RUN pip3 install -r reqirement.txt
+
+COPY app/app.py .
+COPY app/word_pdf.py .
+COPY app/util.py .
+COPY app/testdata.py .
+# ADD app/work ./work/
 
 RUN mkdir result
 ADD word-pdf/bin/Debug/net5.0/publish/ word-pdf/
 
+COPY invoice-template.docx template/
+
 ENTRYPOINT [ "/entry.sh" ]
 CMD [ "app.lambdaHandler" ]
+
+
