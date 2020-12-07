@@ -1,16 +1,27 @@
 ARG DEP_DIR="docker-dependencies"
 
-FROM amazon/aws-lambda-python:3.8
+FROM ubuntu:20.04
+
 ARG DEP_DIR
 
-RUN yum install -y which
+RUN apt-get update
+RUN apt-get upgrade -y
 
-COPY ${DEP_DIR}/packages-microsoft-prod.rpm .
-RUN rpm -Uvh packages-microsoft-prod.rpm
-RUN yum install -y dotnet-runtime-5.0
+RUN apt-get install -y wget
+COPY ${DEP_DIR}/packages-microsoft-prod.deb ./packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb
+RUN apt-get update
 
-RUN pip install --upgrade pip
-RUN pip install awslambdaric
+RUN apt-get install -y libgdiplus
+RUN apt-get install -y dotnet-runtime-5.0
+
+RUN apt-get install -y python3
+RUN apt-get install -y python3-pip
+
+RUN pip3 install --upgrade pip
+RUN pip3 install awslambdaric
+
+RUN apt-get autoremove -y
 
 WORKDIR /app/
 
@@ -19,6 +30,9 @@ RUN chmod 755 /usr/bin/aws-lambda-rie
 
 COPY ${DEP_DIR}/entry.sh /
 COPY app/* .
+
+RUN mkdir result
+ADD word-pdf/bin/Debug/net5.0/publish/ word-pdf/
 
 ENTRYPOINT [ "/entry.sh" ]
 CMD [ "app.lambdaHandler" ]
