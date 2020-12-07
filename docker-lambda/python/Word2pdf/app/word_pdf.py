@@ -8,11 +8,11 @@ import util
 import testdata
 
 def merge():
-  result_directory = '/app/result/'
+  result_directory = '/tmp/'
   fileName = 'result'
   result_word_file = f'{result_directory}{fileName}.docx'
   result_pdf_file = f'{result_directory}{fileName}.pdf'
-  template = '/app/invoice-template.docx'
+  template = '/tmp/invoice-template.docx'
   bucket = 'logs.huge.head.li'
   replacement = os.environ.get('REPLACEMENT', r'Paul Kempa')
 
@@ -22,8 +22,9 @@ def merge():
   print(json_data)
 
   # Clear the result directory
-  util.clearDirectory(result_directory)
+  # util.clearDirectory(result_directory)
 
+  util.downloadtemplate()
   # Create the new word document
   wdoc = Document(template)
 

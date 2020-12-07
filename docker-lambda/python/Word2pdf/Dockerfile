@@ -39,7 +39,7 @@ COPY app/util.py .
 COPY app/testdata.py .
 # ADD app/work ./work/
 
-RUN mkdir result
+RUN mkdir /tmp/result/
 ADD word-pdf/bin/Debug/net5.0/publish/ word-pdf/
 
 COPY invoice-template.docx .

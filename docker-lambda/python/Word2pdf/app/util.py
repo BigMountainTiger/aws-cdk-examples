@@ -101,6 +101,11 @@ def doc2pdf(word_file, pdf_file):
   p.wait()
   stdout, stderr = p.communicate()
 
+# downloadtemplate
+def downloadtemplate():
+   s3 = boto3.client('s3')
+   s3.download_file('sam.huge.head.li', 'invoice-template.docx', '/tmp/invoice-template.docx')
+
 # upload2s3
 def upload2s3(bucket, result_pdf_file):
   ts = datetime.datetime.fromtimestamp(time.time()).strftime(r'%Y-%m-%d-%H-%M-%S')
