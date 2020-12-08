@@ -12,7 +12,7 @@ def merge():
   fileName = 'result'
   result_word_file = f'{result_directory}{fileName}.docx'
   result_pdf_file = f'{result_directory}{fileName}.pdf'
-  template = '/tmp/invoice-template.docx'
+  template = '/tmp/invoicetemplate.docx'
   bucket = 'logs.huge.head.li'
   replacement = os.environ.get('REPLACEMENT', r'Paul Kempa')
 

@@ -42,7 +42,7 @@ COPY app/testdata.py .
 RUN mkdir /tmp/result/
 ADD word-pdf/bin/Debug/net5.0/publish/ word-pdf/
 
-COPY invoice-template.docx .
+COPY invoicetemplate.docx .
 
 ENTRYPOINT [ "/entry.sh" ]
 CMD [ "app.lambdaHandler" ]

@@ -104,7 +104,7 @@ def doc2pdf(word_file, pdf_file):
 # downloadtemplate
 def downloadtemplate():
    s3 = boto3.client('s3')
-   s3.download_file('sam.huge.head.li', 'invoice-template.docx', '/tmp/invoice-template.docx')
+   s3.download_file('sam.huge.head.li', 'invoice-template.docx', '/tmp/invoicetemplate.docx')
 
 # upload2s3
 def upload2s3(bucket, result_pdf_file):
