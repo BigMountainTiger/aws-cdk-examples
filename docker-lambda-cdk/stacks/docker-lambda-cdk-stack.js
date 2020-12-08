@@ -1,6 +1,7 @@
 const cdk = require('@aws-cdk/core');
 const iam = require('@aws-cdk/aws-iam');
 const lambda = require('@aws-cdk/aws-lambda');
+const ecr = require('@aws-cdk/aws-ecr');
 
 class DockerLambdaCdkStack extends cdk.Stack {
 
@@ -30,6 +31,21 @@ class DockerLambdaCdkStack extends cdk.Stack {
       code: lambda.Code.fromAsset('lambdas/IN'),
       memorySize: 1024,
       handler: 'app.lambdaHandler'
+    });
+
+    const repository = ecr.Repository.fromRepositoryName(this, 'word2pdf-lambda', 'word2pdf-lambda');
+    const PDF_LAMBDA_NAME = `${id}-PDF`;
+    new lambda.Function(this, PDF_LAMBDA_NAME, {
+      runtime: lambda.Runtime.FROM_IMAGE,
+      functionName: PDF_LAMBDA_NAME,
+      description: PDF_LAMBDA_NAME,
+      timeout: cdk.Duration.seconds(30),
+      role: lambda_role,
+      code: lambda.Code.fromEcrImage(repository, {
+        tag: 'word2pdf-lambda'
+      }),
+      memorySize: 1024,
+      handler: lambda.Handler.FROM_IMAGE
     });
 
   }
