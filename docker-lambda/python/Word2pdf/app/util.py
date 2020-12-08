@@ -94,7 +94,7 @@ def docx_fill_data(wdoc, data):
 
 # doc2pdf
 def doc2pdf(word_file, pdf_file):  
-  cmd = [f'/app/word-pdf/word-pdf']
+  cmd = [f'/var/task/word-pdf/word-pdf']
   print(cmd)
 
   p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)

@@ -23,7 +23,7 @@ RUN pip3 install awslambdaric
 
 RUN apt-get autoremove -y
 
-WORKDIR /app/
+WORKDIR /var/task/
 
 COPY ${DEP_DIR}/aws-lambda-rie /usr/bin/aws-lambda-rie
 RUN chmod 755 /usr/bin/aws-lambda-rie

@@ -22,5 +22,5 @@ ECR_REGION=us-east-1
 IMAGES_TO_DELETE=$( aws ecr list-images --region $ECR_REGION --repository-name $REPO_NAME --filter "tagStatus=UNTAGGED" --query 'imageIds[*]' --output json )
 aws ecr batch-delete-image --region $ECR_REGION --repository-name $REPO_NAME --image-ids "$IMAGES_TO_DELETE" || true
 
-# aws lambda update-function-code --function-name word2pdf-lambda \
-#   --image-uri 005256505030.dkr.ecr.us-east-1.amazonaws.com/word2pdf-lambda:0.0.1
+aws lambda update-function-code --function-name word2pdf-lambda \
+  --image-uri 005256505030.dkr.ecr.us-east-1.amazonaws.com/word2pdf-lambda:0.0.1
