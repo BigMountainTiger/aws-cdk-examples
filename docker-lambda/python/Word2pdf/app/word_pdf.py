@@ -12,7 +12,7 @@ def merge():
   fileName = 'result'
   result_word_file = f'{result_directory}{fileName}.docx'
   result_pdf_file = f'{result_directory}{fileName}.pdf'
-  template = '/tmp/invoicetemplate.docx'
+  template = '/var/task/invoicetemplate.docx'
   bucket = 'logs.huge.head.li'
   replacement = os.environ.get('REPLACEMENT', r'Paul Kempa')
 
@@ -24,7 +24,7 @@ def merge():
   # Clear the result directory
   # util.clearDirectory(result_directory)
 
-  util.downloadtemplate()
+  # util.downloadtemplate()
   # Create the new word document
   wdoc = Document(template)
 

@@ -43,6 +43,7 @@ RUN mkdir /tmp/result/
 ADD word-pdf/bin/Debug/net5.0/publish/ word-pdf/
 
 COPY invoicetemplate.docx .
+RUN chmod 755 invoicetemplate.docx
 
 ENTRYPOINT [ "/entry.sh" ]
 CMD [ "app.lambdaHandler" ]
