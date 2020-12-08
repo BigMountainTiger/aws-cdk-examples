@@ -1,0 +1,81 @@
+Resources:
+  DOCKERLambdaCDKSTACKLAMBDAROLEF240FFB0:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      Description: DOCKER-Lambda-CDK-STACK-LAMBDA_ROLE
+      RoleName: DOCKER-Lambda-CDK-STACK-LAMBDA_ROLE
+    Metadata:
+      aws:cdk:path: DOCKER-Lambda-CDK-STACK/DOCKER-Lambda-CDK-STACK-LAMBDA_ROLE/Resource
+  DOCKERLambdaCDKSTACKLAMBDAROLEDefaultPolicy5ADAAAA8:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - s3:GetObject
+              - s3:PutObject
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: DOCKERLambdaCDKSTACKLAMBDAROLEDefaultPolicy5ADAAAA8
+      Roles:
+        - Ref: DOCKERLambdaCDKSTACKLAMBDAROLEF240FFB0
+    Metadata:
+      aws:cdk:path: DOCKER-Lambda-CDK-STACK/DOCKER-Lambda-CDK-STACK-LAMBDA_ROLE/DefaultPolicy/Resource
+  DOCKERLambdaCDKSTACKIN240653F3:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters35746394afc3dde08f89a7b46f147dfb1ffe17c62228182932280800d0560363S3Bucket1682C91B
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters35746394afc3dde08f89a7b46f147dfb1ffe17c62228182932280800d0560363S3VersionKeyEB064728
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters35746394afc3dde08f89a7b46f147dfb1ffe17c62228182932280800d0560363S3VersionKeyEB064728
+      Handler: app.lambdaHandler
+      Role:
+        Fn::GetAtt:
+          - DOCKERLambdaCDKSTACKLAMBDAROLEF240FFB0
+          - Arn
+      Runtime: python3.8
+      Description: DOCKER-Lambda-CDK-STACK-IN
+      FunctionName: DOCKER-Lambda-CDK-STACK-IN
+      MemorySize: 1024
+      Timeout: 30
+    DependsOn:
+      - DOCKERLambdaCDKSTACKLAMBDAROLEDefaultPolicy5ADAAAA8
+      - DOCKERLambdaCDKSTACKLAMBDAROLEF240FFB0
+    Metadata:
+      aws:cdk:path: DOCKER-Lambda-CDK-STACK/DOCKER-Lambda-CDK-STACK-IN/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/docker-lambda-cdk/lambdas/IN
+      aws:asset:property: Code
+Parameters:
+  AssetParameters35746394afc3dde08f89a7b46f147dfb1ffe17c62228182932280800d0560363S3Bucket1682C91B:
+    Type: String
+    Description: S3 bucket for asset "35746394afc3dde08f89a7b46f147dfb1ffe17c62228182932280800d0560363"
+  AssetParameters35746394afc3dde08f89a7b46f147dfb1ffe17c62228182932280800d0560363S3VersionKeyEB064728:
+    Type: String
+    Description: S3 key for asset version "35746394afc3dde08f89a7b46f147dfb1ffe17c62228182932280800d0560363"
+  AssetParameters35746394afc3dde08f89a7b46f147dfb1ffe17c62228182932280800d0560363ArtifactHash6389B200:
+    Type: String
+    Description: Artifact hash for asset "35746394afc3dde08f89a7b46f147dfb1ffe17c62228182932280800d0560363"
+

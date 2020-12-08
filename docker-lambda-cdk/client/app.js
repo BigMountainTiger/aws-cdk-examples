@@ -2,7 +2,7 @@ const fs = require('fs');
 const aws = require('aws-sdk');
 const lambda = new aws.Lambda({ region: 'us-east-1' });
 
-const lambda_name = 'word2pdf-lambda';
+const lambda_name = 'DOCKER-Lambda-CDK-STACK-IN';
 
 (async () => {
 

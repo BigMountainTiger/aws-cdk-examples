@@ -1,18 +1,21 @@
-import time
-import datetime
-import boto3
+import sys
+sys.path.append('/var/task/pip')
+sys.path.append('/var/task/docx_merge')
 
-def work():
+import time, datetime, boto3, docx_merge
+
+def upload2s3(content):
   bucket = 'logs.huge.head.li';
-  file_name = '/var/task/invoice-template.txt';
   ts = datetime.datetime.fromtimestamp(time.time()).strftime(r'%Y-%m-%d-%H-%M-%S')
-  object_name = f'G-{ts}.docx'
+  object_key = f'G-{ts}.docx'
 
-  s3 = boto3.resource('s3')
-  s3.meta.client.upload_file(file_name, bucket, object_name)
+  client = boto3.client('s3')
+  client.put_object(Body = content, Bucket = bucket, Key = object_key)
 
 
 def lambdaHandler(event, context):
-    work()
-    
-    return f'{event} is received'
+  content = docx_merge.merge()
+
+  upload2s3(content)
+  
+  return f'{event} is received'
