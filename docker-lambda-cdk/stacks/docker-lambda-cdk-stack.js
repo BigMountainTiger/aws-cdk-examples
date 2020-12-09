@@ -29,7 +29,7 @@ class DockerLambdaCdkStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(30),
       role: lambda_role,
       code: lambda.Code.fromAsset('lambdas/IN'),
-      memorySize: 1024,
+      memorySize: 1536,
       handler: 'app.lambdaHandler'
     });
 
@@ -44,7 +44,7 @@ class DockerLambdaCdkStack extends cdk.Stack {
       code: lambda.Code.fromEcrImage(repository, {
         tag: 'word2pdf-lambda'
       }),
-      memorySize: 1024,
+      memorySize: 1536,
       handler: lambda.Handler.FROM_IMAGE
     });
 

@@ -16,10 +16,15 @@ const lambda_name = 'DOCKER-Lambda-CDK-STACK-PDF';
     Payload: input_base64
   };
 
+  const TIMER_NAME = 'TIMER'
+  console.time(TIMER_NAME);
+
   const result = await lambda.invoke({
     FunctionName: lambda_name,
     Payload: JSON.stringify(payload)
   }).promise();
+
+  console.timeEnd(TIMER_NAME);
 
   const result_json = JSON.parse(result.Payload);
   fs.writeFileSync(output_file, Buffer.from(result_json.Payload, 'base64'))
