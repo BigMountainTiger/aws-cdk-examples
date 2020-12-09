@@ -2,16 +2,7 @@ import sys
 sys.path.append('/var/task/pip')
 sys.path.append('/var/task/docx_merge')
 
-import time, datetime, boto3, json, base64, docx_merge
-
-def upload2s3(content):
-  bucket = 'logs.huge.head.li';
-  ts = datetime.datetime.fromtimestamp(time.time()).strftime(r'%Y-%m-%d-%H-%M-%S')
-  object_key = f'G-{ts}.docx'
-
-  client = boto3.client('s3')
-  client.put_object(Body = content, Bucket = bucket, Key = object_key)
-
+import boto3, json, base64, docx_merge
 
 def lambdaHandler(event, context):
   body = event['body']
@@ -19,7 +10,6 @@ def lambdaHandler(event, context):
 
   content = docx_merge.merge(data)
   base64_content = base64.b64encode(content.read()).decode("utf-8")
-  # upload2s3(content)
 
   lambda_name = 'DOCKER-Lambda-CDK-STACK-PDF';
   payload = {
@@ -32,9 +22,13 @@ def lambdaHandler(event, context):
     Payload = json.dumps(payload)
   )
 
-  print(response)
+  str_payload = response['Payload'].read().decode("utf-8")
+  payload = json.loads(str_payload)
+  presigned_url = payload['Payload']
 
   return {
     'statusCode': 200,
-    'body': '"Success"'
+    'body': json.dumps({
+      'presigned_url': presigned_url
+    })
   }

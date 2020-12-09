@@ -25,3 +25,6 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 
 docker push 005256505030.dkr.ecr.us-east-1.amazonaws.com/word2pdf-lambda:$TAG
 
+aws lambda update-function-code --function-name DOCKER-Lambda-CDK-STACK-PDF \
+  --image-uri 005256505030.dkr.ecr.us-east-1.amazonaws.com/word2pdf-lambda:$TAG
+
