@@ -4,12 +4,8 @@ import datetime
 from docx import Document
 import util
 
-import testdata
-
-def merge():
+def merge(data):
   replacement = r'Paul Kempa'
-
-  data = testdata.get_test_data()
   wdoc = Document('/var/task/invoice-template')
 
   util.docx_replace(wdoc, re.compile(r'{{customer-name}}') , replacement)

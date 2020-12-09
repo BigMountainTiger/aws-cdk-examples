@@ -2,6 +2,7 @@ const cdk = require('@aws-cdk/core');
 const iam = require('@aws-cdk/aws-iam');
 const lambda = require('@aws-cdk/aws-lambda');
 const ecr = require('@aws-cdk/aws-ecr');
+const apigateway = require('@aws-cdk/aws-apigateway');
 
 class DockerLambdaCdkStack extends cdk.Stack {
 
@@ -22,7 +23,7 @@ class DockerLambdaCdkStack extends cdk.Stack {
     }));
 
     const IN_LAMBDA_NAME = `${id}-IN`;
-    new lambda.Function(this, IN_LAMBDA_NAME, {
+    const in_lambda = new lambda.Function(this, IN_LAMBDA_NAME, {
       runtime: lambda.Runtime.PYTHON_3_8,
       functionName: IN_LAMBDA_NAME,
       description: IN_LAMBDA_NAME,
@@ -48,6 +49,19 @@ class DockerLambdaCdkStack extends cdk.Stack {
       handler: lambda.Handler.FROM_IMAGE
     });
 
+    const API_NAME = `${id}-IN-API`;
+    const api = new apigateway.RestApi(this, API_NAME, {
+      restApiName: API_NAME,
+      description: API_NAME,
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS
+      },
+      endpointTypes: [apigateway.EndpointType.REGIONAL]
+    });
+
+    const endpoint = api.root.addResource('receipt');
+    endpoint.addMethod('POST', new apigateway.LambdaIntegration(in_lambda, { proxy: true }));
   }
 }
 
