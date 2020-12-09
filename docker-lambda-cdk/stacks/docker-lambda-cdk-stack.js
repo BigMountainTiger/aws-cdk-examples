@@ -22,6 +22,12 @@ class DockerLambdaCdkStack extends cdk.Stack {
       actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents', 's3:GetObject', 's3:PutObject']
     }));
 
+    lambda_role.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      resources: ['*'],
+      actions: ['lambda:InvokeFunction']
+    }));
+
     const IN_LAMBDA_NAME = `${id}-IN`;
     const in_lambda = new lambda.Function(this, IN_LAMBDA_NAME, {
       runtime: lambda.Runtime.PYTHON_3_8,
