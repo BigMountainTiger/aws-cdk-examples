@@ -93,7 +93,7 @@ def docx_fill_data(wdoc, data):
       cell._tc.get_or_add_tcPr().append(deepcopy(background))
 
 # doc2pdf
-def doc2pdf(word_file, pdf_file):  
+def doc2pdf():  
   cmd = [f'/var/task/word-pdf/word-pdf']
   print(cmd)
 
@@ -107,9 +107,17 @@ def downloadtemplate():
    s3.download_file('sam.huge.head.li', 'invoice-template.docx', '/tmp/invoicetemplate.docx')
 
 # upload2s3
-def upload2s3(bucket, result_pdf_file):
+def upload2s3():
+  bucket = 'logs.huge.head.li'
+  result_pdf_file = '/tmp/result.pdf'
+
   ts = datetime.datetime.fromtimestamp(time.time()).strftime(r'%Y-%m-%d-%H-%M-%S')
   object_name = f'G-{ts}.pdf'
 
-  s3 = boto3.resource('s3')
-  s3.meta.client.upload_file(result_pdf_file, bucket, object_name)
+  client = boto3.client('s3')
+  client.upload_file(result_pdf_file, bucket, object_name)
+
+  params = {'Bucket': bucket, 'Key': object_name}
+  presigned_url = client.generate_presigned_url(ClientMethod = 'get_object', Params = params, ExpiresIn = 5 * 60)
+
+  return presigned_url

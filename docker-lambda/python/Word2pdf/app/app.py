@@ -1,6 +1,25 @@
 import sys
-from word_pdf import merge
+import json
+import docx_merge
+import testdata
+import util
 
 def lambdaHandler(event, context):
-    merge()
-    return f'{event} is received'
+  body = event['body']
+  data = json.loads(body)
+
+  # data = testdata.get_test_data()
+
+  docx_merge.merge(data)
+  util.doc2pdf()
+  presigned_url = util.upload2s3()
+
+  return {
+    'statusCode': 200,
+    'body': json.dumps({
+      'presigned_url': presigned_url
+    })
+  }
+
+if __name__ == '__main__':
+  lambdaHandler({'body': {}}, {})

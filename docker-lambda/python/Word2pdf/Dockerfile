@@ -34,9 +34,11 @@ COPY app/reqirement.txt .
 RUN pip3 install -r reqirement.txt
 
 COPY app/app.py .
-COPY app/word_pdf.py .
-COPY app/util.py .
+COPY app/docx_merge.py .
 COPY app/testdata.py .
+COPY app/util.py .
+COPY app/word_pdf.py .
+
 # ADD app/work ./work/
 
 RUN mkdir /tmp/result/
