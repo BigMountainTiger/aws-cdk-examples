@@ -22,8 +22,7 @@ class WebsocketCdkStack extends cdk.Stack {
     const table = new dynamodb.Table(this, DYNAMO_NAME, {
       tableName: DYNAMO_NAME,
       partitionKey: { name: "connectionId", type: dynamodb.AttributeType.STRING },
-      readCapacity: 5,
-      writeCapacity: 5,
+      readCapacity: 5, writeCapacity: 5,
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
