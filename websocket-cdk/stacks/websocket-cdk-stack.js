@@ -76,7 +76,7 @@ class WebsocketCdkStack extends cdk.Stack {
 
     const connect_route = this.create_route('connect', '$connect');
     const disconnect_route = this.create_route('disconnect', '$disconnect');
-    const sendMessage_route = this.create_route('sendMessage', 'sendMessage');
+    const sendMessage_route = this.create_route('sendmessage', 'sendmessage');
 
     const DEPLOYMENT_NAME = `{id}-DEPLOYMENT`;
     const deployment = new apiv2.CfnDeployment(this, DEPLOYMENT_NAME, { apiId: api.ref });

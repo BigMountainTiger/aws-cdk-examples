@@ -1,6 +1,3 @@
-// Example code
-// https://aws.amazon.com/blogs/compute/announcing-websocket-apis-in-amazon-api-gateway/
-
 const AWS = require('aws-sdk');
 const DDB = new AWS.DynamoDB();
 

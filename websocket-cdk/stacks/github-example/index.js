@@ -4,6 +4,9 @@
 
 // https://github.com/aws-samples/aws-cdk-examples/tree/81d1e787b27f19ec6199c19664ad0897418e2233/typescript/api-websocket-lambda-dynamodb
 
+// https://aws.amazon.com/blogs/compute/announcing-websocket-apis-in-amazon-api-gateway/
+// https://github.com/aws-samples/simple-websockets-chat-app
+
 const {AssetCode, Function, Runtime} = require('@aws-cdk/aws-lambda');
 const {CfnApi, CfnDeployment, CfnIntegration, CfnRoute, CfnStage} = require('@aws-cdk/aws-apigatewayv2');
 const {App, ConcreteDependable, Construct, Duration, RemovalPolicy, Stack, StackProps} = require('@aws-cdk/core');
