@@ -6,6 +6,9 @@ const dynamodb = require('@aws-cdk/aws-dynamodb');
 const iam = require("@aws-cdk/aws-iam");
 const lambda = require('@aws-cdk/aws-lambda');
 
+
+const region = 'us-east-1';
+
 class WebsocketCdkStack extends cdk.Stack {
 
   constructor(scope, id, props) {
@@ -48,6 +51,14 @@ class WebsocketCdkStack extends cdk.Stack {
       code: lambda.Code.fromAsset('lambdas/connect'),
       memorySize: 256,
       handler: 'app.lambdaHandler'
+    });
+
+    const CONNECT_INTEGRATION_NAME = `${id}-CONNECT_INTEGRATION`;
+    const connect_integration = new apiv2.CfnIntegration(this, CONNECT_INTEGRATION_NAME, {
+      apiId: api.ref,
+      integrationType: "AWS_PROXY",
+      integrationUri: "arn:aws:apigateway:" + region + ":lambda:path/2015-03-31/functions/" + connect_lambda.functionArn + "/invocations",
+      credentialsArn: api_role.roleArn,
     });
 
   }
