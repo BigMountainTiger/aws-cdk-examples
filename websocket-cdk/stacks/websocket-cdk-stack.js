@@ -54,12 +54,27 @@ class WebsocketCdkStack extends cdk.Stack {
     });
 
     const CONNECT_INTEGRATION_NAME = `${id}-CONNECT_INTEGRATION`;
+    const CONNECT_ROUTE_NAME = `${id}-CONNECT_ROUTE`;
     const connect_integration = new apiv2.CfnIntegration(this, CONNECT_INTEGRATION_NAME, {
       apiId: api.ref,
-      integrationType: "AWS_PROXY",
-      integrationUri: "arn:aws:apigateway:" + region + ":lambda:path/2015-03-31/functions/" + connect_lambda.functionArn + "/invocations",
+      integrationType: 'AWS_PROXY',
+      integrationUri: 'arn:aws:apigateway:' + region + ':lambda:path/2015-03-31/functions/' + connect_lambda.functionArn + '/invocations',
       credentialsArn: api_role.roleArn,
     });
+    const connect_route = new apiv2.CfnRoute(this, CONNECT_ROUTE_NAME, {
+      apiId: api.ref, routeKey: '$connect', authorizationType: 'NONE', target: 'integrations/' + connect_integration.ref
+    });
+
+
+    const DEPLOYMENT_NAME = `{id}-DEPLOYMENT`;
+    const deployment = new apiv2.CfnDeployment(this, DEPLOYMENT_NAME, { apiId: api.ref });
+
+    const STAGE_NAME = `{id}-STAGE`;
+    new apiv2.CfnStage(this, STAGE_NAME, { apiId: api.ref, autoDeploy: true, deploymentId: deployment.ref, stageName: "prod" });
+
+    const dependencies = new cdk.ConcreteDependable();
+    dependencies.add(connect_route);
+    deployment.node.addDependency(dependencies);
 
   }
 }
