@@ -11,7 +11,7 @@ const region = 'us-east-1';
 
 class WebsocketCdkStack extends cdk.Stack {
 
-  create_route(name) {
+  create_route(name, route_key) {
     const {id, api, lambda_role, api_role} = this.entries;
 
     const LAMBDA_NAME = `${id}-${name}-LAMBDA`;
@@ -35,7 +35,7 @@ class WebsocketCdkStack extends cdk.Stack {
       credentialsArn: api_role.roleArn,
     });
     const route = new apiv2.CfnRoute(this, ROUTE_NAME, {
-      apiId: api.ref, routeKey: `$${name}`, authorizationType: 'NONE', target: 'integrations/' + integration.ref
+      apiId: api.ref, routeKey: route_key, authorizationType: 'NONE', target: 'integrations/' + integration.ref
     });
 
     return route;
@@ -73,8 +73,9 @@ class WebsocketCdkStack extends cdk.Stack {
 
     this.entries = { id: id, api: api, lambda_role: lambda_role, api_role: api_role };
 
-    const connect_route = this.create_route('connect');
-    const disconnect_route = this.create_route('disconnect');
+    const connect_route = this.create_route('connect', '$connect');
+    const disconnect_route = this.create_route('disconnect', '$disconnect');
+    const sendMessage_route = this.create_route('sendMessage', 'sendMessage');
 
     const DEPLOYMENT_NAME = `{id}-DEPLOYMENT`;
     const deployment = new apiv2.CfnDeployment(this, DEPLOYMENT_NAME, { apiId: api.ref });
@@ -85,6 +86,7 @@ class WebsocketCdkStack extends cdk.Stack {
     const dependencies = new cdk.ConcreteDependable();
     dependencies.add(connect_route);
     dependencies.add(disconnect_route);
+    dependencies.add(sendMessage_route);
     deployment.node.addDependency(dependencies);
 
   }
