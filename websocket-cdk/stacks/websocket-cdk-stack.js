@@ -4,6 +4,7 @@ const cdk = require('@aws-cdk/core');
 const apiv2 = require('@aws-cdk/aws-apigatewayv2');
 const dynamodb = require('@aws-cdk/aws-dynamodb');
 const iam = require("@aws-cdk/aws-iam");
+const lambda = require('@aws-cdk/aws-lambda');
 
 class WebsocketCdkStack extends cdk.Stack {
 
@@ -32,7 +33,23 @@ class WebsocketCdkStack extends cdk.Stack {
     });
     lambda_role.addToPolicy(new iam.PolicyStatement({ actions: [ 'dynamodb:*' ], resources: [table.tableArn] }));
     lambda_role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'));
-    
+
+    const API_ROLE_NAME = `${id}-API-ROLE`;
+    const api_role = new iam.Role(this, API_ROLE_NAME, { assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com") });
+    api_role.addToPolicy(new iam.PolicyStatement({ resources: ['*'], actions: ["lambda:InvokeFunction"] }));
+
+    const CONNECT_LAMBDA_NAME = `${id}-ICONNECT-LAMBDA`;
+    const connect_lambda = new lambda.Function(this, CONNECT_LAMBDA_NAME, {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      functionName: CONNECT_LAMBDA_NAME,
+      description: CONNECT_LAMBDA_NAME,
+      timeout: cdk.Duration.seconds(30),
+      role: lambda_role,
+      code: lambda.Code.fromAsset('lambdas/connect'),
+      memorySize: 256,
+      handler: 'app.lambdaHandler'
+    });
+
   }
 }
 
