@@ -11,6 +11,36 @@ const region = 'us-east-1';
 
 class WebsocketCdkStack extends cdk.Stack {
 
+  create_route(name) {
+    const {id, api, lambda_role, api_role} = this.entries;
+
+    const LAMBDA_NAME = `${id}-${name}-LAMBDA`;
+    const lambda_function = new lambda.Function(this, LAMBDA_NAME, {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      functionName: LAMBDA_NAME,
+      description: LAMBDA_NAME,
+      timeout: cdk.Duration.seconds(30),
+      role: lambda_role,
+      code: lambda.Code.fromAsset(`lambdas/${name}`),
+      memorySize: 256,
+      handler: 'app.lambdaHandler'
+    });
+
+    const INTEGRATION_NAME = `${id}-${name}_INTEGRATION`;
+    const ROUTE_NAME = `${id}-${name}_ROUTE`;
+    const integration = new apiv2.CfnIntegration(this, INTEGRATION_NAME, {
+      apiId: api.ref,
+      integrationType: 'AWS_PROXY',
+      integrationUri: 'arn:aws:apigateway:' + region + ':lambda:path/2015-03-31/functions/' + lambda_function.functionArn + '/invocations',
+      credentialsArn: api_role.roleArn,
+    });
+    const route = new apiv2.CfnRoute(this, ROUTE_NAME, {
+      apiId: api.ref, routeKey: `$${name}`, authorizationType: 'NONE', target: 'integrations/' + integration.ref
+    });
+
+    return route;
+  }
+
   constructor(scope, id, props) {
     super(scope, id, props);
 
@@ -41,30 +71,10 @@ class WebsocketCdkStack extends cdk.Stack {
     const api_role = new iam.Role(this, API_ROLE_NAME, { assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com") });
     api_role.addToPolicy(new iam.PolicyStatement({ resources: ['*'], actions: ["lambda:InvokeFunction"] }));
 
-    const CONNECT_LAMBDA_NAME = `${id}-ICONNECT-LAMBDA`;
-    const connect_lambda = new lambda.Function(this, CONNECT_LAMBDA_NAME, {
-      runtime: lambda.Runtime.NODEJS_12_X,
-      functionName: CONNECT_LAMBDA_NAME,
-      description: CONNECT_LAMBDA_NAME,
-      timeout: cdk.Duration.seconds(30),
-      role: lambda_role,
-      code: lambda.Code.fromAsset('lambdas/connect'),
-      memorySize: 256,
-      handler: 'app.lambdaHandler'
-    });
+    this.entries = { id: id, api: api, lambda_role: lambda_role, api_role: api_role };
 
-    const CONNECT_INTEGRATION_NAME = `${id}-CONNECT_INTEGRATION`;
-    const CONNECT_ROUTE_NAME = `${id}-CONNECT_ROUTE`;
-    const connect_integration = new apiv2.CfnIntegration(this, CONNECT_INTEGRATION_NAME, {
-      apiId: api.ref,
-      integrationType: 'AWS_PROXY',
-      integrationUri: 'arn:aws:apigateway:' + region + ':lambda:path/2015-03-31/functions/' + connect_lambda.functionArn + '/invocations',
-      credentialsArn: api_role.roleArn,
-    });
-    const connect_route = new apiv2.CfnRoute(this, CONNECT_ROUTE_NAME, {
-      apiId: api.ref, routeKey: '$connect', authorizationType: 'NONE', target: 'integrations/' + connect_integration.ref
-    });
-
+    const connect_route = this.create_route('connect');
+    const disconnect_route = this.create_route('disconnect');
 
     const DEPLOYMENT_NAME = `{id}-DEPLOYMENT`;
     const deployment = new apiv2.CfnDeployment(this, DEPLOYMENT_NAME, { apiId: api.ref });
@@ -74,6 +84,7 @@ class WebsocketCdkStack extends cdk.Stack {
 
     const dependencies = new cdk.ConcreteDependable();
     dependencies.add(connect_route);
+    dependencies.add(disconnect_route);
     deployment.node.addDependency(dependencies);
 
   }
