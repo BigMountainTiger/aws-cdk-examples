@@ -1,0 +1,11 @@
+#!/bin/bash
+
+TABLE_NAME=WEBSOCKET-CDK-STACK-DYNAMO-TABLE
+
+aws dynamodb scan \
+  --attributes-to-get $HASH_KEY $RANGE_KEY \
+  --table-name $TABLE_NAME --query "Items[*]" \
+    | jq --compact-output '.[]' \
+    | tr '\n' '\0' \
+    | xargs -0 -t -I keyItem \
+  aws dynamodb delete-item --table-name $TABLE_NAME --key=keyItem
