@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <style> html, input {font-family: courier,arial,helvetica;} </style>
+  <script>
+    let URL = 'wss://qx1oamgzzl.execute-api.us-east-1.amazonaws.com/prod';
+    let wsocket = null;
+    let update_msg = function(msg) { document.getElementById('divMsg').innerHTML = msg; };
+    
+    let socket_connect = function() {
+      update_msg(`Trying to connect the websocket`);
+      let socket = new WebSocket(URL);
+
+      socket.onopen = function (event) {
+        update_msg(`Websocket is connected`);
+
+        socket.onmessage = function (event) { update_msg(event.data); }
+      };
+
+      return socket;
+    }
+
+    let wnd_onload = function(e) {
+      wsocket = socket_connect();
+    };
+
+    let send_onclick = function() {
+      let element = document.getElementById('txtInput');
+
+      let txt = element.value.trim();
+      let msg = { action: 'sendmessage', data: txt };
+
+      wsocket.send(JSON.stringify(msg));
+      element.value = '';
+    };
+
+    let txtInput_onkeyup = function(e) { if (e.keyCode == 13) { send_onclick(); } };
+
+  </script>
+
+  <body onload="return wnd_onload(event)">
+
+    <div>
+      <input id="txtInput" type="text" onkeyup="return txtInput_onkeyup(event)" />
+      <button onclick="return send_onclick()">Send</button>
+    </div>
+    <br />
+    <div id="divMsg"></div>
+  </body>
+</html>

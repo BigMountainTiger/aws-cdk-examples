@@ -1,3 +1,3 @@
 #!/bin/bash
 
-wscat -c wss://5wbw4n5ixh.execute-api.us-east-1.amazonaws.com/prod
+wscat -c wss://qx1oamgzzl.execute-api.us-east-1.amazonaws.com/prod
