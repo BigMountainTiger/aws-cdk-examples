@@ -66,6 +66,7 @@ class WebsocketCdkStack extends cdk.Stack {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com")
     });
     lambda_role.addToPolicy(new iam.PolicyStatement({ actions: [ 'dynamodb:*' ], resources: [dynamo_table.tableArn] }));
+    lambda_role.addToPolicy(new iam.PolicyStatement({ actions: [ 'execute-api:ManageConnections' ], resources: ['*'] }));
     lambda_role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'));
 
     const API_ROLE_NAME = `${id}-API-ROLE`;
