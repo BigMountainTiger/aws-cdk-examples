@@ -12,16 +12,13 @@
 
       socket.onopen = function (event) {
         update_msg(`Websocket is connected`);
-
         socket.onmessage = function (event) { update_msg(event.data); }
       };
 
       return socket;
     }
 
-    let wnd_onload = function(e) {
-      wsocket = socket_connect();
-    };
+    let wnd_onload = function(e) { wsocket = socket_connect(); };
 
     let send_onclick = function() {
       let element = document.getElementById('txtInput');
