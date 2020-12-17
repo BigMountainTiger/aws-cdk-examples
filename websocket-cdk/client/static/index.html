@@ -18,7 +18,28 @@
       return socket;
     }
 
-    let wnd_onload = function(e) { wsocket = socket_connect(); };
+    let add_autorefresh = function() {
+      let url = 'http://localhost:3000/refresh-script';
+
+      let xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        
+        if (this.readyState == 4 && this.status == 200) {
+          let script_url = (this.responseText || '').trim();
+          
+          if (script_url) {
+            let script = document.createElement('script');
+            script.setAttribute('src', script_url);
+            document.head.appendChild(script);
+          }
+        }
+      };
+
+      xhttp.open("GET", url, true);
+      xhttp.send();
+    };
+
+    let wnd_onload = function(e) { wsocket = socket_connect(); add_autorefresh(); };
 
     let send_onclick = function() {
       let element = document.getElementById('txtInput');
@@ -42,8 +63,6 @@
     </div>
     <br />
     <div id="divMsg"></div>
-    <div>This</div>
-
-    <script src="http://localhost:42637/browser-refresh.js"></script>
+    <div>Never mind</div>
   </body>
 </html>
