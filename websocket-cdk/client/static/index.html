@@ -7,39 +7,35 @@
     let update_msg = function(msg) { document.getElementById('divMsg').innerHTML = msg; };
     
     let socket_connect = function() {
+
+      let STATE = { CONNECTING: 0, OPEN: 1, CLOSING: 2, CLOSED: 3 };
+
       update_msg(`Trying to connect the websocket`);
+
       let socket = new WebSocket(URL);
+
+      socket.onerror = function(event) {
+        console.log('Socket has error');
+        let state = socket.readyState;
+        if (state != STATE.CLOSED || state != STATE.CLOSING) { socket.close(); }
+      };
+
+      socket.onclose = function(event) {
+        console.log('Socket is closed');
+      };
 
       socket.onopen = function (event) {
         update_msg(`Websocket is connected`);
-        socket.onmessage = function (event) { update_msg(event.data); }
+      };
+
+      socket.onmessage = function (event) { 
+        update_msg(event.data); 
       };
 
       return socket;
     }
 
-    let add_autorefresh = function() {
-      let url = 'http://localhost:3000/refresh-script';
-
-      let xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        
-        if (this.readyState == 4 && this.status == 200) {
-          let script_url = (this.responseText || '').trim();
-          
-          if (script_url) {
-            let script = document.createElement('script');
-            script.setAttribute('src', script_url);
-            document.head.appendChild(script);
-          }
-        }
-      };
-
-      xhttp.open("GET", url, true);
-      xhttp.send();
-    };
-
-    let wnd_onload = function(e) { wsocket = socket_connect(); add_autorefresh(); };
+    let wnd_onload = function(e) { wsocket = socket_connect(); };
 
     let send_onclick = function() {
       let element = document.getElementById('txtInput');
@@ -63,5 +59,28 @@
     </div>
     <br />
     <div id="divMsg"></div>
+    
   </body>
+
+  <script>
+    (function() {
+      let url = 'http://localhost:3000/refresh-script';
+
+      let xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          let script_url = (this.responseText || '').trim();
+          
+          if (script_url) {
+            let script = document.createElement('script');
+            script.setAttribute('src', script_url);
+            document.head.appendChild(script);
+          }
+        }
+      };
+
+      xhttp.open("GET", url, true);
+      xhttp.send();
+    })();
+  </script>
 </html>
