@@ -19,5 +19,11 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(errorhandler());
     
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+  console.log(`Express server listening on port ${app.get('port')}`);
+
+  if (process.send) {
+    process.send({ event:'online', url:`http://localhost:${app.get('port')}/` });
+
+    console.log(process.env.BROWSER_REFRESH_URL);
+  }
 });
