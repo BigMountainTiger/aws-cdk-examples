@@ -14,23 +14,21 @@
 
       let socket = new WebSocket(URL);
 
-      socket.onerror = function(event) {
-        console.log('Socket has error');
-        let state = socket.readyState;
-        if (state != STATE.CLOSED || state != STATE.CLOSING) { socket.close(); }
+      let close = function() {
+        if (socket.readyState != STATE.CLOSED || socket.readyState != STATE.CLOSING) { socket.close(); }
       };
 
+      socket.onerror = function(event) { console.log('Socket has error'); close(); };
+
       socket.onclose = function(event) {
+        // If fail to connect, both onerror() and onclose() are called, 
+        // it may be because of timeout or close() is called explicitly.
         console.log('Socket is closed');
       };
 
-      socket.onopen = function (event) {
-        update_msg(`Websocket is connected`);
-      };
+      socket.onmessage = function (event) { update_msg(event.data); };
 
-      socket.onmessage = function (event) { 
-        update_msg(event.data); 
-      };
+      socket.onopen = function (event) { update_msg(`Websocket is connected`); };
 
       return socket;
     }
@@ -49,6 +47,10 @@
 
     let txtInput_onkeyup = function(e) { if (e.keyCode == 13) { send_onclick(); } };
 
+    let close_onclick = function() {
+      wsocket.close();
+    };
+
   </script>
 
   <body onload="return wnd_onload(event)">
@@ -56,6 +58,7 @@
     <div>
       <input id="txtInput" type="text" onkeyup="return txtInput_onkeyup(event)" />
       <button onclick="return send_onclick()">Send</button>
+      <button onclick="return close_onclick()">Close</button>
     </div>
     <br />
     <div id="divMsg"></div>
