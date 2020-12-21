@@ -20,13 +20,13 @@ exports.lambdaHandler = async (event, context) => {
   const calls = connections.Items.map(async (connection) => {
 
     const id = connection.connectionId.S;
-    console.log(id);
+    
     try {
       await api.postToConnection({ ConnectionId: id, Data: postData }).promise();
     } catch (e) {
       if (e.statusCode === 410) {
         console.log(`Found stale connection, deleting ${id}`);
-        // await ddb.delete({ TableName: TABLE_NAME, Key: { connectionId } }).promise();
+        await DDB.delete({ TableName: process.env.TABLE_NAME, Key: { connectionId: { S: id } } }).promise();
       } else { throw e; }
     }
   });

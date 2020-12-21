@@ -21,7 +21,7 @@
       socket.onerror = function(event) { console.log('Socket has error'); close(); };
 
       socket.onclose = function(event) {
-        // If fail to connect, both onerror() and onclose() are called, 
+        // If fail to connect for any reason (timeout, wrong url, no internet), both onerror() and onclose() are called
         // it may be because of timeout or close() is called explicitly.
         console.log('Socket is closed');
       };
@@ -48,7 +48,9 @@
     let txtInput_onkeyup = function(e) { if (e.keyCode == 13) { send_onclick(); } };
 
     let close_onclick = function() {
+      console.log('Before calling close');
       wsocket.close();
+      console.log('After calling close');
     };
 
   </script>
