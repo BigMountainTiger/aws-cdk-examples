@@ -8,8 +8,6 @@ exports.lambdaHandler = async (event, context) => {
   const params = { TableName: process.env.TABLE_NAME, ProjectionExpression: 'connectionId' };
   const connections = await DDB.scan(params).promise();
 
-  console.log(connections);
-
   const api = new AWS.ApiGatewayManagementApi({
     apiVersion: '2018-11-29',
     endpoint: event.requestContext.domainName + '/' + event.requestContext.stage
@@ -26,7 +24,7 @@ exports.lambdaHandler = async (event, context) => {
     } catch (e) {
       if (e.statusCode === 410) {
         console.log(`Found stale connection, deleting ${id}`);
-        await DDB.delete({ TableName: process.env.TABLE_NAME, Key: { connectionId: { S: id } } }).promise();
+        await DDB.deleteItem({ TableName: process.env.TABLE_NAME, Key: { connectionId: { S: id } } }).promise();
       } else { throw e; }
     }
   });
