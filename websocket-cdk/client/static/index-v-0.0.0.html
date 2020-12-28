@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <style> html, input {font-family: courier,arial,helvetica;} </style>
+  <script>
+    let URL = 'wss://qx1oamgzzl.execute-api.us-east-1.amazonaws.com/prod';
+    let wsocket = null;
+    let update_msg = function(msg) { document.getElementById('divMsg').innerHTML = msg; };
+    
+    let socket_connect = function() {
+
+      let STATE = { CONNECTING: 0, OPEN: 1, CLOSING: 2, CLOSED: 3 };
+
+      update_msg(`Trying to connect the websocket`);
+
+      let socket = new WebSocket(URL);
+
+      let close = function() {
+        if (socket.readyState != STATE.CLOSED || socket.readyState != STATE.CLOSING) { socket.close(); }
+      };
+
+      socket.onerror = function(event) { console.log('Socket has error'); close(); };
+
+      socket.onclose = function(event) {
+        // If fail to connect for any reason (timeout, wrong url, no internet), both onerror() and onclose() are called
+        // If no internet, close() method needs to timeout. It is 20 seconds firefox. 2 minutes chrome.
+        console.log('Socket is closed');
+      };
+
+      socket.onmessage = function (event) {
+        console.log('Message is coming - ' + event.data)
+        update_msg(event.data); 
+      };
+
+      socket.onopen = function (event) { update_msg(`Websocket is connected`); };
+
+      return socket;
+    }
+
+    let wnd_onload = function(e) { wsocket = socket_connect(); };
+
+    let send_onclick = function() {
+      let element = document.getElementById('txtInput');
+
+      let txt = element.value.trim();
+      let msg = { action: 'sendmessage', data: txt };
+
+      wsocket.send(JSON.stringify(msg));
+      element.value = '';
+    };
+
+    let txtInput_onkeyup = function(e) { if (e.keyCode == 13) { send_onclick(); } };
+
+    let close_onclick = function() {
+      console.log('Before calling close');
+      wsocket.close();
+      console.log('After calling close');
+    };
+
+  </script>
+
+  <body onload="return wnd_onload(event)">
+
+    <div>
+      <input id="txtInput" type="text" onkeyup="return txtInput_onkeyup(event)" />
+      <button onclick="return send_onclick()">Send</button>
+      <button onclick="return close_onclick()">Close</button>
+    </div>
+    <br />
+    <div id="divMsg"></div>
+    
+  </body>
+
+  <script>
+    (function() {
+      let url = 'http://localhost:3000/refresh-script';
+
+      let xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          let script_url = (this.responseText || '').trim();
+          
+          if (script_url) {
+            let script = document.createElement('script');
+            script.setAttribute('src', script_url);
+            document.head.appendChild(script);
+          }
+        }
+      };
+
+      xhttp.open("GET", url, true);
+      xhttp.send();
+    })();
+  </script>
+</html>
