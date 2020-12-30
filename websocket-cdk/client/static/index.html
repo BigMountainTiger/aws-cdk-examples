@@ -1,100 +1,33 @@
-<!-- https://stackoverflow.com/questions/9502929/why-doesnt-my-chrome-profiler-show-proper-retaining-paths-for-my-objects-and-w -->
-
-<!-- This example is to show that if a socket is closed and there is no reference to it, it is garbage collectable. -->
-<!-- One interesting finding is that if there is console.log() used the chrome devtool will prevent the object from garbage collected -->
-<!-- until the console is cleared -->
-
 <!DOCTYPE html>
 <html>
   <style> html, input {font-family: courier,arial,helvetica;} </style>
   <script>
-    let wsocket = null;
-    let update_msg = function(msg) { document.getElementById('divMsg').innerHTML = msg; };
 
-    let config = {
-      url: 'wss://qx1oamgzzl.execute-api.us-east-1.amazonaws.com/prod',
-      onerror: function(event) {
-        console.log('Socket has error ');
-        console.log(event);
-      },
-      onclose: function(event) {
-        console.log('Socket is closed');
-      },
-      onmessage: function(event) {
-        console.log('Message is coming - ' + event.data); update_msg(event.data);
-      },
-      onopen: function(event) {
-        console.log(`Websocket is connected`);
-        update_msg(`Websocket is connected`);
-      }
-    };
-
-    let RSocket = function(config) {
+    let ABCD = function(entry) {
       let s = this;
+      s.entry = entry;
 
-      let STATE = { CONNECTING: 0, OPEN: 1, CLOSING: 2, CLOSED: 3 };
-      let c = Object.assign({}, config);
-
-      let socket = new WebSocket(c.url);
-      let close = function() {
-        if (socket.readyState != STATE.CLOSED || socket.readyState != STATE.CLOSING) { socket.close(); }
-      };
-
-      let f = function() {};
-      socket.onerror = function(event) { close(); (c.onerror || function() {} )(event); };
-      socket.onclose = function(event) { (c.onclose || function() {} )(event); };
-      socket.onmessage = function (event) { (c.onmessage || function() {} )(event); };
-      socket.onopen = function (event) { (c.onopen || function() {} )(event); };
-
-      s.send = function(msg) { socket.send(JSON.stringify(msg)); }
-      s.close = function() { socket.close(); }
-    };
-
-    let wnd_onload = function(e) {
-      wsocket = new RSocket(config); 
-    };
-
-    let send_onclick = function() {
-      let element = document.getElementById('txtInput');
-
-      let txt = element.value.trim();
-      let msg = { action: 'sendmessage', data: txt };
-
-      wsocket.send({ action: 'sendmessage', data: txt });
-      element.value = '';
-    };
-
-    let txtInput_onkeyup = function(e) { if (e.keyCode == 13) { send_onclick(); } };
-
-    let sockets = [];
-    let close_onclick = function() {
-      while(sockets.length > 0) {
-        sockets.pop().close();
+      s.log = function() {
+        console.log(`This is log from ${s.entry}`);
       }
     };
+    
+    let objs = [];    
+    let test_onclick = function() {
 
-    let experiment_onclick = function() {
-      let n = 10;
+      for (let i = 0; i < 100; i++) {
+        // objs.push(new ABCD(i));
 
-      for (let i = 0; i < n; i++) {
-        sockets.push(new RSocket(config));
+        console.log(new ABCD(i));
       }
-
-      console.log(`Loop finished - ${n}`);
     };
-
   </script>
 
-  <body onload="return wnd_onload(event)">
+  <body>
 
     <div>
-      <input id="txtInput" type="text" onkeyup="return txtInput_onkeyup(event)" />
-      <button onclick="return send_onclick()">Send</button>
-      <button onclick="return experiment_onclick()">Experiment</button>
-      <button onclick="return close_onclick()">Close</button>
+      <button onclick="return test_onclick()">Test</button>
     </div>
-    <br />
-    <div id="divMsg"></div>
     
   </body>
 
