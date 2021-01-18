@@ -5,15 +5,15 @@ const aws4 = require('aws4');
 global.fetch = require('node-fetch');
 
 const REGION = 'us-east-1';
-const USER_POOL_ID = 'us-east-1_RdHhI3fvv';
-const USER_POOL_CLIENT_ID = '3essgo40k46n6jf9d8pr0i7sv5';
-const IDENTITY_POOL_ID = 'us-east-1:d0117ffb-8011-43fc-a0a1-b591df1cf558';
+const USER_POOL_ID = 'us-east-1_ZJiWLU2Bs';
+const USER_POOL_CLIENT_ID = '36edd75083nn27fptjbe4d38u';
+const IDENTITY_POOL_ID = 'us-east-1:3c21b85f-71f1-4109-94ec-e140e294b293';
 
 const IDENTITY_PROVIDER_NAME = `cognito-idp.us-east-1.amazonaws.com/${USER_POOL_ID}`
 
-const URL_PREFIX = 'abe9nunpah';
-const HOST_NAME = `${URL_PREFIX}.execute-api.us-east-1.amazonaws.com`;
-const API_URL = `https://${URL_PREFIX}.execute-api.us-east-1.amazonaws.com/prod/`;
+// const URL_PREFIX = 'vi1hq3kyh0';
+// const HOST_NAME = `${URL_PREFIX}.execute-api.us-east-1.amazonaws.com`;
+// const API_URL = `https://${URL_PREFIX}.execute-api.us-east-1.amazonaws.com/prod/`;
 
 const USER = 'song';
 const PASSWORD = 'Password123';
@@ -108,20 +108,19 @@ const make_api_call = async (identities) => {
   console.log('End login');
 
   console.log(token);
-  console.log();
 
-  console.log('Start get_keys');
-  const identities = await get_keys(token);
-  console.log('End get_keys');
+  // console.log('Start get_keys');
+  // const identities = await get_keys(token);
+  // console.log('End get_keys');
 
-  console.log(identities);
+  // console.log(identities);
 
-  try {
-    const result = await make_api_call(identities);
-    console.log(result.data);
-  } catch(e) {
-    //console.log(e);
-  }
+  // try {
+  //   const result = await make_api_call(identities);
+  //   console.log(result.data);
+  // } catch(e) {
+  //   console.log(e);
+  // }
 
 })();
 

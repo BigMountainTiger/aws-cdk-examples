@@ -1,5 +1,8 @@
 aws cognito-idp admin-initiate-auth --user-pool-id us-east-1_50wBjc9L7 --client-id 3719k34k2qgfdi4238eim58gn0 --auth-flow ADMIN_NO_SRP_AUTH --auth-parameters USERNAME="song",PASSWORD="Password123" 
 
+Youtube - https://www.youtube.com/watch?v=m7y582V3yYc&list=PL5KTLzN85O4KmW6BZHtYb37wmKc18-Mfk&index=1&ab_channel=SrceCde
+
+
 The policy Statement to access the api gateway
 {
     "Version": "2012-10-17",
