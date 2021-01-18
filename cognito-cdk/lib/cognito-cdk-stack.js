@@ -93,22 +93,22 @@ class CognitoCdkStack extends cdk.Stack {
         handler: 'index.handler'
       });
       
-      // const authorizer = new apigateway.CfnAuthorizer(this, AUTHORIZER_NAME, {
-      //   name: AUTHORIZER_NAME,
-      //   identitySource: 'method.request.header.Authorization',
-      //   restApiId: api.restApiId,
-      //   providerArns: [user_pool.userPoolArn],
-      //   type: apigateway.AuthorizationType.COGNITO,
-      // });
-
-      // api.root.addMethod("GET", new apigateway.LambdaIntegration(f, { proxy: true }), {
-      //   authorizationType: apigateway.AuthorizationType.COGNITO,
-      //   authorizer: { authorizerId: authorizer.ref }
-      // });
+      const authorizer = new apigateway.CfnAuthorizer(this, AUTHORIZER_NAME, {
+        name: AUTHORIZER_NAME,
+        identitySource: 'method.request.header.Authorization',
+        restApiId: api.restApiId,
+        providerArns: [user_pool.userPoolArn],
+        type: apigateway.AuthorizationType.COGNITO,
+      });
 
       api.root.addMethod("GET", new apigateway.LambdaIntegration(f, { proxy: true }), {
-        authorizationType: apigateway.AuthorizationType.IAM
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+        authorizer: { authorizerId: authorizer.ref }
       });
+
+      // api.root.addMethod("GET", new apigateway.LambdaIntegration(f, { proxy: true }), {
+      //   authorizationType: apigateway.AuthorizationType.IAM
+      // });
 
       return api;
     };

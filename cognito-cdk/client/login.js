@@ -5,11 +5,15 @@ const aws4 = require('aws4');
 global.fetch = require('node-fetch');
 
 const REGION = 'us-east-1';
-const USER_POOL_ID = 'us-east-1_qzRHIZK9W';
-const USER_POOL_CLIENT_ID = '76fduugu2k2pk86ho3l94mf2ju';
-const IDENTITY_POOL_ID = 'us-east-1:79400f5a-1321-45d9-8345-84bf45996d20';
-const IDENTITY_PROVIDER_NAME = 'cognito-idp.us-east-1.amazonaws.com/us-east-1_qzRHIZK9W'
-const API_URL = ' https://i41ty53jd2.execute-api.us-east-1.amazonaws.com/prod';
+const USER_POOL_ID = 'us-east-1_RdHhI3fvv';
+const USER_POOL_CLIENT_ID = '3essgo40k46n6jf9d8pr0i7sv5';
+const IDENTITY_POOL_ID = 'us-east-1:d0117ffb-8011-43fc-a0a1-b591df1cf558';
+
+const IDENTITY_PROVIDER_NAME = `cognito-idp.us-east-1.amazonaws.com/${USER_POOL_ID}`
+
+const URL_PREFIX = 'abe9nunpah';
+const HOST_NAME = `${URL_PREFIX}.execute-api.us-east-1.amazonaws.com`;
+const API_URL = `https://${URL_PREFIX}.execute-api.us-east-1.amazonaws.com/prod/`;
 
 const USER = 'song';
 const PASSWORD = 'Password123';
@@ -61,7 +65,7 @@ const get_keys = async (token) => {
   const p = new Promise((rs, rj) => {
     AWS.config.credentials.get(function(err){
       if (err) { rj(err); return;}
-  
+
       const identities = {
         accessKeyId: AWS.config.credentials.accessKeyId,
         secretAccessKey: AWS.config.credentials.secretAccessKey,
@@ -79,18 +83,18 @@ const get_keys = async (token) => {
 const make_api_call = async (identities) => {
 
   let option = {
-    hostname: 'i41ty53jd2.execute-api.us-east-1.amazonaws.com',
+    hostname: HOST_NAME,
     method: "GET",
-    url: 'https://i41ty53jd2.execute-api.us-east-1.amazonaws.com/prod',
+    url: API_URL,
     path: '/prod'
   };
 
   option = aws4.sign(option,
-    {
-      accessKeyId: identities.accessKeyId,
-      secretAccessKey: identities.secretAccessKey,
-      sessionToken: identities.sessionToken
-    });
+  {
+    accessKeyId: identities.accessKeyId,
+    secretAccessKey: identities.secretAccessKey,
+    sessionToken: identities.sessionToken
+  });
 
   delete option.headers['Host']
   delete option.headers['Content-Length']
@@ -99,14 +103,24 @@ const make_api_call = async (identities) => {
 };
 
 (async () => {
+  console.log('Start login');
   const token = await login();
+  console.log('End login');
+
+  console.log(token);
+  console.log();
+
+  console.log('Start get_keys');
   const identities = await get_keys(token);
+  console.log('End get_keys');
+
+  console.log(identities);
 
   try {
     const result = await make_api_call(identities);
     console.log(result.data);
   } catch(e) {
-    console.log(e);
+    //console.log(e);
   }
 
 })();
