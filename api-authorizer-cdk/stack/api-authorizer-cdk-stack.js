@@ -24,9 +24,21 @@ class ApiAuthorizerCdkStack extends cdk.Stack {
     const api_func = new lambda.Function(this, API_FUNCTION_NAME, {
       runtime: lambda.Runtime.NODEJS_12_X,
       functionName: API_FUNCTION_NAME,
+      description: API_FUNCTION_NAME,
       timeout: cdk.Duration.seconds(120),
       role: role,
       code: lambda.Code.fromAsset('./lambda/api-function'),
+      handler: 'index.handler'
+    });
+
+    const AUTHORIZER_FUNCTION_NAME = `${id}-AUTHORIZER_FUNCTION`;
+    const authorizer_func = new lambda.Function(this, AUTHORIZER_FUNCTION_NAME, {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      functionName: AUTHORIZER_FUNCTION_NAME,
+      description: AUTHORIZER_FUNCTION_NAME,
+      timeout: cdk.Duration.seconds(120),
+      role: role,
+      code: lambda.Code.fromAsset('./lambda/authorizer-function'),
       handler: 'index.handler'
     });
 
@@ -41,8 +53,14 @@ class ApiAuthorizerCdkStack extends cdk.Stack {
       endpointTypes: [apigateway.EndpointType.REGIONAL]
     });
 
+    const AUTH_NAME = `${id}-AUTH`;
+    let auth = new apigateway.RequestAuthorizer(this, AUTH_NAME, {
+      identitySources: ['method.request.header.Authorization'],
+      handler: authorizer_func
+    });
+
     const api_root = api.root;
-    api_root.addMethod('GET', new apigateway.LambdaIntegration(api_func, { proxy: true }));
+    api_root.addMethod('GET', new apigateway.LambdaIntegration(api_func, { proxy: true }), { authorizer: auth });
   }
 }
 
