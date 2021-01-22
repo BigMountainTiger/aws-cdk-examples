@@ -4,9 +4,12 @@
   "author": "Song Li",
   "private": true,
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "^1.85.0",
-    "@aws-cdk/aws-iam": "^1.85.0",
-    "@aws-cdk/aws-lambda": "^1.85.0",
-    "@aws-cdk/core": "1.85.0"
+    "@aws-cdk/aws-apigateway": "^1.86.0",
+    "@aws-cdk/aws-cognito": "^1.86.0",
+    "@aws-cdk/aws-iam": "^1.86.0",
+    "@aws-cdk/aws-lambda": "^1.86.0",
+    "@aws-cdk/core": "1.86.0",
+    "amazon-cognito-identity-js": "^4.5.7",
+    "node-fetch": "^2.6.1"
   }
 }

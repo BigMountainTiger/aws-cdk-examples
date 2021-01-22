@@ -2,6 +2,7 @@ const cdk = require('@aws-cdk/core');
 const lambda = require('@aws-cdk/aws-lambda');
 const iam = require('@aws-cdk/aws-iam');
 const apigateway = require('@aws-cdk/aws-apigateway');
+const cognito = require('@aws-cdk/aws-cognito');
 
 class ApiAuthorizerCdkStack extends cdk.Stack {
 
@@ -61,6 +62,29 @@ class ApiAuthorizerCdkStack extends cdk.Stack {
 
     const api_root = api.root;
     api_root.addMethod('GET', new apigateway.LambdaIntegration(api_func, { proxy: true }), { authorizer: auth });
+
+    // Cognito
+    const USERPOOL_NAME = `${id}-USERPOOL`;
+    const user_pool = new cognito.UserPool(this, USERPOOL_NAME, {
+      userPoolName: USERPOOL_NAME,
+      passwordPolicy: {},
+      userInvitation: {
+        emailSubject: `Invite to join our awesome app!`,
+        emailBody: `Hello {username},
+          you have been invited to join our awesome app! Your temporary password is {####}`,
+        smsMessage: `Hello {username},
+          your temporary password for our awesome app is {####}`
+      }
+    });
+
+    const USERPOOL_CLIENT_NAME = `${id}-USERPOOL_CLIENT`;
+    new cognito.UserPoolClient(this, USERPOOL_CLIENT_NAME, {
+      userPool: user_pool,
+      userPoolClientName: USERPOOL_CLIENT_NAME,
+      generateSecret: false,
+      authFlows: { userPassword: true, userSrp: true, refreshToken: true }
+    });
+
   }
 }
 
