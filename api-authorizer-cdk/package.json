@@ -10,6 +10,9 @@
     "@aws-cdk/aws-lambda": "^1.86.0",
     "@aws-cdk/core": "1.86.0",
     "amazon-cognito-identity-js": "^4.5.7",
+    "aws-sdk": "^2.831.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.4",
     "node-fetch": "^2.6.1"
   }
 }
