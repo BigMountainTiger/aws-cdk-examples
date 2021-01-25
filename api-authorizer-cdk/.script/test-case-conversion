@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export ENV=Develop
+STR=ThisIsMyCase
+
+Result=$(.script/case-conversion $STR $ENV)
+
+echo $Result

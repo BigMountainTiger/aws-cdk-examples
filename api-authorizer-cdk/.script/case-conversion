@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# To upper case
+# echo ${BRANCH^^}
+
+# To lower case
+# echo ${BRANCH,,}
+
+# STR=$1
+# ENV=$2
+
+SERVICE_NAME="ThisIsMyCaseSensitiveMicroService"
+BRANCH="Development"
+
+hyphen=''
+function pascal2hyphen() {
+  for (( i=0; i<${#SERVICE_NAME}; i++ )); do
+    n=${SERVICE_NAME:$i:1}
+
+    if [[ $n =~ [A-Z] ]] && [[ ${hyphen} != '' ]]; then
+      hyphen="${hyphen}-"
+    fi
+
+    hyphen="${hyphen}${n,,}"
+  done
+}
+
+pascal2hyphen 
+
+echo ${BRANCH,,}.${hyphen}
