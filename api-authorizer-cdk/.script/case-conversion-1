@@ -4,10 +4,8 @@
 SERVICE_NAME='ThisIsMyCaseSensitiveMicroService'
 BRANCH='Development'
 
-hyphen=''
-function add_hyphen() { if [[ $n =~ [A-Z] ]] && [[ ${hyphen} != '' ]]; then hyphen=${hyphen}-; fi; }
-function append_text { n=${SERVICE_NAME:$i:1}; add_hyphen; hyphen=${hyphen}${n,,}; }
-for (( i=0; i<${#SERVICE_NAME}; i++ )); do append_text; done
+hyphen='';
+for (( i=0; i<${#SERVICE_NAME}; i++ )); do n=${SERVICE_NAME:$i:1}; if [[ $n =~ [A-Z] ]] && [[ ${hyphen} != '' ]]; then hyphen=${hyphen}-; fi; hyphen=${hyphen}${n,,}; done
 
 echo 'This is the result of the conversion --------------------------------'
 echo ${BRANCH,,}.${hyphen}
