@@ -6,6 +6,7 @@
   "dependencies": {
     "@aws-cdk/aws-s3": "^1.86.0",
     "@aws-cdk/core": "1.86.0",
+    "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }
 }
