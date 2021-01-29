@@ -1,0 +1,350 @@
+Resources:
+  DynamoCdkStackDynamoTableB15747C8:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      KeySchema:
+        - AttributeName: service
+          KeyType: HASH
+      AttributeDefinitions:
+        - AttributeName: service
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      TableName: DynamoCdkStackDynamoTable
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStackDynamoTable/Resource
+  DynamoCdkStackLAMBDAROLE34D3D240:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      Description: DynamoCdkStack-LAMBDA_ROLE
+      RoleName: DynamoCdkStack-LAMBDA_ROLE
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-LAMBDA_ROLE/Resource
+  DynamoCdkStackLAMBDAROLEDefaultPolicy42412D9A:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: DynamoCdkStackLAMBDAROLEDefaultPolicy42412D9A
+      Roles:
+        - Ref: DynamoCdkStackLAMBDAROLE34D3D240
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-LAMBDA_ROLE/DefaultPolicy/Resource
+  DynamoCdkStackIN349DD727:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters98ce8ecabe7926da6c2f99220b261913fdb61870613fa20a357e85e390a65d62S3Bucket63C757B0
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters98ce8ecabe7926da6c2f99220b261913fdb61870613fa20a357e85e390a65d62S3VersionKey21D8959D
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters98ce8ecabe7926da6c2f99220b261913fdb61870613fa20a357e85e390a65d62S3VersionKey21D8959D
+      Role:
+        Fn::GetAtt:
+          - DynamoCdkStackLAMBDAROLE34D3D240
+          - Arn
+      Description: DynamoCdkStack-IN
+      FunctionName: DynamoCdkStack-IN
+      Handler: app.lambdaHandler
+      Runtime: python3.8
+      Timeout: 30
+    DependsOn:
+      - DynamoCdkStackLAMBDAROLEDefaultPolicy42412D9A
+      - DynamoCdkStackLAMBDAROLE34D3D240
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-IN/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/dynamo-cdk/lambdas/add-service
+      aws:asset:property: Code
+  DynamoCdkStackAGWYE4081FBB:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: DynamoCdkStack-AGWY
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: DynamoCdkStack-AGWY
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Resource
+  DynamoCdkStackAGWYCloudWatchRoleB5115F90:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/CloudWatchRole/Resource
+  DynamoCdkStackAGWYAccount28945199:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - DynamoCdkStackAGWYCloudWatchRoleB5115F90
+          - Arn
+    DependsOn:
+      - DynamoCdkStackAGWYE4081FBB
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Account
+  DynamoCdkStackAGWYDeployment117D74B1aa92f32d86e00ceaceaea2c164696a25:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: DynamoCdkStackAGWYE4081FBB
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - DynamoCdkStackAGWYOPTIONS22113825
+      - DynamoCdkStackAGWYserviceaddOPTIONSFD781E1F
+      - DynamoCdkStackAGWYserviceaddPOST3A50263B
+      - DynamoCdkStackAGWYserviceadd5FCD0989
+      - DynamoCdkStackAGWYserviceOPTIONS193BAFBB
+      - DynamoCdkStackAGWYservice123FB2F4
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Deployment/Resource
+  DynamoCdkStackAGWYDeploymentStageprod32CAD6C0:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: DynamoCdkStackAGWYE4081FBB
+      DeploymentId:
+        Ref: DynamoCdkStackAGWYDeployment117D74B1aa92f32d86e00ceaceaea2c164696a25
+      StageName: prod
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/DeploymentStage.prod/Resource
+  DynamoCdkStackAGWYOPTIONS22113825:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Fn::GetAtt:
+          - DynamoCdkStackAGWYE4081FBB
+          - RootResourceId
+      RestApiId:
+        Ref: DynamoCdkStackAGWYE4081FBB
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Default/OPTIONS/Resource
+  DynamoCdkStackAGWYservice123FB2F4:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - DynamoCdkStackAGWYE4081FBB
+          - RootResourceId
+      PathPart: service
+      RestApiId:
+        Ref: DynamoCdkStackAGWYE4081FBB
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Default/service/Resource
+  DynamoCdkStackAGWYserviceOPTIONS193BAFBB:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Ref: DynamoCdkStackAGWYservice123FB2F4
+      RestApiId:
+        Ref: DynamoCdkStackAGWYE4081FBB
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Default/service/OPTIONS/Resource
+  DynamoCdkStackAGWYserviceadd5FCD0989:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Ref: DynamoCdkStackAGWYservice123FB2F4
+      PathPart: add
+      RestApiId:
+        Ref: DynamoCdkStackAGWYE4081FBB
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Default/service/add/Resource
+  DynamoCdkStackAGWYserviceaddOPTIONSFD781E1F:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Ref: DynamoCdkStackAGWYserviceadd5FCD0989
+      RestApiId:
+        Ref: DynamoCdkStackAGWYE4081FBB
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Default/service/add/OPTIONS/Resource
+  DynamoCdkStackAGWYserviceaddPOSTApiPermissionDynamoCdkStackDynamoCdkStackAGWY714E3C2FPOSTserviceadd4115E070:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - DynamoCdkStackIN349DD727
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: DynamoCdkStackAGWYE4081FBB
+            - /
+            - Ref: DynamoCdkStackAGWYDeploymentStageprod32CAD6C0
+            - /POST/service/add
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Default/service/add/POST/ApiPermission.DynamoCdkStackDynamoCdkStackAGWY714E3C2F.POST..service.add
+  DynamoCdkStackAGWYserviceaddPOSTApiPermissionTestDynamoCdkStackDynamoCdkStackAGWY714E3C2FPOSTserviceaddFCE1101A:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - DynamoCdkStackIN349DD727
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: DynamoCdkStackAGWYE4081FBB
+            - /test-invoke-stage/POST/service/add
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Default/service/add/POST/ApiPermission.Test.DynamoCdkStackDynamoCdkStackAGWY714E3C2F.POST..service.add
+  DynamoCdkStackAGWYserviceaddPOST3A50263B:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId:
+        Ref: DynamoCdkStackAGWYserviceadd5FCD0989
+      RestApiId:
+        Ref: DynamoCdkStackAGWYE4081FBB
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - DynamoCdkStackIN349DD727
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: DynamoCdkStack/DynamoCdkStack-AGWY/Default/service/add/POST/Resource
+Parameters:
+  AssetParameters98ce8ecabe7926da6c2f99220b261913fdb61870613fa20a357e85e390a65d62S3Bucket63C757B0:
+    Type: String
+    Description: S3 bucket for asset "98ce8ecabe7926da6c2f99220b261913fdb61870613fa20a357e85e390a65d62"
+  AssetParameters98ce8ecabe7926da6c2f99220b261913fdb61870613fa20a357e85e390a65d62S3VersionKey21D8959D:
+    Type: String
+    Description: S3 key for asset version "98ce8ecabe7926da6c2f99220b261913fdb61870613fa20a357e85e390a65d62"
+  AssetParameters98ce8ecabe7926da6c2f99220b261913fdb61870613fa20a357e85e390a65d62ArtifactHashE9D27476:
+    Type: String
+    Description: Artifact hash for asset "98ce8ecabe7926da6c2f99220b261913fdb61870613fa20a357e85e390a65d62"
+Outputs:
+  DynamoCdkStackAGWYEndpoint59CCD522:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: DynamoCdkStackAGWYE4081FBB
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: DynamoCdkStackAGWYDeploymentStageprod32CAD6C0
+          - /
+
