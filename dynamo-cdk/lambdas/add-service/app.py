@@ -8,11 +8,11 @@ def lambdaHandler(event, context):
   if entry not in data:
     print(f'{entry} is not in data')
 
-  print(data['service'])
+  # print(data['service'])
 
   return {
     'statusCode': 200,
     'body': json.dumps({
-      'presigned_url': 'This is OK'
+      'event': event
     })
   }
