@@ -5,6 +5,8 @@ CONSTR = 'postgres://postgres:Password123@database-1.cw18weh1liqq.us-east-1.rds.
 
 def connect():
 
+  sql = 'insert into public.student ("Name") values (%s);'
+
   conn = None
 
   try:
@@ -12,13 +14,13 @@ def connect():
     conn = psycopg2.connect(CONSTR)
     cur = conn.cursor()
 
-    cur.execute('SELECT version()')
-    db_version = cur.fetchone()
+    cur.execute(sql, ('Song Li', ))
+    conn.commit()
+
     cur.close()
 
-    print(db_version)
 
-  except (Exception) as error:
+  except (Exception, psycopg2.DatabaseError) as error:
     print(error)
 
   finally:
