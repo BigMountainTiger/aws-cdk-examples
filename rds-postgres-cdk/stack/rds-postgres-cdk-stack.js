@@ -32,6 +32,8 @@ class RdsPostgresCdkStack extends cdk.Stack {
     const instance = new rds.DatabaseInstance(this, RDS_DATABASE_NAME, {
       databaseName: 'StudentDB',
       instanceIdentifier: 'Database-1',
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      deleteAutomatedBackups: true,
       engine: rds.DatabaseInstanceEngine.postgres({ version: rds.PostgresEngineVersion.VER_12_4}),
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.MICRO),
       credentials: rds.Credentials.fromPassword('postgres', cdk.SecretValue.plainText('Password123')),
