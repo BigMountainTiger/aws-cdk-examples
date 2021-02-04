@@ -7,14 +7,14 @@ def connect():
 
   conn = None
 
-  sql = 'select id, "Name" from public.student where "Name" = (%s)'
+  sql = 'select id, name from public.student where name = (%s)'
 
   try:
 
     conn = psycopg2.connect(CONSTR)
     cur = conn.cursor()
 
-    cur.execute(sql, ('Song LI',))
+    cur.execute(sql, ('Song Li',))
 
     rows = cur.fetchall()
 

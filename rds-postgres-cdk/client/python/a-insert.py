@@ -5,7 +5,7 @@ CONSTR = 'postgres://postgres:Password123@database-1.cw18weh1liqq.us-east-1.rds.
 
 def connect():
 
-  sql = 'insert into public.student ("Name") values (%s);'
+  sql = 'insert into public.student (name) values (%s);'
 
   conn = None
 

@@ -4,14 +4,14 @@ drop table if exists public.student;
 
 CREATE TABLE public.student (
 	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-	"Name" varchar NOT NULL,
+	name varchar NOT NULL,
 	CONSTRAINT student_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE public.student_class (
 	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	student_id int4 NOT NULL,
-	"Name" varchar NOT NULL,
+	name varchar NOT NULL,
 	score int2 NULL,
 	CONSTRAINT student_class_pk PRIMARY KEY (id)
 );
