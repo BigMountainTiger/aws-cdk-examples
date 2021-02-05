@@ -44,8 +44,25 @@ AS $function$
 BEGIN
  
  return QUERY
- SELECT s.id, s.name from public.student s where id = student_id;
+ SELECT s.id, s.name from public.student s where s.id = student_id;
 
 END; $function$;
 
+-- public.get_a_student_by_name(student_name varchar);
+drop function if exists public.get_a_student_by_name(student_name varchar);
 
+CREATE OR REPLACE FUNCTION public.get_a_student_by_name(student_name varchar)
+ RETURNS TABLE(id int4, name varchar)
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+ 
+ return QUERY
+ SELECT s.id, s.name from public.student s where s.name = student_name;
+
+END; $function$;
+
+-- Added test data
+insert into public.student (name) values ('Song Li - 1');
+insert into public.student (name) values ('Song Li - 2');
+insert into public.student (name) values ('Song Li - 3');
