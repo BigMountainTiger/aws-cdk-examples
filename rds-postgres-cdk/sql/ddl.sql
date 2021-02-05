@@ -66,3 +66,4 @@ END; $function$;
 insert into public.student (name) values ('Song Li - 1');
 insert into public.student (name) values ('Song Li - 2');
 insert into public.student (name) values ('Song Li - 3');
+
