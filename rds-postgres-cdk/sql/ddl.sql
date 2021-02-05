@@ -2,13 +2,13 @@
 drop table if exists public.student_class;
 drop table if exists public.student;
 
-CREATE TABLE public.student (
+CREATE TABLE IF NOT EXISTS public.student (
 	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	name varchar NOT NULL,
 	CONSTRAINT student_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE public.student_class (
+CREATE TABLE IF NOT EXISTS public.student_class (
 	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	student_id int4 NOT NULL,
 	name varchar NOT NULL,
