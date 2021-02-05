@@ -36,6 +36,17 @@ class LayerPythonCdkStack extends cdk.Stack {
       layers: [layer],
       handler: 'app.lambdaHandler'
     });
+
+    // This is a lambda without the layer. Test where to put the dependencies
+    const LAMBDA_TEST_NAME = `${id}-LAMBDA_TEST`;
+    new lambda.Function(this, LAMBDA_TEST_NAME, {
+      runtime: lambda.Runtime.PYTHON_3_8,
+      functionName: LAMBDA_TEST_NAME,
+      role: role,
+      code: lambda.Code.fromAsset('./Python/Lambda-test'),
+      handler: 'app.lambdaHandler'
+    });
+
   }
 }
 
