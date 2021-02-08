@@ -29,11 +29,15 @@ CREATE INDEX tenant_digitalassetmanagers_digitalassetmanager_id_idx ON public.te
 CREATE INDEX tenant_digitalassetmanagers_tenant_id_idx ON public.tenant_digitalassetmanagers USING btree (tenant_id);
 
 ALTER TABLE public.tenant_digitalassetmanagers
-	ADD CONSTRAINT tenant_digitalassetmanagers_tenant_fk FOREIGN KEY (tenant_id)
+	ADD CONSTRAINT tenant_digitalassetmanagers_tenant_fk
+	FOREIGN KEY (tenant_id)
 	REFERENCES tenant(id)
 	ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ALTER TABLE public.tenant_digitalassetmanagers
 	ADD CONSTRAINT tenant_digitalassetmanagers_digitalassetmanagers_fk
-	FOREIGN KEY (digitalassetmanager_id) REFERENCES tenant_digitalassetmanagers(id)
+	FOREIGN KEY (digitalassetmanager_id)
+	REFERENCES digitalassetmanagers(id)
 	ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
