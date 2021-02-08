@@ -23,7 +23,8 @@ CREATE TABLE public.tenant_digitalassetmanagers (
 	user_name varchar NOT NULL,
 	private_key varchar NOT NULL,
 	url varchar NOT NULL,
-	CONSTRAINT tenant_digitalassetmanagers_pk PRIMARY KEY (id)
+	CONSTRAINT tenant_digitalassetmanagers_pk PRIMARY KEY (id),
+	CONSTRAINT tenant_digitalassetmanagers_un UNIQUE (tenant_id, digitalassetmanager_id)
 );
 CREATE INDEX tenant_digitalassetmanagers_digitalassetmanager_id_idx ON public.tenant_digitalassetmanagers USING btree (digitalassetmanager_id);
 CREATE INDEX tenant_digitalassetmanagers_tenant_id_idx ON public.tenant_digitalassetmanagers USING btree (tenant_id);
