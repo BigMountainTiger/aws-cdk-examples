@@ -17,11 +17,10 @@ insert into tenant_digitalassetmanagers (tenant_id, digitalassetmanager_id, user
 update tenant set name = 'Updated - ' || name where id = 1;
 update digitalassetmanagers set name = 'Updated - ' || name where id = 1;
 
-select * from tenant;
-select * from digitalassetmanagers;
-
 update tenant_digitalassetmanagers set user_name = 'Updated' || user_name where id = 1;
 
+select * from tenant;
+select * from digitalassetmanagers;
 select * from tenant_digitalassetmanagers;
 
 
