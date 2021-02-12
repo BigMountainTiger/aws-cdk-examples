@@ -11,11 +11,11 @@ import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 export class AppComponent {
   title = 'angular-app';
 
-  onTest() {
+  async login(user, pwd) {
     const USER_POOL_ID = 'us-east-1_n37H054sQ';
     const USER_POOL_CLIENT_ID = '1pd3ri7i655lk7bo39e3bppn23';
-    const USER = 'song';
-    const PASSWORD = 'Password123';
+    let USER = user;
+    let PASSWORD = pwd;
 
     const poolData = {    
       UserPoolId : USER_POOL_ID, 
@@ -26,20 +26,37 @@ export class AppComponent {
     const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({ Username: USER, Password: PASSWORD, });
     const cognitoUser = new AmazonCognitoIdentity.CognitoUser({ Username: USER, Pool: userPool });
 
-    const callback = {
-      onSuccess: (result) => {
-        console.log(result);
-      },
-      onFailure: (e) => { 
-        console.log('error');
-        console.log(e);
-      },
-      newPasswordRequired: (userAttributes) => {
-        delete userAttributes.email_verified;
-        cognitoUser.completeNewPasswordChallenge(PASSWORD, userAttributes, callback);
-      }
-    }
+    const p = new Promise((rs, rj) => {
+      const callback = {
+        onSuccess: (result) => {
+          const data = {
+            access_token: result.getAccessToken().getJwtToken(),
+            id_token: result.getIdToken().getJwtToken(),
+            refresh_token: result.getRefreshToken().getToken()
+          }
 
-    cognitoUser.authenticateUser(authenticationDetails, callback);
+          rs(data);
+        },
+        onFailure: (e) => { 
+          rj(e);
+        },
+        newPasswordRequired: (userAttributes) => {
+          delete userAttributes.email_verified;
+          cognitoUser.completeNewPasswordChallenge(PASSWORD, userAttributes, callback);
+        }
+      }
+
+      cognitoUser.authenticateUser(authenticationDetails, callback);
+    });
+
+    return await p;
+  }
+
+  async onTest() {
+    const USER = 'song';
+    const PASSWORD = 'Password123';
+
+    const token = await this.login(USER, PASSWORD);
+    console.log(token);
   }
 }
