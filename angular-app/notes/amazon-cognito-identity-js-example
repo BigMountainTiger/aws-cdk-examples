@@ -1,0 +1,17 @@
+With the following steps, we can use amazon-cognito-identity-js to get the token 
+from cognito
+
+1. npm i amazon-cognito-identity-js
+2. Add "browser": {
+        "crypto": false
+    } to package.json
+
+3. Add "allowedCommonJsDependencies": [
+        "crypto-js/lib-typedarrays",
+        "crypto-js/hmac-sha256",
+        "crypto-js/enc-base64",
+        "crypto-js/sha256",
+        "buffer",
+        "js-cookie",
+        "isomorphic-unfetch"
+    ] to angular.json => projects => architect => build
