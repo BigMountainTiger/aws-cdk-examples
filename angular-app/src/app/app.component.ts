@@ -1,6 +1,7 @@
 // https://docs.amazonaws.cn/en_us/cognito/latest/developerguide/token-endpoint.html
 
 import { Component } from '@angular/core';
+import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 @Component({
   selector: 'app-root',
@@ -21,8 +22,24 @@ export class AppComponent {
       ClientId : USER_POOL_CLIENT_ID
     }; 
 
+    const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({ Username: USER, Password: PASSWORD, });
+    const cognitoUser = new AmazonCognitoIdentity.CognitoUser({ Username: USER, Pool: userPool });
 
+    const callback = {
+      onSuccess: (result) => {
+        console.log(result);
+      },
+      onFailure: (e) => { 
+        console.log('error');
+        console.log(e);
+      },
+      newPasswordRequired: (userAttributes) => {
+        delete userAttributes.email_verified;
+        cognitoUser.completeNewPasswordChallenge(PASSWORD, userAttributes, callback);
+      }
+    }
 
-    alert('OK');
+    cognitoUser.authenticateUser(authenticationDetails, callback);
   }
 }

@@ -26,7 +26,16 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "crypto-js/lib-typedarrays",
+              "crypto-js/hmac-sha256",
+              "crypto-js/enc-base64",
+              "crypto-js/sha256",
+              "buffer",
+              "js-cookie",
+              "isomorphic-unfetch"
+            ]
           },
           "configurations": {
             "production": {
