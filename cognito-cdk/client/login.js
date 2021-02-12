@@ -5,8 +5,8 @@ const aws4 = require('aws4');
 global.fetch = require('node-fetch');
 
 const REGION = 'us-east-1';
-const USER_POOL_ID = 'us-east-1_ZJiWLU2Bs';
-const USER_POOL_CLIENT_ID = '36edd75083nn27fptjbe4d38u';
+const USER_POOL_ID = 'us-east-1_n37H054sQ';
+const USER_POOL_CLIENT_ID = '1pd3ri7i655lk7bo39e3bppn23';
 const IDENTITY_POOL_ID = 'us-east-1:3c21b85f-71f1-4109-94ec-e140e294b293';
 
 const IDENTITY_PROVIDER_NAME = `cognito-idp.us-east-1.amazonaws.com/${USER_POOL_ID}`
