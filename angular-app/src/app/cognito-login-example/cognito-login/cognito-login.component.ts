@@ -4,11 +4,11 @@ import { Component, OnInit } from '@angular/core';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 @Component({
-  selector: 'app-cognito-login-example',
-  templateUrl: './cognito-login-example.component.html',
-  styleUrls: ['./cognito-login-example.component.css']
+  selector: 'app-cognito-login',
+  templateUrl: './cognito-login.component.html',
+  styleUrls: ['./cognito-login.component.css']
 })
-export class CognitoLoginExampleComponent implements OnInit {
+export class CognitoLoginComponent implements OnInit {
 
   constructor() { }
 
