@@ -18,9 +18,13 @@ export class CognitoLoginComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngAfterViewInit(): void {
-    this.jEditor = new JSONEditor(this.jEditorRef.nativeElement, {mode: 'code'});
+    let jEditor = new JSONEditor(this.jEditorRef.nativeElement, {mode: 'code'});
+
+    jEditor.setText('');
     (document.getElementsByClassName('jsoneditor-poweredBy')[0] as HTMLElement).style.visibility = 'hidden';
     (document.getElementsByClassName('ace_editor ace_hidpi ace-jsoneditor')[0] as HTMLElement).style.fontSize = '13px';
+
+    this.jEditor = jEditor;
   }
 
   ngOnInit(): void {}
@@ -66,19 +70,23 @@ export class CognitoLoginComponent implements OnInit, AfterViewInit {
     return await p;
   }
 
-  async onTest() {
+  async onGetToken() {
     const USER = 'song';
     const PASSWORD = 'Password123';
 
     let jEditor = this.jEditor;
 
-    jEditor.set({});
+    jEditor.setText('');
     const token = await this.login(USER, PASSWORD);
 
     if (jEditor) {
       jEditor.set(token);
       
     }
+  }
+
+  async onClear() {
+    this.jEditor.setText('');
   }
 
 }
