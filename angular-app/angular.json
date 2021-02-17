@@ -25,9 +25,12 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/jsoneditor/dist/jsoneditor.min.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "./node_modules/jsoneditor/dist/jsoneditor.min.js"
+            ],
             "allowedCommonJsDependencies": [
               "crypto-js/lib-typedarrays",
               "crypto-js/hmac-sha256",

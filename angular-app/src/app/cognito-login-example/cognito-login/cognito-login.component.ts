@@ -1,19 +1,29 @@
 // https://docs.amazonaws.cn/en_us/cognito/latest/developerguide/token-endpoint.html
 
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+
+declare let JSONEditor: any
 
 @Component({
   selector: 'app-cognito-login',
   templateUrl: './cognito-login.component.html',
   styleUrls: ['./cognito-login.component.css']
 })
-export class CognitoLoginComponent implements OnInit {
+export class CognitoLoginComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('JEditor') jEditorRef;
+  private jEditor = null;
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+    this.jEditor = new JSONEditor(this.jEditorRef.nativeElement, {mode: 'code'});
+    (document.getElementsByClassName('jsoneditor-poweredBy')[0] as HTMLElement).style.visibility = 'hidden';
+    (document.getElementsByClassName('ace_editor ace_hidpi ace-jsoneditor')[0] as HTMLElement).style.fontSize = '13px';
   }
+
+  ngOnInit(): void {}
 
   async login(user, pwd) {
     const USER_POOL_ID = 'us-east-1_n37H054sQ';
@@ -60,8 +70,15 @@ export class CognitoLoginComponent implements OnInit {
     const USER = 'song';
     const PASSWORD = 'Password123';
 
+    let jEditor = this.jEditor;
+
+    jEditor.set({});
     const token = await this.login(USER, PASSWORD);
-    console.log(token);
+
+    if (jEditor) {
+      jEditor.set(token);
+      
+    }
   }
 
 }
