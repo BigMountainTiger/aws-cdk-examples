@@ -7,6 +7,9 @@ import { SharedModule } from './shared/shared.module';
 const routes: Routes = [
 
   { path: '', redirectTo: '/cognito-login-example', pathMatch: 'full' },
+
+  { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
+  
   { 
     path: 'cognito-login-example',
     loadChildren: () => import('./cognito-login-example/cognito-login-example.module').then(m => m.CognitoLoginExampleModule),
