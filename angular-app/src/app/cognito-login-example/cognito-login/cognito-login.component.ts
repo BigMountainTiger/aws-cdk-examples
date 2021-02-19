@@ -1,7 +1,7 @@
 // https://docs.amazonaws.cn/en_us/cognito/latest/developerguide/token-endpoint.html
 
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+// import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 declare let JSONEditor: any
 
@@ -40,31 +40,35 @@ export class CognitoLoginComponent implements OnInit, AfterViewInit {
       ClientId : USER_POOL_CLIENT_ID
     }; 
 
-    const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-    const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({ Username: USER, Password: PASSWORD, });
-    const cognitoUser = new AmazonCognitoIdentity.CognitoUser({ Username: USER, Pool: userPool });
+    // const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    // const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({ Username: USER, Password: PASSWORD, });
+    // const cognitoUser = new AmazonCognitoIdentity.CognitoUser({ Username: USER, Pool: userPool });
+
+    // const p = new Promise((rs, rj) => {
+    //   const callback = {
+    //     onSuccess: (result) => {
+    //       const data = {
+    //         access_token: result.getAccessToken().getJwtToken(),
+    //         id_token: result.getIdToken().getJwtToken(),
+    //         refresh_token: result.getRefreshToken().getToken()
+    //       }
+
+    //       rs(data);
+    //     },
+    //     onFailure: (e) => { 
+    //       rj(e);
+    //     },
+    //     newPasswordRequired: (userAttributes) => {
+    //       delete userAttributes.email_verified;
+    //       cognitoUser.completeNewPasswordChallenge(PASSWORD, userAttributes, callback);
+    //     }
+    //   }
+
+    //   cognitoUser.authenticateUser(authenticationDetails, callback);
+    // });
 
     const p = new Promise((rs, rj) => {
-      const callback = {
-        onSuccess: (result) => {
-          const data = {
-            access_token: result.getAccessToken().getJwtToken(),
-            id_token: result.getIdToken().getJwtToken(),
-            refresh_token: result.getRefreshToken().getToken()
-          }
-
-          rs(data);
-        },
-        onFailure: (e) => { 
-          rj(e);
-        },
-        newPasswordRequired: (userAttributes) => {
-          delete userAttributes.email_verified;
-          cognitoUser.completeNewPasswordChallenge(PASSWORD, userAttributes, callback);
-        }
-      }
-
-      cognitoUser.authenticateUser(authenticationDetails, callback);
+      rs('amazon-cognito-identity-js had problem working together with Amplify');
     });
 
     return await p;

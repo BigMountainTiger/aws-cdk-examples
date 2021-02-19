@@ -38,7 +38,17 @@
               "crypto-js/sha256",
               "buffer",
               "js-cookie",
-              "isomorphic-unfetch"
+              "isomorphic-unfetch",
+              "uuid",
+              "@aws-crypto/sha256-js",
+              "zen-observable",
+              "lodash/isEqual",
+              "lodash/isEmpty",
+              "lodash/get",
+              "axios",
+              "@aws-crypto/crc32",
+              "@aws-crypto/sha256-browser",
+              "fast-xml-parser"
             ]
           },
           "configurations": {
