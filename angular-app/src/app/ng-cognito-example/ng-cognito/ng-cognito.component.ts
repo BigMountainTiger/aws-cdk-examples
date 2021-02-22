@@ -24,9 +24,31 @@ export class NgCognitoComponent implements OnInit {
     const USER = 'song';
     const PASSWORD = 'Password123';
 
-    let a = await Auth.signIn(USER, PASSWORD);
+    try {
+      
+      await Auth.signIn(USER, PASSWORD);
+      console.log('Login succeeded');
+    }
+    catch(e) {
+      
+      console.log('Login failed');
+      console.log(e);
+    }
+  }
 
-    console.log(a);
+  async onCheckAuth() {
+    let user = await Auth.currentAuthenticatedUser();
+    let session = user.signInUserSession;
+    let id_token = session.idToken;
+
+    console.log(user);
+    console.log(session);
+    console.log(id_token);
+
+    console.log(id_token.payload.exp);
+
+    let unix_now = Date.now();
+    console.log(`Unix now - ${unix_now}`);
   }
 
 }
