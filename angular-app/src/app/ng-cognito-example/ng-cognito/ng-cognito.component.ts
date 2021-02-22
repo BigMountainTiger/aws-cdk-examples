@@ -36,6 +36,27 @@ export class NgCognitoComponent implements OnInit {
     }
   }
 
+  async onRefresh() {
+    let user = await Auth.currentAuthenticatedUser();
+    let session = user.signInUserSession;
+
+    let refresh_token = session.refreshToken;
+
+    let p = new Promise((rs, rj) => {
+      user.refreshSession(refresh_token, (err, session) => { if (err) { rj(err); } rs(session); });
+    });
+    
+    try {
+
+      session = await p;
+      console.log(session);
+    }
+    catch(e) {
+      console.log(e);
+    }
+
+  }
+
   async onCheckAuth() {
     let user = await Auth.currentAuthenticatedUser();
     let session = user.signInUserSession;
