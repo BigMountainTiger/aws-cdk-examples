@@ -24,6 +24,8 @@
     "@angular/platform-browser-dynamic": "~11.2.0",
     "@angular/router": "~11.2.0",
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
+    "ag-grid-angular": "^25.1.0",
+    "ag-grid-community": "^25.1.0",
     "amazon-cognito-identity-js": "^4.5.10",
     "aws-amplify": "^3.3.20",
     "bootstrap": "^4.5.0",
