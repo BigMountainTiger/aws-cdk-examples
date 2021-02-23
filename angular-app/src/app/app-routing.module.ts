@@ -22,6 +22,9 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
 
+  { path: 'ag-grid-example',
+    loadChildren: () => import('./ag-grid-example/ag-grid-example.module').then(m => m.AgGridExampleModule) },
+
   { path: '**', component: PageNotFoundComponent }
 ];
 
