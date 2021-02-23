@@ -9,13 +9,14 @@ export class AgGridComponent implements OnInit {
   public columnDefs = [
     { field: 'make', sortable: true, filter: true },
     { field: 'model', sortable: true, filter: true },
-    { field: 'price', sortable: true, filter: true }
+    { field: 'price', sortable: true, filter: true },
+    { field: 'hidden_field', sortable: true, filter: true }
   ];
 
   public rowData = [
-      { make: 'Toyota', model: 'Celica', price: 35000 },
-      { make: 'Ford', model: 'Mondeo', price: 32000 },
-      { make: 'Porsche', model: 'Boxter', price: 72000 }
+      { make: 'Toyota', model: 'Celica', price: 35000, hidden_field: 'Is hidden' },
+      { make: 'Ford', model: 'Mondeo', price: 32000, hidden_field: 'Is hidden' },
+      { make: 'Porsche', model: 'Boxter', price: 72000, hidden_field: 'Is hidden' }
   ];
 
   constructor() { }
