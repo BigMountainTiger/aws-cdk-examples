@@ -62,6 +62,17 @@ BEGIN
 
 END; $function$;
 
+-- public.add_a_student(name VARCHAR);
+drop procedure if exists public.add_a_student(name VARCHAR);
+
+CREATE OR REPLACE procedure public.add_a_student(name VARCHAR)
+ LANGUAGE plpgsql
+AS $procedure$
+BEGIN
+
+	insert into public.student (name) values (name);	
+END; $procedure$;
+
 -- Added test data
 insert into public.student (name) values ('Song Li - 1');
 insert into public.student (name) values ('Song Li - 2');

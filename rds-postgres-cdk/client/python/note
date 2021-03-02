@@ -7,7 +7,16 @@ Basically - No practical difference unless server side cursor is used
 https://stackoverflow.com/questions/62372081/what-is-the-advantage-of-using-multiple-cursors-in-psycopg2-for-postgresql-queri
 
 Transaction - Cursor based or connection based?
-Basically - Connection based
+Basically - Connection based - See "a-insert.py"
 https://dba.stackexchange.com/questions/75395/are-transactions-in-postgresql-via-psycopg2-per-cursor-or-per-connection
+
+Call stored procedure / function
+PROCEDURE - call procedure_name()
+FUNCTION - select * from function_name()
+https://www.postgresqltutorial.com/postgresql-python/call-stored-procedures/
+
+Postgres Truncate - "RESTART IDENTITY"
+https://www.postgresql.org/docs/9.2/sql-truncate.html
+
 
 
