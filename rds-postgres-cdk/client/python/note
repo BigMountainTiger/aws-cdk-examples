@@ -1,1 +1,13 @@
+psycopg2
+
 https://www.postgresqltutorial.com/postgresql-python/
+
+Multi-cursor vs Single-cursor?
+Basically - No practical difference unless server side cursor is used
+https://stackoverflow.com/questions/62372081/what-is-the-advantage-of-using-multiple-cursors-in-psycopg2-for-postgresql-queri
+
+Transaction - Cursor based or connection based?
+Basically - Connection based
+https://dba.stackexchange.com/questions/75395/are-transactions-in-postgresql-via-psycopg2-per-cursor-or-per-connection
+
+
