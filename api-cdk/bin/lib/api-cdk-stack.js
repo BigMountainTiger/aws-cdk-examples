@@ -32,7 +32,7 @@ class ApiCdkStack extends cdk.Stack {
         functionName: FUNCTION_NAME,
         timeout: cdk.Duration.seconds(120),
         role: role,
-        code: lambda.Code.asset(path),
+        code: lambda.Code.fromAsset(path),
         handler: 'index.handler'
       });
 
@@ -42,6 +42,7 @@ class ApiCdkStack extends cdk.Stack {
     const role = add_lambda_role();
     const handler_base64 = add_lambda(role, './lambda/AFunction-base64', `${id}AFunction-base64`);
     const handler_multipart = add_lambda(role, './lambda/AFunction-multipart', `${id}AFunction-multipart`);
+    const handler_download = add_lambda(role, './lambda/AFunction-download', `${id}AFunction-download`);
 
     const api = new apigateway.RestApi(this, API_NAME, {
       restApiName: API_NAME,
@@ -59,6 +60,10 @@ class ApiCdkStack extends cdk.Stack {
 
     const attach_endpoint_multipart = api.root.addResource('attach-multipart').addResource('{key}');
     attach_endpoint_multipart.addMethod('POST', new apigateway.LambdaIntegration(handler_multipart, { proxy: true }));
+
+    const attach_endpoint_downloaed = api.root.addResource('download');
+    attach_endpoint_downloaed.addMethod('GET', new apigateway.LambdaIntegration(handler_download, { proxy: true }));
+
   }
 }
 
