@@ -2,10 +2,24 @@ const cdk = require('@aws-cdk/core');
 const lambda = require('@aws-cdk/aws-lambda');
 const iam = require('@aws-cdk/aws-iam');
 const apigateway = require('@aws-cdk/aws-apigateway');
+const s3 = require('@aws-cdk/aws-s3');
 
 class ApiCdkStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
+
+    const add_bucket = (name) => {
+      const bucket = new s3.Bucket(this, name, {
+        bucketName: `${name.toLowerCase().replace(/_/g, '-')}.huge.head.li`,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        versioned: false,
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      });
+    
+      return bucket;
+    };
+
+    add_bucket('api-cdk');
 
     const ROLE_NAME = `${id}MyRole`;
     const API_NAME = `${id}APIGW`;
@@ -20,7 +34,13 @@ class ApiCdkStack extends cdk.Stack {
         effect: iam.Effect.ALLOW,
         resources: ['*'],
         actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents']
-      }))
+      }));
+
+      role.addToPolicy(new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        resources: ['arn:aws:s3:::*'],
+        actions: ['s3:GetObject', 's3:PutObject']
+      }));
 
       return role;
     };

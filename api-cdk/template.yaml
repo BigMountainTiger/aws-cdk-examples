@@ -1,5 +1,18 @@
 Description: API-CDK-STACK
 Resources:
+  apicdkA8EEE5C9:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: api-cdk.huge.head.li
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/api-cdk/Resource
   APICDKSTACKMyRole834BC275:
     Type: AWS::IAM::Role
     Properties:
@@ -24,6 +37,11 @@ Resources:
               - logs:PutLogEvents
             Effect: Allow
             Resource: "*"
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+            Effect: Allow
+            Resource: arn:aws:s3:::*
         Version: "2012-10-17"
       PolicyName: APICDKSTACKMyRoleDefaultPolicy6490C780
       Roles:
@@ -49,13 +67,13 @@ Resources:
                   - Fn::Split:
                       - "||"
                       - Ref: AssetParameters931bb89ff61a553a3200a0f619266592b95750a20ed5d1252b2569eaa3049b49S3VersionKeyD2927987
-      Handler: index.handler
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
           - Arn
-      Runtime: nodejs12.x
       FunctionName: API-CDK-STACKAFunction-base64
+      Handler: index.handler
+      Runtime: nodejs12.x
       Timeout: 120
     DependsOn:
       - APICDKSTACKMyRoleDefaultPolicy6490C780
@@ -83,13 +101,13 @@ Resources:
                   - Fn::Split:
                       - "||"
                       - Ref: AssetParameterse86c7ffc676977dbce5cc1ca293487ee3ea354b86ee2166ab0a29757f70f1be2S3VersionKey1CAB0613
-      Handler: index.handler
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
           - Arn
-      Runtime: nodejs12.x
       FunctionName: API-CDK-STACKAFunction-multipart
+      Handler: index.handler
+      Runtime: nodejs12.x
       Timeout: 120
     DependsOn:
       - APICDKSTACKMyRoleDefaultPolicy6490C780
@@ -117,13 +135,13 @@ Resources:
                   - Fn::Split:
                       - "||"
                       - Ref: AssetParametersff234e3d4ff71b0aa5aa345cdc938b3b664b3cb2f1c8cf3b6e0ff70a070a71b3S3VersionKeyF44CC2EC
-      Handler: index.handler
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
           - Arn
-      Runtime: nodejs12.x
       FunctionName: API-CDK-STACKAFunction-download
+      Handler: index.handler
+      Runtime: nodejs12.x
       Timeout: 120
     DependsOn:
       - APICDKSTACKMyRoleDefaultPolicy6490C780
@@ -173,7 +191,7 @@ Resources:
       - APICDKSTACKAPIGWAA193FB7
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Account
-  APICDKSTACKAPIGWDeployment2FE7C019593f8327e3b77952ced318280c9d98e8:
+  APICDKSTACKAPIGWDeployment2FE7C019fe372667b1abf357e5db7459f243804e:
     Type: AWS::ApiGateway::Deployment
     Properties:
       RestApiId:
@@ -202,7 +220,7 @@ Resources:
       RestApiId:
         Ref: APICDKSTACKAPIGWAA193FB7
       DeploymentId:
-        Ref: APICDKSTACKAPIGWDeployment2FE7C019593f8327e3b77952ced318280c9d98e8
+        Ref: APICDKSTACKAPIGWDeployment2FE7C019fe372667b1abf357e5db7459f243804e
       StageName: prod
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/DeploymentStage.prod/Resource
