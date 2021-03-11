@@ -15,21 +15,17 @@ def read_file():
 def connect():
   file_content = read_file()
 
-  sql = 'select id, image_data from public.image_test'
+  sql = 'insert into public.image_test (image_data) values (%s)'
 
   try:
 
     conn = psycopg2.connect(CONSTR)
     cur = conn.cursor()
 
-    # cur.execute(sql, ('Song Li',))
-    cur.execute(sql)
+    cur.execute(sql, [file_content])
 
-    rows = cur.fetchall()
-
+    conn.commit()
     cur.close()
-
-    print(rows)
 
   except (Exception) as error:
     print(error)
