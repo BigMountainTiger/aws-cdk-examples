@@ -5,13 +5,13 @@ from pprint import pprint
 CONSTR = 'postgres://postgres:Password123@database-1.cw18weh1liqq.us-east-1.rds.amazonaws.com:5432/StudentDB'  
 
 def save_to_file(file_id, file_content):
-  directory = './images/save-to-file/'
+  # Create the directory if not exists
+  directory = './images/files-from-db/'
   if not os.path.exists(directory):
     os.makedirs(directory)
 
-  f = open(f'{directory}{file_id}.jpg', 'wb')
-  f.write(file_content)
-  f.close()
+  with open(f'{directory}file-{file_id}.jpg', 'wb') as file:
+    file.write(file_content)
 
 def connect():
 
