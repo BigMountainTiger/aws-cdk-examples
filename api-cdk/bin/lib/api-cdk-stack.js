@@ -114,7 +114,6 @@ class ApiCdkStack extends cdk.Stack {
 
     const attach_endpoint_upload_python = api.root.addResource('upload-python');
     attach_endpoint_upload_python.addMethod('POST', new apigateway.LambdaIntegration(handler_upload_python, { proxy: true }));
-
   }
 }
 

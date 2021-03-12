@@ -1,16 +1,19 @@
 # https://stackoverflow.com/questions/50925083/parse-multipart-request-string-in-python
 
-import boto3
-import base64
+import boto3, base64, json, time
 from requests_toolbelt.multipart import decoder
-import json
-import time
 
 bucket = 'api-cdk.huge.head.li'
 
 def lambdaHandler(event, context):
 
     content_type = event['headers']['Content-Type']
+
+    # This code can only handle base64 encoded
+    # Need to work on Non-base64 encoded case
+    isBase64 = event['isBase64Encoded']
+
+    # In the CDK, if the binaryMediaTypes: ['multipart/form-data'] specified on the API level, it is base64 encoded, otherwise, it is not
     body = base64.b64decode(event['body'])
     
     form_data = decoder.MultipartDecoder(body, content_type).parts
