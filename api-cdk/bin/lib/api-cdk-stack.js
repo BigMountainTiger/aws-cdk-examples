@@ -59,10 +59,19 @@ class ApiCdkStack extends cdk.Stack {
       return func;
     };
 
+    const PYTHON_LAYER_NAME = `${id}-LAYER`;
+    const python_layer = new lambda.LayerVersion(this, PYTHON_LAYER_NAME, {
+      layerVersionName: PYTHON_LAYER_NAME,
+      code: lambda.Code.fromAsset('./lambda/Python-layer'),
+      compatibleRuntimes: [lambda.Runtime.PYTHON_3_8],
+      description: PYTHON_LAYER_NAME
+    });
+
     const add_lambda_python = (role, path, FUNCTION_NAME) => {
 
       const func = new lambda.Function(this, FUNCTION_NAME, {
         runtime: lambda.Runtime.PYTHON_3_8,
+        layers: [python_layer],
         functionName: FUNCTION_NAME,
         timeout: cdk.Duration.seconds(120),
         role: role,
