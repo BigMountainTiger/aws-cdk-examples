@@ -72,7 +72,7 @@ class ApiCdkStack extends cdk.Stack {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS,
       },
-      binaryMediaTypes: ['*~1*'],
+      binaryMediaTypes: ['multipart/form-data'],
       endpointTypes: [apigateway.EndpointType.REGIONAL]
     });
 

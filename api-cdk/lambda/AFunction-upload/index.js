@@ -26,7 +26,12 @@ exports.handler = async (event, context) => {
   const body = event.body;
   
   const parse_result = await parser.parse(event);
-  const data = parse_result.files[0].content;
+  const file = parse_result.files[0];
+
+  console.log(file);
+
+  const data = file.content;
+
 
   const result = await put_s3_object(data);
   
