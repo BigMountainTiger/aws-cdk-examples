@@ -1,10 +1,10 @@
 const AWS = require('aws-sdk');
 const parser = require('lambda-multipart-parser');
 
+const s3 = new AWS.S3();
+const bucket = 'api-cdk.huge.head.li';
+
 const put_s3_object = async (buffer) => {
-  const s3 = new AWS.S3();
-  
-  const bucket = 'api-cdk.huge.head.li';
 
   const time = new Date().toISOString();
   const TARGET_KEY = time.replace(/:/g, '-').replace(/\./g, '-');
@@ -15,10 +15,22 @@ const put_s3_object = async (buffer) => {
     Body: buffer
   };
 
-  const result = await s3.putObject(params).promise(); 
+  await s3.putObject(params).promise();
+
+  const get_presigned_Url = async () => {
+    const params = { Bucket: bucket, Key: `${TARGET_KEY}.jpg`, Expires: 60 * 2 };
+  
+    return new Promise((rs, rj) => {
+      s3.getSignedUrl('getObject', params, (err, url) => { if (err) { rj(err); } else { rs(url); } });
+    });
+  };
+
+  const result =  await get_presigned_Url();
   return result;
 };
 
+// Need to deploy to aws to use multipart upload
+// SAM local won't work for now
 exports.handler = async (event, context) => {
 
   const content_type = event.headers['Content-Type'];
@@ -31,7 +43,6 @@ exports.handler = async (event, context) => {
   console.log(file);
 
   const data = file.content;
-
 
   const result = await put_s3_object(data);
   

@@ -155,7 +155,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameters81e12761ab31ea5c0b34ae9086ae25966345cebba949ea80f5771f8843253323S3Bucket6645BEAB
+          Ref: AssetParameters0e267b6d2bbae24ff3028939539d9406ae17a070f000fc75c3d0e055206881b8S3Bucket4B9960DA
         S3Key:
           Fn::Join:
             - ""
@@ -163,12 +163,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters81e12761ab31ea5c0b34ae9086ae25966345cebba949ea80f5771f8843253323S3VersionKeyE5BACAD4
+                      - Ref: AssetParameters0e267b6d2bbae24ff3028939539d9406ae17a070f000fc75c3d0e055206881b8S3VersionKeyCDB54DB7
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters81e12761ab31ea5c0b34ae9086ae25966345cebba949ea80f5771f8843253323S3VersionKeyE5BACAD4
+                      - Ref: AssetParameters0e267b6d2bbae24ff3028939539d9406ae17a070f000fc75c3d0e055206881b8S3VersionKeyCDB54DB7
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
@@ -188,7 +188,7 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       BinaryMediaTypes:
-        - "*~1*"
+        - multipart/form-data
       Description: API-CDK-STACKAPIGW
       EndpointConfiguration:
         Types:
@@ -225,7 +225,7 @@ Resources:
       - APICDKSTACKAPIGWAA193FB7
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Account
-  APICDKSTACKAPIGWDeployment2FE7C0198cc21e61ec7904d21d87814b7cec1d11:
+  APICDKSTACKAPIGWDeployment2FE7C019d1ac2676b2d099511b690a79c9f475f9:
     Type: AWS::ApiGateway::Deployment
     Properties:
       RestApiId:
@@ -257,7 +257,7 @@ Resources:
       RestApiId:
         Ref: APICDKSTACKAPIGWAA193FB7
       DeploymentId:
-        Ref: APICDKSTACKAPIGWDeployment2FE7C0198cc21e61ec7904d21d87814b7cec1d11
+        Ref: APICDKSTACKAPIGWDeployment2FE7C019d1ac2676b2d099511b690a79c9f475f9
       StageName: prod
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/DeploymentStage.prod/Resource
@@ -844,15 +844,15 @@ Parameters:
   AssetParameters4ac6bc7fb9d370fe4b779bfaf58aa61892f6642b679b8fdcb6c8ebdafff530b2ArtifactHash9B77013D:
     Type: String
     Description: Artifact hash for asset "4ac6bc7fb9d370fe4b779bfaf58aa61892f6642b679b8fdcb6c8ebdafff530b2"
-  AssetParameters81e12761ab31ea5c0b34ae9086ae25966345cebba949ea80f5771f8843253323S3Bucket6645BEAB:
+  AssetParameters0e267b6d2bbae24ff3028939539d9406ae17a070f000fc75c3d0e055206881b8S3Bucket4B9960DA:
     Type: String
-    Description: S3 bucket for asset "81e12761ab31ea5c0b34ae9086ae25966345cebba949ea80f5771f8843253323"
-  AssetParameters81e12761ab31ea5c0b34ae9086ae25966345cebba949ea80f5771f8843253323S3VersionKeyE5BACAD4:
+    Description: S3 bucket for asset "0e267b6d2bbae24ff3028939539d9406ae17a070f000fc75c3d0e055206881b8"
+  AssetParameters0e267b6d2bbae24ff3028939539d9406ae17a070f000fc75c3d0e055206881b8S3VersionKeyCDB54DB7:
     Type: String
-    Description: S3 key for asset version "81e12761ab31ea5c0b34ae9086ae25966345cebba949ea80f5771f8843253323"
-  AssetParameters81e12761ab31ea5c0b34ae9086ae25966345cebba949ea80f5771f8843253323ArtifactHashDCF77455:
+    Description: S3 key for asset version "0e267b6d2bbae24ff3028939539d9406ae17a070f000fc75c3d0e055206881b8"
+  AssetParameters0e267b6d2bbae24ff3028939539d9406ae17a070f000fc75c3d0e055206881b8ArtifactHash58F71941:
     Type: String
-    Description: Artifact hash for asset "81e12761ab31ea5c0b34ae9086ae25966345cebba949ea80f5771f8843253323"
+    Description: Artifact hash for asset "0e267b6d2bbae24ff3028939539d9406ae17a070f000fc75c3d0e055206881b8"
 Outputs:
   APICDKSTACKAPIGWEndpointF8CFD52F:
     Value:
