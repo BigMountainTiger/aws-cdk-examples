@@ -7,7 +7,8 @@ bucket = 'api-cdk.huge.head.li'
 
 def lambdaHandler(event, context):
 
-    content_type = event['headers']['Content-Type']
+    headers = event['headers']
+    content_type = headers['Content-Type'] if 'Content-Type' in headers else headers['content-type']
 
     # This code can only handle base64 encoded
     # Need to work on Non-base64 encoded case
@@ -33,5 +34,6 @@ def lambdaHandler(event, context):
 
     return {
         'statusCode': 200,
+        'headers': { 'Access-Control-Allow-Origin': '*', 'content-type': 'application/json' },
         'body': json.dumps(presigned_url)
     }

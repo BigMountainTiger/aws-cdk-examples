@@ -32,10 +32,6 @@ const put_s3_object = async (buffer) => {
 // Need to deploy to aws to use multipart upload
 // SAM local won't work for now
 exports.handler = async (event, context) => {
-
-  const content_type = event.headers['Content-Type'];
-  const boundary = `--${content_type.split('boundary=')[1]}`;
-  const body = event.body;
   
   const parse_result = await parser.parse(event);
   const file = parse_result.files[0];

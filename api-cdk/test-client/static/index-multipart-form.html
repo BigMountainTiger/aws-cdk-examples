@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+  </head>
+
+  <script>
+    const url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/upload';
+    // const url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/upload-python';
+
+    const post_data = function() {
+
+      const data = new FormData();
+      data.append("File", document.getElementById("input-file").files[0]);
+
+      const xhttp = new XMLHttpRequest();
+
+      xhttp.onreadystatechange = function() {
+        if (xhttp.readyState != 4) { return; }
+
+        const status = xhttp.status;
+        const text = xhttp.responseText;
+
+
+        if (status == 200) {
+          const result = JSON.parse(text)
+          
+          console.log(result);
+
+        } else {
+          const result = text || xhttp.statusText || 'Unable to get the result'
+          
+          console.log(result);
+
+        }
+      };
+      
+      xhttp.open('POST', url, true);
+      // xhttp.setRequestHeader('Content-Type', undefined);
+      xhttp.send(data);
+    };
+
+  </script>
+
+<body>
+
+  <button onclick="post_data()">Submit</button>
+  <input id="input-file" type="file"><br>
+
+</body>
+</html>
