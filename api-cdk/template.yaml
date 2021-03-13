@@ -4,6 +4,10 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: api-cdk.huge.head.li
+      LifecycleConfiguration:
+        Rules:
+          - ExpirationInDays: 1
+            Status: Enabled
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
@@ -80,7 +84,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameters931bb89ff61a553a3200a0f619266592b95750a20ed5d1252b2569eaa3049b49S3Bucket24A4D21E
+          Ref: AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6S3BucketC5C365DC
         S3Key:
           Fn::Join:
             - ""
@@ -88,12 +92,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters931bb89ff61a553a3200a0f619266592b95750a20ed5d1252b2569eaa3049b49S3VersionKeyD2927987
+                      - Ref: AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6S3VersionKeyB0F40A0B
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters931bb89ff61a553a3200a0f619266592b95750a20ed5d1252b2569eaa3049b49S3VersionKeyD2927987
+                      - Ref: AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6S3VersionKeyB0F40A0B
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
@@ -109,40 +113,17 @@ Resources:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-base64/Resource
       aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-cdk/lambda/AFunction-base64
       aws:asset:property: Code
-  APICDKSTACKAFunctionmultipartE980B63D:
-    Type: AWS::Lambda::Function
+  APICDKSTACKAFunctionbase64ApiAccessPermission0B67ED8B:
+    Type: AWS::Lambda::Permission
     Properties:
-      Code:
-        S3Bucket:
-          Ref: AssetParameterse86c7ffc676977dbce5cc1ca293487ee3ea354b86ee2166ab0a29757f70f1be2S3BucketE89EC972
-        S3Key:
-          Fn::Join:
-            - ""
-            - - Fn::Select:
-                  - 0
-                  - Fn::Split:
-                      - "||"
-                      - Ref: AssetParameterse86c7ffc676977dbce5cc1ca293487ee3ea354b86ee2166ab0a29757f70f1be2S3VersionKey1CAB0613
-              - Fn::Select:
-                  - 1
-                  - Fn::Split:
-                      - "||"
-                      - Ref: AssetParameterse86c7ffc676977dbce5cc1ca293487ee3ea354b86ee2166ab0a29757f70f1be2S3VersionKey1CAB0613
-      Role:
+      Action: lambda:InvokeFunction
+      FunctionName:
         Fn::GetAtt:
-          - APICDKSTACKMyRole834BC275
+          - APICDKSTACKAFunctionbase64FB05D81A
           - Arn
-      FunctionName: API-CDK-STACKAFunction-multipart
-      Handler: index.handler
-      Runtime: nodejs12.x
-      Timeout: 120
-    DependsOn:
-      - APICDKSTACKMyRoleDefaultPolicy6490C780
-      - APICDKSTACKMyRole834BC275
+      Principal: apigateway.amazonaws.com
     Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-multipart/Resource
-      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-cdk/lambda/AFunction-multipart
-      aws:asset:property: Code
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-base64/ApiAccessPermission
   APICDKSTACKAFunctiondownload7F42737A:
     Type: AWS::Lambda::Function
     Properties:
@@ -177,12 +158,23 @@ Resources:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-download/Resource
       aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-cdk/lambda/AFunction-download
       aws:asset:property: Code
+  APICDKSTACKAFunctiondownloadApiAccessPermissionA40AE367:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APICDKSTACKAFunctiondownload7F42737A
+          - Arn
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-download/ApiAccessPermission
   APICDKSTACKAFunctionupload45BDC153:
     Type: AWS::Lambda::Function
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameters8fab83604586ce6a350a3fb67757652ff438892641996617e2805525363b47ceS3BucketE203EADF
+          Ref: AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effS3BucketA3730A56
         S3Key:
           Fn::Join:
             - ""
@@ -190,12 +182,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters8fab83604586ce6a350a3fb67757652ff438892641996617e2805525363b47ceS3VersionKeyB1DCECCD
+                      - Ref: AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effS3VersionKeyE8C11D18
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters8fab83604586ce6a350a3fb67757652ff438892641996617e2805525363b47ceS3VersionKeyB1DCECCD
+                      - Ref: AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effS3VersionKeyE8C11D18
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
@@ -211,12 +203,23 @@ Resources:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-upload/Resource
       aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-cdk/lambda/AFunction-upload
       aws:asset:property: Code
+  APICDKSTACKAFunctionuploadApiAccessPermissionA7A4BDBE:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APICDKSTACKAFunctionupload45BDC153
+          - Arn
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-upload/ApiAccessPermission
   APICDKSTACKAFunctionuploadpython7A5133DA:
     Type: AWS::Lambda::Function
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameterse4c389f42336356fb0e40c6b30ad5c542417c0b2ec2a00185a5b224c24f2f858S3BucketF6AA10C9
+          Ref: AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cS3BucketF2898260
         S3Key:
           Fn::Join:
             - ""
@@ -224,12 +227,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameterse4c389f42336356fb0e40c6b30ad5c542417c0b2ec2a00185a5b224c24f2f858S3VersionKey29C8621B
+                      - Ref: AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cS3VersionKey8AFEB58E
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameterse4c389f42336356fb0e40c6b30ad5c542417c0b2ec2a00185a5b224c24f2f858S3VersionKey29C8621B
+                      - Ref: AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cS3VersionKey8AFEB58E
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
@@ -247,6 +250,17 @@ Resources:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-upload-python/Resource
       aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-cdk/lambda/AFunction-upload-python
       aws:asset:property: Code
+  APICDKSTACKAFunctionuploadpythonApiAccessPermission19CCDB1F:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APICDKSTACKAFunctionuploadpython7A5133DA
+          - Arn
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-upload-python/ApiAccessPermission
   APICDKSTACKAPIGWAA193FB7:
     Type: AWS::ApiGateway::RestApi
     Properties:
@@ -288,23 +302,16 @@ Resources:
       - APICDKSTACKAPIGWAA193FB7
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Account
-  APICDKSTACKAPIGWDeployment2FE7C019435315dc38f49a94fc85d2fd4b230032:
+  APICDKSTACKAPIGWDeployment2FE7C019a89abc47b0383d16fc38876a9c5419bb:
     Type: AWS::ApiGateway::Deployment
     Properties:
       RestApiId:
         Ref: APICDKSTACKAPIGWAA193FB7
       Description: Automatically created by the RestApi construct
     DependsOn:
-      - APICDKSTACKAPIGWattachbase64keyOPTIONS87C43E77
-      - APICDKSTACKAPIGWattachbase64keyPOST003AFAAE
-      - APICDKSTACKAPIGWattachbase64keyFFE66BB5
-      - APICDKSTACKAPIGWattachbase64OPTIONS9091F2F6
-      - APICDKSTACKAPIGWattachbase64C37A92FC
-      - APICDKSTACKAPIGWattachmultipartkeyOPTIONS4899A541
-      - APICDKSTACKAPIGWattachmultipartkeyPOST8650C333
-      - APICDKSTACKAPIGWattachmultipartkey86F262DF
-      - APICDKSTACKAPIGWattachmultipartOPTIONS3E94D0A6
-      - APICDKSTACKAPIGWattachmultipart01A9177A
+      - APICDKSTACKAPIGWbase64OPTIONS65676786
+      - APICDKSTACKAPIGWbase64POSTF4EEA77B
+      - APICDKSTACKAPIGWbase64EA201051
       - APICDKSTACKAPIGWdownloadGET40EC633C
       - APICDKSTACKAPIGWdownloadOPTIONSE6A94765
       - APICDKSTACKAPIGWdownload8D56EFB7
@@ -323,7 +330,7 @@ Resources:
       RestApiId:
         Ref: APICDKSTACKAPIGWAA193FB7
       DeploymentId:
-        Ref: APICDKSTACKAPIGWDeployment2FE7C019435315dc38f49a94fc85d2fd4b230032
+        Ref: APICDKSTACKAPIGWDeployment2FE7C019a89abc47b0383d16fc38876a9c5419bb
       StageName: prod
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/DeploymentStage.prod/Resource
@@ -356,24 +363,24 @@ Resources:
           StatusCode: "204"
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/OPTIONS/Resource
-  APICDKSTACKAPIGWattachbase64C37A92FC:
+  APICDKSTACKAPIGWbase64EA201051:
     Type: AWS::ApiGateway::Resource
     Properties:
       ParentId:
         Fn::GetAtt:
           - APICDKSTACKAPIGWAA193FB7
           - RootResourceId
-      PathPart: attach-base64
+      PathPart: base64
       RestApiId:
         Ref: APICDKSTACKAPIGWAA193FB7
     Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-base64/Resource
-  APICDKSTACKAPIGWattachbase64OPTIONS9091F2F6:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/base64/Resource
+  APICDKSTACKAPIGWbase64OPTIONS65676786:
     Type: AWS::ApiGateway::Method
     Properties:
       HttpMethod: OPTIONS
       ResourceId:
-        Ref: APICDKSTACKAPIGWattachbase64C37A92FC
+        Ref: APICDKSTACKAPIGWbase64EA201051
       RestApiId:
         Ref: APICDKSTACKAPIGWAA193FB7
       AuthorizationType: NONE
@@ -394,45 +401,8 @@ Resources:
             method.response.header.Access-Control-Allow-Methods: true
           StatusCode: "204"
     Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-base64/OPTIONS/Resource
-  APICDKSTACKAPIGWattachbase64keyFFE66BB5:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId:
-        Ref: APICDKSTACKAPIGWattachbase64C37A92FC
-      PathPart: "{key}"
-      RestApiId:
-        Ref: APICDKSTACKAPIGWAA193FB7
-    Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-base64/{key}/Resource
-  APICDKSTACKAPIGWattachbase64keyOPTIONS87C43E77:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      HttpMethod: OPTIONS
-      ResourceId:
-        Ref: APICDKSTACKAPIGWattachbase64keyFFE66BB5
-      RestApiId:
-        Ref: APICDKSTACKAPIGWAA193FB7
-      AuthorizationType: NONE
-      Integration:
-        IntegrationResponses:
-          - ResponseParameters:
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
-            StatusCode: "204"
-        RequestTemplates:
-          application/json: "{ statusCode: 200 }"
-        Type: MOCK
-      MethodResponses:
-        - ResponseParameters:
-            method.response.header.Access-Control-Allow-Headers: true
-            method.response.header.Access-Control-Allow-Origin: true
-            method.response.header.Access-Control-Allow-Methods: true
-          StatusCode: "204"
-    Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-base64/{key}/OPTIONS/Resource
-  APICDKSTACKAPIGWattachbase64keyPOSTApiPermissionAPICDKSTACKAPICDKSTACKAPIGW52E3ED44POSTattachbase64key5E498BB8:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/base64/OPTIONS/Resource
+  APICDKSTACKAPIGWbase64POSTApiPermissionAPICDKSTACKAPICDKSTACKAPIGW52E3ED44POSTbase646F9E0D39:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
@@ -454,10 +424,10 @@ Resources:
             - Ref: APICDKSTACKAPIGWAA193FB7
             - /
             - Ref: APICDKSTACKAPIGWDeploymentStageprod2B95DB1B
-            - /POST/attach-base64/*
+            - /POST/base64
     Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-base64/{key}/POST/ApiPermission.APICDKSTACKAPICDKSTACKAPIGW52E3ED44.POST..attach-base64.{key}
-  APICDKSTACKAPIGWattachbase64keyPOSTApiPermissionTestAPICDKSTACKAPICDKSTACKAPIGW52E3ED44POSTattachbase64key2CEE0CFF:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/base64/POST/ApiPermission.APICDKSTACKAPICDKSTACKAPIGW52E3ED44.POST..base64
+  APICDKSTACKAPIGWbase64POSTApiPermissionTestAPICDKSTACKAPICDKSTACKAPIGW52E3ED44POSTbase64F7D750F1:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
@@ -477,15 +447,15 @@ Resources:
             - Ref: AWS::AccountId
             - ":"
             - Ref: APICDKSTACKAPIGWAA193FB7
-            - /test-invoke-stage/POST/attach-base64/*
+            - /test-invoke-stage/POST/base64
     Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-base64/{key}/POST/ApiPermission.Test.APICDKSTACKAPICDKSTACKAPIGW52E3ED44.POST..attach-base64.{key}
-  APICDKSTACKAPIGWattachbase64keyPOST003AFAAE:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/base64/POST/ApiPermission.Test.APICDKSTACKAPICDKSTACKAPIGW52E3ED44.POST..base64
+  APICDKSTACKAPIGWbase64POSTF4EEA77B:
     Type: AWS::ApiGateway::Method
     Properties:
       HttpMethod: POST
       ResourceId:
-        Ref: APICDKSTACKAPIGWattachbase64keyFFE66BB5
+        Ref: APICDKSTACKAPIGWbase64EA201051
       RestApiId:
         Ref: APICDKSTACKAPIGWAA193FB7
       AuthorizationType: NONE
@@ -505,157 +475,7 @@ Resources:
                   - Arn
               - /invocations
     Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-base64/{key}/POST/Resource
-  APICDKSTACKAPIGWattachmultipart01A9177A:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId:
-        Fn::GetAtt:
-          - APICDKSTACKAPIGWAA193FB7
-          - RootResourceId
-      PathPart: attach-multipart
-      RestApiId:
-        Ref: APICDKSTACKAPIGWAA193FB7
-    Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-multipart/Resource
-  APICDKSTACKAPIGWattachmultipartOPTIONS3E94D0A6:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      HttpMethod: OPTIONS
-      ResourceId:
-        Ref: APICDKSTACKAPIGWattachmultipart01A9177A
-      RestApiId:
-        Ref: APICDKSTACKAPIGWAA193FB7
-      AuthorizationType: NONE
-      Integration:
-        IntegrationResponses:
-          - ResponseParameters:
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
-            StatusCode: "204"
-        RequestTemplates:
-          application/json: "{ statusCode: 200 }"
-        Type: MOCK
-      MethodResponses:
-        - ResponseParameters:
-            method.response.header.Access-Control-Allow-Headers: true
-            method.response.header.Access-Control-Allow-Origin: true
-            method.response.header.Access-Control-Allow-Methods: true
-          StatusCode: "204"
-    Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-multipart/OPTIONS/Resource
-  APICDKSTACKAPIGWattachmultipartkey86F262DF:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId:
-        Ref: APICDKSTACKAPIGWattachmultipart01A9177A
-      PathPart: "{key}"
-      RestApiId:
-        Ref: APICDKSTACKAPIGWAA193FB7
-    Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-multipart/{key}/Resource
-  APICDKSTACKAPIGWattachmultipartkeyOPTIONS4899A541:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      HttpMethod: OPTIONS
-      ResourceId:
-        Ref: APICDKSTACKAPIGWattachmultipartkey86F262DF
-      RestApiId:
-        Ref: APICDKSTACKAPIGWAA193FB7
-      AuthorizationType: NONE
-      Integration:
-        IntegrationResponses:
-          - ResponseParameters:
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
-            StatusCode: "204"
-        RequestTemplates:
-          application/json: "{ statusCode: 200 }"
-        Type: MOCK
-      MethodResponses:
-        - ResponseParameters:
-            method.response.header.Access-Control-Allow-Headers: true
-            method.response.header.Access-Control-Allow-Origin: true
-            method.response.header.Access-Control-Allow-Methods: true
-          StatusCode: "204"
-    Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-multipart/{key}/OPTIONS/Resource
-  APICDKSTACKAPIGWattachmultipartkeyPOSTApiPermissionAPICDKSTACKAPICDKSTACKAPIGW52E3ED44POSTattachmultipartkey28CAFB84:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName:
-        Fn::GetAtt:
-          - APICDKSTACKAFunctionmultipartE980B63D
-          - Arn
-      Principal: apigateway.amazonaws.com
-      SourceArn:
-        Fn::Join:
-          - ""
-          - - "arn:"
-            - Ref: AWS::Partition
-            - ":execute-api:"
-            - Ref: AWS::Region
-            - ":"
-            - Ref: AWS::AccountId
-            - ":"
-            - Ref: APICDKSTACKAPIGWAA193FB7
-            - /
-            - Ref: APICDKSTACKAPIGWDeploymentStageprod2B95DB1B
-            - /POST/attach-multipart/*
-    Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-multipart/{key}/POST/ApiPermission.APICDKSTACKAPICDKSTACKAPIGW52E3ED44.POST..attach-multipart.{key}
-  APICDKSTACKAPIGWattachmultipartkeyPOSTApiPermissionTestAPICDKSTACKAPICDKSTACKAPIGW52E3ED44POSTattachmultipartkey6CCEDF11:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName:
-        Fn::GetAtt:
-          - APICDKSTACKAFunctionmultipartE980B63D
-          - Arn
-      Principal: apigateway.amazonaws.com
-      SourceArn:
-        Fn::Join:
-          - ""
-          - - "arn:"
-            - Ref: AWS::Partition
-            - ":execute-api:"
-            - Ref: AWS::Region
-            - ":"
-            - Ref: AWS::AccountId
-            - ":"
-            - Ref: APICDKSTACKAPIGWAA193FB7
-            - /test-invoke-stage/POST/attach-multipart/*
-    Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-multipart/{key}/POST/ApiPermission.Test.APICDKSTACKAPICDKSTACKAPIGW52E3ED44.POST..attach-multipart.{key}
-  APICDKSTACKAPIGWattachmultipartkeyPOST8650C333:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      HttpMethod: POST
-      ResourceId:
-        Ref: APICDKSTACKAPIGWattachmultipartkey86F262DF
-      RestApiId:
-        Ref: APICDKSTACKAPIGWAA193FB7
-      AuthorizationType: NONE
-      Integration:
-        IntegrationHttpMethod: POST
-        Type: AWS_PROXY
-        Uri:
-          Fn::Join:
-            - ""
-            - - "arn:"
-              - Ref: AWS::Partition
-              - ":apigateway:"
-              - Ref: AWS::Region
-              - :lambda:path/2015-03-31/functions/
-              - Fn::GetAtt:
-                  - APICDKSTACKAFunctionmultipartE980B63D
-                  - Arn
-              - /invocations
-    Metadata:
-      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/attach-multipart/{key}/POST/Resource
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/base64/POST/Resource
   APICDKSTACKAPIGWdownload8D56EFB7:
     Type: AWS::ApiGateway::Resource
     Properties:
@@ -1005,24 +825,15 @@ Parameters:
   AssetParameters034e42a031aebc87c9370f0fb9dbe527e0c4ba0cbddb2e56966f8efa8173cf51ArtifactHash8FE91348:
     Type: String
     Description: Artifact hash for asset "034e42a031aebc87c9370f0fb9dbe527e0c4ba0cbddb2e56966f8efa8173cf51"
-  AssetParameters931bb89ff61a553a3200a0f619266592b95750a20ed5d1252b2569eaa3049b49S3Bucket24A4D21E:
+  AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6S3BucketC5C365DC:
     Type: String
-    Description: S3 bucket for asset "931bb89ff61a553a3200a0f619266592b95750a20ed5d1252b2569eaa3049b49"
-  AssetParameters931bb89ff61a553a3200a0f619266592b95750a20ed5d1252b2569eaa3049b49S3VersionKeyD2927987:
+    Description: S3 bucket for asset "61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6"
+  AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6S3VersionKeyB0F40A0B:
     Type: String
-    Description: S3 key for asset version "931bb89ff61a553a3200a0f619266592b95750a20ed5d1252b2569eaa3049b49"
-  AssetParameters931bb89ff61a553a3200a0f619266592b95750a20ed5d1252b2569eaa3049b49ArtifactHash0660D292:
+    Description: S3 key for asset version "61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6"
+  AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6ArtifactHashF87CEB88:
     Type: String
-    Description: Artifact hash for asset "931bb89ff61a553a3200a0f619266592b95750a20ed5d1252b2569eaa3049b49"
-  AssetParameterse86c7ffc676977dbce5cc1ca293487ee3ea354b86ee2166ab0a29757f70f1be2S3BucketE89EC972:
-    Type: String
-    Description: S3 bucket for asset "e86c7ffc676977dbce5cc1ca293487ee3ea354b86ee2166ab0a29757f70f1be2"
-  AssetParameterse86c7ffc676977dbce5cc1ca293487ee3ea354b86ee2166ab0a29757f70f1be2S3VersionKey1CAB0613:
-    Type: String
-    Description: S3 key for asset version "e86c7ffc676977dbce5cc1ca293487ee3ea354b86ee2166ab0a29757f70f1be2"
-  AssetParameterse86c7ffc676977dbce5cc1ca293487ee3ea354b86ee2166ab0a29757f70f1be2ArtifactHashAAA622E1:
-    Type: String
-    Description: Artifact hash for asset "e86c7ffc676977dbce5cc1ca293487ee3ea354b86ee2166ab0a29757f70f1be2"
+    Description: Artifact hash for asset "61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6"
   AssetParameters4ac6bc7fb9d370fe4b779bfaf58aa61892f6642b679b8fdcb6c8ebdafff530b2S3Bucket6F338FE4:
     Type: String
     Description: S3 bucket for asset "4ac6bc7fb9d370fe4b779bfaf58aa61892f6642b679b8fdcb6c8ebdafff530b2"
@@ -1032,24 +843,24 @@ Parameters:
   AssetParameters4ac6bc7fb9d370fe4b779bfaf58aa61892f6642b679b8fdcb6c8ebdafff530b2ArtifactHash9B77013D:
     Type: String
     Description: Artifact hash for asset "4ac6bc7fb9d370fe4b779bfaf58aa61892f6642b679b8fdcb6c8ebdafff530b2"
-  AssetParameters8fab83604586ce6a350a3fb67757652ff438892641996617e2805525363b47ceS3BucketE203EADF:
+  AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effS3BucketA3730A56:
     Type: String
-    Description: S3 bucket for asset "8fab83604586ce6a350a3fb67757652ff438892641996617e2805525363b47ce"
-  AssetParameters8fab83604586ce6a350a3fb67757652ff438892641996617e2805525363b47ceS3VersionKeyB1DCECCD:
+    Description: S3 bucket for asset "f21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922eff"
+  AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effS3VersionKeyE8C11D18:
     Type: String
-    Description: S3 key for asset version "8fab83604586ce6a350a3fb67757652ff438892641996617e2805525363b47ce"
-  AssetParameters8fab83604586ce6a350a3fb67757652ff438892641996617e2805525363b47ceArtifactHashE6DCFE8C:
+    Description: S3 key for asset version "f21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922eff"
+  AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effArtifactHash72FBF9C5:
     Type: String
-    Description: Artifact hash for asset "8fab83604586ce6a350a3fb67757652ff438892641996617e2805525363b47ce"
-  AssetParameterse4c389f42336356fb0e40c6b30ad5c542417c0b2ec2a00185a5b224c24f2f858S3BucketF6AA10C9:
+    Description: Artifact hash for asset "f21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922eff"
+  AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cS3BucketF2898260:
     Type: String
-    Description: S3 bucket for asset "e4c389f42336356fb0e40c6b30ad5c542417c0b2ec2a00185a5b224c24f2f858"
-  AssetParameterse4c389f42336356fb0e40c6b30ad5c542417c0b2ec2a00185a5b224c24f2f858S3VersionKey29C8621B:
+    Description: S3 bucket for asset "19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135c"
+  AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cS3VersionKey8AFEB58E:
     Type: String
-    Description: S3 key for asset version "e4c389f42336356fb0e40c6b30ad5c542417c0b2ec2a00185a5b224c24f2f858"
-  AssetParameterse4c389f42336356fb0e40c6b30ad5c542417c0b2ec2a00185a5b224c24f2f858ArtifactHashE1D25A1F:
+    Description: S3 key for asset version "19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135c"
+  AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cArtifactHash824A3BE8:
     Type: String
-    Description: Artifact hash for asset "e4c389f42336356fb0e40c6b30ad5c542417c0b2ec2a00185a5b224c24f2f858"
+    Description: Artifact hash for asset "19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135c"
 Outputs:
   APICDKSTACKAPIGWEndpointF8CFD52F:
     Value:

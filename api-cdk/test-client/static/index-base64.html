@@ -22,6 +22,7 @@
     const file = document.querySelector('input[type=file]').files[0];
     const reader = new FileReader();
 
+    // Non-image file is OK to get Base64 here
     reader.addEventListener("load", function () {
       let base64 = reader.result;
       previewData(base64);
@@ -39,13 +40,14 @@
   };
 
   const post_data = function() {
-    //const url = 'https://4s6zo9w8p6.execute-api.us-east-1.amazonaws.com/prod/attach/GSD-201';
-    const url = 'http://localhost:3000/attach/GSD-201';
+    const url = 'http://127.0.0.1:3000/base64';
 
     let call = $.ajax({
       type: 'POST',
       url: url,
-      data: binary,
+      data: JSON.stringify({
+        content: binary
+      }),
       contentType: 'text/plain'
     }).done(function(jqx, status) {
       console.log('Done');

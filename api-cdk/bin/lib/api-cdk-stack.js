@@ -93,7 +93,6 @@ class ApiCdkStack extends cdk.Stack {
 
     const role = add_lambda_role();
     const handler_base64 = add_lambda(role, './lambda/AFunction-base64', `${id}AFunction-base64`);
-    const handler_multipart = add_lambda(role, './lambda/AFunction-multipart', `${id}AFunction-multipart`);
     const handler_download = add_lambda(role, './lambda/AFunction-download', `${id}AFunction-download`);
     const handler_upload = add_lambda(role, './lambda/AFunction-upload', `${id}AFunction-upload`);
     const handler_upload_python = add_lambda_python(role, './lambda/AFunction-upload-python', `${id}AFunction-upload-python`);
@@ -109,11 +108,8 @@ class ApiCdkStack extends cdk.Stack {
       endpointTypes: [apigateway.EndpointType.REGIONAL]
     });
 
-    const attach_endpoint_base64 = api.root.addResource('attach-base64').addResource('{key}');
+    const attach_endpoint_base64 = api.root.addResource('base64');
     attach_endpoint_base64.addMethod('POST', new apigateway.LambdaIntegration(handler_base64, { proxy: true }));
-
-    const attach_endpoint_multipart = api.root.addResource('attach-multipart').addResource('{key}');
-    attach_endpoint_multipart.addMethod('POST', new apigateway.LambdaIntegration(handler_multipart, { proxy: true }));
 
     const attach_endpoint_downloaed = api.root.addResource('download');
     attach_endpoint_downloaed.addMethod('GET', new apigateway.LambdaIntegration(handler_download, { proxy: true }));
