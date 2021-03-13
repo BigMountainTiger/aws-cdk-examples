@@ -12,6 +12,7 @@ class ApiCdkStack extends cdk.Stack {
       const bucket = new s3.Bucket(this, name, {
         bucketName: `${name.toLowerCase().replace(/_/g, '-')}.huge.head.li`,
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        lifecycleRules: [{ expiration: cdk.Duration.days(1) }],
         versioned: false,
         removalPolicy: cdk.RemovalPolicy.DESTROY
       });
@@ -56,6 +57,10 @@ class ApiCdkStack extends cdk.Stack {
         handler: 'index.handler'
       });
 
+      func.addPermission('ApiAccessPermission', {
+        principal: new iam.ServicePrincipal('apigateway.amazonaws.com')
+      })
+
       return func;
     };
 
@@ -78,6 +83,10 @@ class ApiCdkStack extends cdk.Stack {
         code: lambda.Code.fromAsset(path),
         handler: 'app.lambdaHandler'
       });
+
+      func.addPermission('ApiAccessPermission', {
+        principal: new iam.ServicePrincipal('apigateway.amazonaws.com')
+      })
 
       return func;
     };
