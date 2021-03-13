@@ -9,10 +9,12 @@
   </head>
 
   <script>
-    const url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/upload';
-    // const url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/upload-python';
 
     const post_data = function() {
+
+      // Get the URL
+      const e = document.getElementById('selURL');
+      const url = e.options[e.selectedIndex].text;
 
       const data = new FormData();
       data.append("File", document.getElementById("input-file").files[0]);
@@ -40,13 +42,17 @@
       };
       
       xhttp.open('POST', url, true);
-      // xhttp.setRequestHeader('Content-Type', undefined);
       xhttp.send(data);
     };
 
   </script>
 
 <body>
+
+  <select id="selURL">
+    <option>https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/upload</option>
+    <option>https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/upload-python</option>
+  </select><br>
 
   <button onclick="post_data()">Submit</button>
   <input id="input-file" type="file"><br>
