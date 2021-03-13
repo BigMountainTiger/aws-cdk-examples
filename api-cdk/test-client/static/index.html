@@ -14,8 +14,12 @@
       let base64 = reader.result;
       preview.src = base64;
 
+      console.log(base64);
+
       let i = base64.indexOf(',');
       binary = base64.substring(i + 1);
+
+      console.log(binary);
 
     }, false);
 
