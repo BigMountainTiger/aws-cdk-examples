@@ -28,7 +28,7 @@ def lambdaHandler(event, context):
     def get_presigned_url():
         client.put_object(Body = part.content, Bucket = bucket, Key = key)
         # ExpiresIn - time in second
-        return client.generate_presigned_url('get_object', Params = { 'Bucket': bucket, 'Key': key }, ExpiresIn = 100)
+        return client.generate_presigned_url('get_object', Params = { 'Bucket': bucket, 'Key': key }, ExpiresIn = 60 * 60 * 24)
 
     presigned_url = get_presigned_url()
 

@@ -18,7 +18,7 @@ const put_s3_object = async (buffer) => {
   await s3.putObject(params).promise();
 
   const get_presigned_Url = async () => {
-    const params = { Bucket: bucket, Key: `${TARGET_KEY}.jpg`, Expires: 60 * 2 };
+    const params = { Bucket: bucket, Key: `${TARGET_KEY}.jpg`, Expires: 60 * 60 * 24 };
   
     return new Promise((rs, rj) => {
       s3.getSignedUrl('getObject', params, (err, url) => { if (err) { rj(err); } else { rs(url); } });
