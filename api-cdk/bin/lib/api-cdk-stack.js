@@ -96,7 +96,7 @@ class ApiCdkStack extends cdk.Stack {
     const handler_download = add_lambda(role, './lambda/AFunction-download', `${id}AFunction-download`);
     const handler_upload = add_lambda(role, './lambda/AFunction-upload', `${id}AFunction-upload`);
     const handler_upload_python = add_lambda_python(role, './lambda/AFunction-upload-python', `${id}AFunction-upload-python`);
-    const handler_upload_presigned_python = add_lambda_python(role, './lambda/AFunction-upload-presigned-python', `${id}AFunction-upload-presigned-python`);
+    const handler_post_presigned_python = add_lambda_python(role, './lambda/AFunction-post-presigned-python', `${id}AFunction-AFunction-post-presigned-python`);
 
     const api = new apigateway.RestApi(this, API_NAME, {
       restApiName: API_NAME,
@@ -109,20 +109,20 @@ class ApiCdkStack extends cdk.Stack {
       endpointTypes: [apigateway.EndpointType.REGIONAL]
     });
 
-    const attach_endpoint_base64 = api.root.addResource('base64');
-    attach_endpoint_base64.addMethod('POST', new apigateway.LambdaIntegration(handler_base64, { proxy: true }));
+    let resource = api.root.addResource('base64');
+    resource.addMethod('POST', new apigateway.LambdaIntegration(handler_base64, { proxy: true }));
 
-    const attach_endpoint_downloaed = api.root.addResource('download');
-    attach_endpoint_downloaed.addMethod('GET', new apigateway.LambdaIntegration(handler_download, { proxy: true }));
+    resource = api.root.addResource('download');
+    resource.addMethod('GET', new apigateway.LambdaIntegration(handler_download, { proxy: true }));
 
-    const attach_endpoint_upload = api.root.addResource('upload');
-    attach_endpoint_upload.addMethod('POST', new apigateway.LambdaIntegration(handler_upload, { proxy: true }));
+    resource = api.root.addResource('upload');
+    resource.addMethod('POST', new apigateway.LambdaIntegration(handler_upload, { proxy: true }));
 
-    const attach_endpoint_upload_python = api.root.addResource('upload-python');
-    attach_endpoint_upload_python.addMethod('POST', new apigateway.LambdaIntegration(handler_upload_python, { proxy: true }));
+    resource = api.root.addResource('upload-python');
+    resource.addMethod('POST', new apigateway.LambdaIntegration(handler_upload_python, { proxy: true }));
 
-    const attach_endpoint_upload_presigned_python = api.root.addResource('upload_presigned_python');
-    attach_endpoint_upload_presigned_python.addMethod('GET', new apigateway.LambdaIntegration(handler_upload_presigned_python, { proxy: true }));
+    resource = api.root.addResource('post_presigned_python');
+    resource.addMethod('GET', new apigateway.LambdaIntegration(handler_post_presigned_python, { proxy: true }));
   }
 }
 

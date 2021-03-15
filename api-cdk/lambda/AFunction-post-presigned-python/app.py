@@ -17,7 +17,7 @@ def lambdaHandler(event, context):
         # PUT - use binary to send data from POSTMAN
         # return client.generate_presigned_url('put_object', Params = { 'Bucket': bucket, 'Key': key }, ExpiresIn = expire)
 
-        # POST - testing
+        # POST - use multi-part/form-data to send the file with the information retured
         return client.generate_presigned_post(Bucket = bucket, Key = key, ExpiresIn = expire)
 
     presigned_url = get_presigned_url()
