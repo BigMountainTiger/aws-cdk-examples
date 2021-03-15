@@ -13,6 +13,11 @@ class ApiCdkStack extends cdk.Stack {
         bucketName: `${name.toLowerCase().replace(/_/g, '-')}.huge.head.li`,
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
         lifecycleRules: [{ expiration: cdk.Duration.days(1) }],
+        cors: [ {
+          allowedMethods: ['GET', 'PUT', 'HEAD', 'POST'],
+          allowedOrigins: ['*'],
+          allowedHeaders: ['*']
+        }],
         versioned: false,
         removalPolicy: cdk.RemovalPolicy.DESTROY
       });

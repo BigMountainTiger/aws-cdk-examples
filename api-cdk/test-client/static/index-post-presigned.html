@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+  </head>
+
+  <script>
+    // The url to get the presigned url
+    const url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/post_presigned_python';
+
+    const get_get_url = function(key) {
+      console.log(key);
+    };
+
+    const post_file = function(s3) {
+
+      const data = new FormData();
+      for ( let key in s3.fields ) {
+        data.append(key, s3.fields[key]);
+      }
+
+      data.append("file", document.getElementById("input-file").files[0]);
+
+      const xhttp = new XMLHttpRequest();
+
+      xhttp.onreadystatechange = function() {
+        if (xhttp.readyState != 4) { return; }
+
+        const status = xhttp.status;
+        const text = xhttp.responseText;
+
+        // AWS returns 204
+        if (status == 200 || status == 204) {
+          const result = JSON.parse(text || '{}')
+          console.log('OK');
+
+          get_get_url(s3.fields.key);
+
+        } else {
+
+          const result = text || xhttp.statusText || 'Unable to get the result'
+          console.log(result);
+        }
+      };
+      
+      xhttp.open('POST', s3.url, true);
+      xhttp.send(data);
+    };
+
+    const post_by_presigned_url = function() {
+
+      const xhttp = new XMLHttpRequest();
+
+      xhttp.onreadystatechange = function() {
+        if (xhttp.readyState != 4) { return; }
+
+        const status = xhttp.status;
+        const text = xhttp.responseText;
+
+        if (status == 200) {
+          const result = JSON.parse(text)
+          post_file(result.presigned_url);
+
+        } else {
+
+          const result = text || xhttp.statusText || 'Unable to get the result'
+          console.log(result);
+        }
+      };
+      
+      xhttp.open('GET', url, true);
+      xhttp.send();
+
+    };
+
+  </script>
+
+<body>
+
+  <button onclick="post_by_presigned_url()">Submit</button>
+  <input autocomplete="off" id="input-file" type="file"><br>
+
+</body>
+</html>
