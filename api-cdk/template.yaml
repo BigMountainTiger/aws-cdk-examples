@@ -84,7 +84,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6S3BucketC5C365DC
+          Ref: AssetParameters66df1e6a1df557ad5779c92bde4bf6f309195e4a96eb51d2187ee2416a662349S3Bucket3F3660EC
         S3Key:
           Fn::Join:
             - ""
@@ -92,12 +92,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6S3VersionKeyB0F40A0B
+                      - Ref: AssetParameters66df1e6a1df557ad5779c92bde4bf6f309195e4a96eb51d2187ee2416a662349S3VersionKey3BCD6AD1
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6S3VersionKeyB0F40A0B
+                      - Ref: AssetParameters66df1e6a1df557ad5779c92bde4bf6f309195e4a96eb51d2187ee2416a662349S3VersionKey3BCD6AD1
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
@@ -174,7 +174,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effS3BucketA3730A56
+          Ref: AssetParameters736f0762f608d58ef75dc2fca2a419daf3b464a009f4b6aa936baf2e478fe550S3BucketE5201CD8
         S3Key:
           Fn::Join:
             - ""
@@ -182,12 +182,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effS3VersionKeyE8C11D18
+                      - Ref: AssetParameters736f0762f608d58ef75dc2fca2a419daf3b464a009f4b6aa936baf2e478fe550S3VersionKey0656759E
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effS3VersionKeyE8C11D18
+                      - Ref: AssetParameters736f0762f608d58ef75dc2fca2a419daf3b464a009f4b6aa936baf2e478fe550S3VersionKey0656759E
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
@@ -219,7 +219,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cS3BucketF2898260
+          Ref: AssetParameters8d878837c2ffc92839c40a503c7bbfab993019903d4654736b32d83240abee03S3Bucket7FBF2BA6
         S3Key:
           Fn::Join:
             - ""
@@ -227,12 +227,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cS3VersionKey8AFEB58E
+                      - Ref: AssetParameters8d878837c2ffc92839c40a503c7bbfab993019903d4654736b32d83240abee03S3VersionKeyD2B82022
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cS3VersionKey8AFEB58E
+                      - Ref: AssetParameters8d878837c2ffc92839c40a503c7bbfab993019903d4654736b32d83240abee03S3VersionKeyD2B82022
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
@@ -261,6 +261,53 @@ Resources:
       Principal: apigateway.amazonaws.com
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-upload-python/ApiAccessPermission
+  APICDKSTACKAFunctionuploadpresignedpython9B442583:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters49627f374b5a8a21ff6bffe17f4edeb0318cf47ca4e54ea4b0541027bf2f5331S3Bucket98BE7B5B
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters49627f374b5a8a21ff6bffe17f4edeb0318cf47ca4e54ea4b0541027bf2f5331S3VersionKey91FD469B
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters49627f374b5a8a21ff6bffe17f4edeb0318cf47ca4e54ea4b0541027bf2f5331S3VersionKey91FD469B
+      Role:
+        Fn::GetAtt:
+          - APICDKSTACKMyRole834BC275
+          - Arn
+      FunctionName: API-CDK-STACKAFunction-upload-presigned-python
+      Handler: app.lambdaHandler
+      Layers:
+        - Ref: APICDKSTACKLAYER7C9693A7
+      Runtime: python3.8
+      Timeout: 120
+    DependsOn:
+      - APICDKSTACKMyRoleDefaultPolicy6490C780
+      - APICDKSTACKMyRole834BC275
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-upload-presigned-python/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-cdk/lambda/AFunction-upload-presigned-python
+      aws:asset:property: Code
+  APICDKSTACKAFunctionuploadpresignedpythonApiAccessPermission25832A8D:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APICDKSTACKAFunctionuploadpresignedpython9B442583
+          - Arn
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-upload-presigned-python/ApiAccessPermission
   APICDKSTACKAPIGWAA193FB7:
     Type: AWS::ApiGateway::RestApi
     Properties:
@@ -302,7 +349,7 @@ Resources:
       - APICDKSTACKAPIGWAA193FB7
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Account
-  APICDKSTACKAPIGWDeployment2FE7C019a89abc47b0383d16fc38876a9c5419bb:
+  APICDKSTACKAPIGWDeployment2FE7C0197880a08753a3c5914e2f279e69f8b413:
     Type: AWS::ApiGateway::Deployment
     Properties:
       RestApiId:
@@ -316,6 +363,9 @@ Resources:
       - APICDKSTACKAPIGWdownloadOPTIONSE6A94765
       - APICDKSTACKAPIGWdownload8D56EFB7
       - APICDKSTACKAPIGWOPTIONS74E74280
+      - APICDKSTACKAPIGWuploadpresignedpythonOPTIONS3D547999
+      - APICDKSTACKAPIGWuploadpresignedpythonPOST9FD87151
+      - APICDKSTACKAPIGWuploadpresignedpython3FC9E6BF
       - APICDKSTACKAPIGWuploadpythonOPTIONS1C6C20BC
       - APICDKSTACKAPIGWuploadpythonPOST3076305A
       - APICDKSTACKAPIGWuploadpythonD7EF7848
@@ -330,7 +380,7 @@ Resources:
       RestApiId:
         Ref: APICDKSTACKAPIGWAA193FB7
       DeploymentId:
-        Ref: APICDKSTACKAPIGWDeployment2FE7C019a89abc47b0383d16fc38876a9c5419bb
+        Ref: APICDKSTACKAPIGWDeployment2FE7C0197880a08753a3c5914e2f279e69f8b413
       StageName: prod
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/DeploymentStage.prod/Resource
@@ -815,6 +865,119 @@ Resources:
               - /invocations
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/upload-python/POST/Resource
+  APICDKSTACKAPIGWuploadpresignedpython3FC9E6BF:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - APICDKSTACKAPIGWAA193FB7
+          - RootResourceId
+      PathPart: upload_presigned_python
+      RestApiId:
+        Ref: APICDKSTACKAPIGWAA193FB7
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/upload_presigned_python/Resource
+  APICDKSTACKAPIGWuploadpresignedpythonOPTIONS3D547999:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Ref: APICDKSTACKAPIGWuploadpresignedpython3FC9E6BF
+      RestApiId:
+        Ref: APICDKSTACKAPIGWAA193FB7
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/upload_presigned_python/OPTIONS/Resource
+  APICDKSTACKAPIGWuploadpresignedpythonPOSTApiPermissionAPICDKSTACKAPICDKSTACKAPIGW52E3ED44POSTuploadpresignedpython05354D1F:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APICDKSTACKAFunctionuploadpresignedpython9B442583
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: APICDKSTACKAPIGWAA193FB7
+            - /
+            - Ref: APICDKSTACKAPIGWDeploymentStageprod2B95DB1B
+            - /POST/upload_presigned_python
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/upload_presigned_python/POST/ApiPermission.APICDKSTACKAPICDKSTACKAPIGW52E3ED44.POST..upload_presigned_python
+  APICDKSTACKAPIGWuploadpresignedpythonPOSTApiPermissionTestAPICDKSTACKAPICDKSTACKAPIGW52E3ED44POSTuploadpresignedpython16D72765:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APICDKSTACKAFunctionuploadpresignedpython9B442583
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: APICDKSTACKAPIGWAA193FB7
+            - /test-invoke-stage/POST/upload_presigned_python
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/upload_presigned_python/POST/ApiPermission.Test.APICDKSTACKAPICDKSTACKAPIGW52E3ED44.POST..upload_presigned_python
+  APICDKSTACKAPIGWuploadpresignedpythonPOST9FD87151:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId:
+        Ref: APICDKSTACKAPIGWuploadpresignedpython3FC9E6BF
+      RestApiId:
+        Ref: APICDKSTACKAPIGWAA193FB7
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - APICDKSTACKAFunctionuploadpresignedpython9B442583
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/upload_presigned_python/POST/Resource
 Parameters:
   AssetParameters034e42a031aebc87c9370f0fb9dbe527e0c4ba0cbddb2e56966f8efa8173cf51S3Bucket0AF3E0E6:
     Type: String
@@ -825,15 +988,15 @@ Parameters:
   AssetParameters034e42a031aebc87c9370f0fb9dbe527e0c4ba0cbddb2e56966f8efa8173cf51ArtifactHash8FE91348:
     Type: String
     Description: Artifact hash for asset "034e42a031aebc87c9370f0fb9dbe527e0c4ba0cbddb2e56966f8efa8173cf51"
-  AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6S3BucketC5C365DC:
+  AssetParameters66df1e6a1df557ad5779c92bde4bf6f309195e4a96eb51d2187ee2416a662349S3Bucket3F3660EC:
     Type: String
-    Description: S3 bucket for asset "61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6"
-  AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6S3VersionKeyB0F40A0B:
+    Description: S3 bucket for asset "66df1e6a1df557ad5779c92bde4bf6f309195e4a96eb51d2187ee2416a662349"
+  AssetParameters66df1e6a1df557ad5779c92bde4bf6f309195e4a96eb51d2187ee2416a662349S3VersionKey3BCD6AD1:
     Type: String
-    Description: S3 key for asset version "61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6"
-  AssetParameters61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6ArtifactHashF87CEB88:
+    Description: S3 key for asset version "66df1e6a1df557ad5779c92bde4bf6f309195e4a96eb51d2187ee2416a662349"
+  AssetParameters66df1e6a1df557ad5779c92bde4bf6f309195e4a96eb51d2187ee2416a662349ArtifactHashB58004BB:
     Type: String
-    Description: Artifact hash for asset "61b51eb846a05d13bcfebe38e3bb9344afcca98f3e700e31bb49587c0eba17e6"
+    Description: Artifact hash for asset "66df1e6a1df557ad5779c92bde4bf6f309195e4a96eb51d2187ee2416a662349"
   AssetParameters4ac6bc7fb9d370fe4b779bfaf58aa61892f6642b679b8fdcb6c8ebdafff530b2S3Bucket6F338FE4:
     Type: String
     Description: S3 bucket for asset "4ac6bc7fb9d370fe4b779bfaf58aa61892f6642b679b8fdcb6c8ebdafff530b2"
@@ -843,24 +1006,33 @@ Parameters:
   AssetParameters4ac6bc7fb9d370fe4b779bfaf58aa61892f6642b679b8fdcb6c8ebdafff530b2ArtifactHash9B77013D:
     Type: String
     Description: Artifact hash for asset "4ac6bc7fb9d370fe4b779bfaf58aa61892f6642b679b8fdcb6c8ebdafff530b2"
-  AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effS3BucketA3730A56:
+  AssetParameters736f0762f608d58ef75dc2fca2a419daf3b464a009f4b6aa936baf2e478fe550S3BucketE5201CD8:
     Type: String
-    Description: S3 bucket for asset "f21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922eff"
-  AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effS3VersionKeyE8C11D18:
+    Description: S3 bucket for asset "736f0762f608d58ef75dc2fca2a419daf3b464a009f4b6aa936baf2e478fe550"
+  AssetParameters736f0762f608d58ef75dc2fca2a419daf3b464a009f4b6aa936baf2e478fe550S3VersionKey0656759E:
     Type: String
-    Description: S3 key for asset version "f21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922eff"
-  AssetParametersf21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922effArtifactHash72FBF9C5:
+    Description: S3 key for asset version "736f0762f608d58ef75dc2fca2a419daf3b464a009f4b6aa936baf2e478fe550"
+  AssetParameters736f0762f608d58ef75dc2fca2a419daf3b464a009f4b6aa936baf2e478fe550ArtifactHash9449A236:
     Type: String
-    Description: Artifact hash for asset "f21a37c59d98e46e3df1a64875a26678a7b70d57c069375fa7a7886903922eff"
-  AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cS3BucketF2898260:
+    Description: Artifact hash for asset "736f0762f608d58ef75dc2fca2a419daf3b464a009f4b6aa936baf2e478fe550"
+  AssetParameters8d878837c2ffc92839c40a503c7bbfab993019903d4654736b32d83240abee03S3Bucket7FBF2BA6:
     Type: String
-    Description: S3 bucket for asset "19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135c"
-  AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cS3VersionKey8AFEB58E:
+    Description: S3 bucket for asset "8d878837c2ffc92839c40a503c7bbfab993019903d4654736b32d83240abee03"
+  AssetParameters8d878837c2ffc92839c40a503c7bbfab993019903d4654736b32d83240abee03S3VersionKeyD2B82022:
     Type: String
-    Description: S3 key for asset version "19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135c"
-  AssetParameters19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135cArtifactHash824A3BE8:
+    Description: S3 key for asset version "8d878837c2ffc92839c40a503c7bbfab993019903d4654736b32d83240abee03"
+  AssetParameters8d878837c2ffc92839c40a503c7bbfab993019903d4654736b32d83240abee03ArtifactHashF9937263:
     Type: String
-    Description: Artifact hash for asset "19ad61d00dd67e19723fb50dc315e6c1da6b8b9f2eac18df76c67b16155e135c"
+    Description: Artifact hash for asset "8d878837c2ffc92839c40a503c7bbfab993019903d4654736b32d83240abee03"
+  AssetParameters49627f374b5a8a21ff6bffe17f4edeb0318cf47ca4e54ea4b0541027bf2f5331S3Bucket98BE7B5B:
+    Type: String
+    Description: S3 bucket for asset "49627f374b5a8a21ff6bffe17f4edeb0318cf47ca4e54ea4b0541027bf2f5331"
+  AssetParameters49627f374b5a8a21ff6bffe17f4edeb0318cf47ca4e54ea4b0541027bf2f5331S3VersionKey91FD469B:
+    Type: String
+    Description: S3 key for asset version "49627f374b5a8a21ff6bffe17f4edeb0318cf47ca4e54ea4b0541027bf2f5331"
+  AssetParameters49627f374b5a8a21ff6bffe17f4edeb0318cf47ca4e54ea4b0541027bf2f5331ArtifactHashF39F2F31:
+    Type: String
+    Description: Artifact hash for asset "49627f374b5a8a21ff6bffe17f4edeb0318cf47ca4e54ea4b0541027bf2f5331"
 Outputs:
   APICDKSTACKAPIGWEndpointF8CFD52F:
     Value:

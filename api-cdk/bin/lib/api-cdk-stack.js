@@ -96,6 +96,7 @@ class ApiCdkStack extends cdk.Stack {
     const handler_download = add_lambda(role, './lambda/AFunction-download', `${id}AFunction-download`);
     const handler_upload = add_lambda(role, './lambda/AFunction-upload', `${id}AFunction-upload`);
     const handler_upload_python = add_lambda_python(role, './lambda/AFunction-upload-python', `${id}AFunction-upload-python`);
+    const handler_upload_presigned_python = add_lambda_python(role, './lambda/AFunction-upload-presigned-python', `${id}AFunction-upload-presigned-python`);
 
     const api = new apigateway.RestApi(this, API_NAME, {
       restApiName: API_NAME,
@@ -119,6 +120,9 @@ class ApiCdkStack extends cdk.Stack {
 
     const attach_endpoint_upload_python = api.root.addResource('upload-python');
     attach_endpoint_upload_python.addMethod('POST', new apigateway.LambdaIntegration(handler_upload_python, { proxy: true }));
+
+    const attach_endpoint_upload_presigned_python = api.root.addResource('upload_presigned_python');
+    attach_endpoint_upload_presigned_python.addMethod('POST', new apigateway.LambdaIntegration(handler_upload_presigned_python, { proxy: true }));
   }
 }
 
