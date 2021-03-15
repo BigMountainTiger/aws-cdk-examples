@@ -122,7 +122,7 @@ class ApiCdkStack extends cdk.Stack {
     attach_endpoint_upload_python.addMethod('POST', new apigateway.LambdaIntegration(handler_upload_python, { proxy: true }));
 
     const attach_endpoint_upload_presigned_python = api.root.addResource('upload_presigned_python');
-    attach_endpoint_upload_presigned_python.addMethod('POST', new apigateway.LambdaIntegration(handler_upload_presigned_python, { proxy: true }));
+    attach_endpoint_upload_presigned_python.addMethod('GET', new apigateway.LambdaIntegration(handler_upload_presigned_python, { proxy: true }));
   }
 }
 
