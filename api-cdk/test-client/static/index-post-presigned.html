@@ -77,6 +77,21 @@
 
     };
 
+    window.onload = function() {
+      
+      if (!Promise) {
+        
+        const load_promise = function() {
+          const js = document.createElement("script");
+          js.type = 'text/javascript';
+          js.src = 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.7.2/bluebird.min.js';
+          document.body.appendChild(js);
+        };
+
+        load_promise();
+      }
+    };
+
   </script>
 
 <body>
