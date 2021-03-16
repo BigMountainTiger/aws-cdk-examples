@@ -4,6 +4,17 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: api-cdk.huge.head.li
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
+              - GET
+              - PUT
+              - HEAD
+              - POST
+            AllowedOrigins:
+              - "*"
       LifecycleConfiguration:
         Rules:
           - ExpirationInDays: 1
@@ -308,6 +319,53 @@ Resources:
       Principal: apigateway.amazonaws.com
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-AFunction-post-presigned-python/ApiAccessPermission
+  APICDKSTACKAFunctionAFunctiongetpresignedpython5E407B6B:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters4317ecee91548a97dabe160a57971f0497b176b00aaf29ef1e5a902284cb3784S3BucketCE197571
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters4317ecee91548a97dabe160a57971f0497b176b00aaf29ef1e5a902284cb3784S3VersionKey0BFC6FC2
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters4317ecee91548a97dabe160a57971f0497b176b00aaf29ef1e5a902284cb3784S3VersionKey0BFC6FC2
+      Role:
+        Fn::GetAtt:
+          - APICDKSTACKMyRole834BC275
+          - Arn
+      FunctionName: API-CDK-STACKAFunction-AFunction-get-presigned-python
+      Handler: app.lambdaHandler
+      Layers:
+        - Ref: APICDKSTACKLAYER7C9693A7
+      Runtime: python3.8
+      Timeout: 120
+    DependsOn:
+      - APICDKSTACKMyRoleDefaultPolicy6490C780
+      - APICDKSTACKMyRole834BC275
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-AFunction-get-presigned-python/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-cdk/lambda/AFunction-get-presigned-python
+      aws:asset:property: Code
+  APICDKSTACKAFunctionAFunctiongetpresignedpythonApiAccessPermissionEA2A120F:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APICDKSTACKAFunctionAFunctiongetpresignedpython5E407B6B
+          - Arn
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAFunction-AFunction-get-presigned-python/ApiAccessPermission
   APICDKSTACKAPIGWAA193FB7:
     Type: AWS::ApiGateway::RestApi
     Properties:
@@ -349,7 +407,7 @@ Resources:
       - APICDKSTACKAPIGWAA193FB7
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Account
-  APICDKSTACKAPIGWDeployment2FE7C019eeb1a7f3fd6a0138342c50e6cbb40367:
+  APICDKSTACKAPIGWDeployment2FE7C019a3a44993dd3f3f80f6cb86e9e32ac178:
     Type: AWS::ApiGateway::Deployment
     Properties:
       RestApiId:
@@ -362,6 +420,11 @@ Resources:
       - APICDKSTACKAPIGWdownloadGET40EC633C
       - APICDKSTACKAPIGWdownloadOPTIONSE6A94765
       - APICDKSTACKAPIGWdownload8D56EFB7
+      - APICDKSTACKAPIGWgetpresignedpythonkeyGET28F82309
+      - APICDKSTACKAPIGWgetpresignedpythonkeyOPTIONSBFE5F654
+      - APICDKSTACKAPIGWgetpresignedpythonkey12DEA2EF
+      - APICDKSTACKAPIGWgetpresignedpythonOPTIONSF4D4993C
+      - APICDKSTACKAPIGWgetpresignedpython881AD818
       - APICDKSTACKAPIGWOPTIONS74E74280
       - APICDKSTACKAPIGWpostpresignedpythonGETB68C8810
       - APICDKSTACKAPIGWpostpresignedpythonOPTIONS84BF992C
@@ -380,7 +443,7 @@ Resources:
       RestApiId:
         Ref: APICDKSTACKAPIGWAA193FB7
       DeploymentId:
-        Ref: APICDKSTACKAPIGWDeployment2FE7C019eeb1a7f3fd6a0138342c50e6cbb40367
+        Ref: APICDKSTACKAPIGWDeployment2FE7C019a3a44993dd3f3f80f6cb86e9e32ac178
       StageName: prod
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/DeploymentStage.prod/Resource
@@ -978,6 +1041,156 @@ Resources:
               - /invocations
     Metadata:
       aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/post_presigned_python/GET/Resource
+  APICDKSTACKAPIGWgetpresignedpython881AD818:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - APICDKSTACKAPIGWAA193FB7
+          - RootResourceId
+      PathPart: get_presigned_python
+      RestApiId:
+        Ref: APICDKSTACKAPIGWAA193FB7
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/get_presigned_python/Resource
+  APICDKSTACKAPIGWgetpresignedpythonOPTIONSF4D4993C:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Ref: APICDKSTACKAPIGWgetpresignedpython881AD818
+      RestApiId:
+        Ref: APICDKSTACKAPIGWAA193FB7
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/get_presigned_python/OPTIONS/Resource
+  APICDKSTACKAPIGWgetpresignedpythonkey12DEA2EF:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Ref: APICDKSTACKAPIGWgetpresignedpython881AD818
+      PathPart: "{key}"
+      RestApiId:
+        Ref: APICDKSTACKAPIGWAA193FB7
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/get_presigned_python/{key}/Resource
+  APICDKSTACKAPIGWgetpresignedpythonkeyOPTIONSBFE5F654:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Ref: APICDKSTACKAPIGWgetpresignedpythonkey12DEA2EF
+      RestApiId:
+        Ref: APICDKSTACKAPIGWAA193FB7
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/get_presigned_python/{key}/OPTIONS/Resource
+  APICDKSTACKAPIGWgetpresignedpythonkeyGETApiPermissionAPICDKSTACKAPICDKSTACKAPIGW52E3ED44GETgetpresignedpythonkeyDC3646A5:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APICDKSTACKAFunctionAFunctiongetpresignedpython5E407B6B
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: APICDKSTACKAPIGWAA193FB7
+            - /
+            - Ref: APICDKSTACKAPIGWDeploymentStageprod2B95DB1B
+            - /GET/get_presigned_python/*
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/get_presigned_python/{key}/GET/ApiPermission.APICDKSTACKAPICDKSTACKAPIGW52E3ED44.GET..get_presigned_python.{key}
+  APICDKSTACKAPIGWgetpresignedpythonkeyGETApiPermissionTestAPICDKSTACKAPICDKSTACKAPIGW52E3ED44GETgetpresignedpythonkey0C9D85DF:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APICDKSTACKAFunctionAFunctiongetpresignedpython5E407B6B
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: APICDKSTACKAPIGWAA193FB7
+            - /test-invoke-stage/GET/get_presigned_python/*
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/get_presigned_python/{key}/GET/ApiPermission.Test.APICDKSTACKAPICDKSTACKAPIGW52E3ED44.GET..get_presigned_python.{key}
+  APICDKSTACKAPIGWgetpresignedpythonkeyGET28F82309:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId:
+        Ref: APICDKSTACKAPIGWgetpresignedpythonkey12DEA2EF
+      RestApiId:
+        Ref: APICDKSTACKAPIGWAA193FB7
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - APICDKSTACKAFunctionAFunctiongetpresignedpython5E407B6B
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: API-CDK-STACK/API-CDK-STACKAPIGW/Default/get_presigned_python/{key}/GET/Resource
 Parameters:
   AssetParameters034e42a031aebc87c9370f0fb9dbe527e0c4ba0cbddb2e56966f8efa8173cf51S3Bucket0AF3E0E6:
     Type: String
@@ -1033,6 +1246,15 @@ Parameters:
   AssetParameters1acff6e731da8c939b3707ef982a4b714752e09f98fd4d0b6464fa1eb4a0ffd6ArtifactHashE433F89E:
     Type: String
     Description: Artifact hash for asset "1acff6e731da8c939b3707ef982a4b714752e09f98fd4d0b6464fa1eb4a0ffd6"
+  AssetParameters4317ecee91548a97dabe160a57971f0497b176b00aaf29ef1e5a902284cb3784S3BucketCE197571:
+    Type: String
+    Description: S3 bucket for asset "4317ecee91548a97dabe160a57971f0497b176b00aaf29ef1e5a902284cb3784"
+  AssetParameters4317ecee91548a97dabe160a57971f0497b176b00aaf29ef1e5a902284cb3784S3VersionKey0BFC6FC2:
+    Type: String
+    Description: S3 key for asset version "4317ecee91548a97dabe160a57971f0497b176b00aaf29ef1e5a902284cb3784"
+  AssetParameters4317ecee91548a97dabe160a57971f0497b176b00aaf29ef1e5a902284cb3784ArtifactHashC4632D45:
+    Type: String
+    Description: Artifact hash for asset "4317ecee91548a97dabe160a57971f0497b176b00aaf29ef1e5a902284cb3784"
 Outputs:
   APICDKSTACKAPIGWEndpointF8CFD52F:
     Value:

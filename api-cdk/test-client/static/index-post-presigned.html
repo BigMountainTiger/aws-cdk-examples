@@ -44,7 +44,7 @@
 
   <script>
     // The url to get the presigned url
-    const url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/post_presigned_python';
+    const url_presigned_to_post = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/post_presigned_python';
 
     const post_by_presigned_url = function() {
       const file = document.getElementById("input-file");
@@ -56,7 +56,7 @@
       }
 
       // Start to make chains of AJAX calls
-      AJAX( { url: url }).then(function(v) {
+      AJAX( { url: url_presigned_to_post }).then(function(v) {
 
         const s3 = JSON.parse(v.response).presigned_url;
 
