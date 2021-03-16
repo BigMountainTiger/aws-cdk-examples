@@ -27,6 +27,7 @@
       let xhttp = new XMLHttpRequest();
       xhttp.open(rq.method || 'GET', rq.url, true);
       xhttp.send(rq.data);
+      xhttp.ajax_request = rq;
 
       return new Promise(function(rs, rj) {
 
@@ -81,7 +82,10 @@
           + presigned_url + '">Download file from S3</a>';
 
       }).catch(function(v) {
-        document.getElementById('span-error').innerHTML = 'Error: please check the log';
+
+        console.log("Error when making the following request");
+        console.log(v.ajax_request);
+        document.getElementById('span-error').innerHTML = 'Error: please check the browser console.log()';
       });
     };
 
