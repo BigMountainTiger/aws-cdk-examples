@@ -22,80 +22,8 @@
         load_promise();
       }
     };
-    
-  </script>
-
-  <script>
-    // The url to get the presigned url
-    const url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/post_presigned_python';
-
-    const get_get_url = function(key) {
-      console.log(key);
-    };
-
-    const post_file = function(s3) {
-
-      const data = new FormData();
-      for ( let key in s3.fields ) {
-        data.append(key, s3.fields[key]);
-      }
-
-      data.append("file", document.getElementById("input-file").files[0]);
-
-      const xhttp = new XMLHttpRequest();
-
-      xhttp.onreadystatechange = function() {
-        if (xhttp.readyState != 4) { return; }
-
-        const status = xhttp.status;
-        const text = xhttp.responseText;
-
-        // AWS returns 204
-        if (status == 200 || status == 204) {
-          const result = JSON.parse(text || '{}')
-          console.log('OK');
-
-          get_get_url(s3.fields.key);
-
-        } else {
-
-          const result = text || xhttp.statusText || 'Unable to get the result'
-          console.log(result);
-        }
-      };
-      
-      xhttp.open('POST', s3.url, true);
-      xhttp.send(data);
-    };
-
-    const post_by_presigned_url = function() {
-
-      const xhttp = new XMLHttpRequest();
-
-      xhttp.onreadystatechange = function() {
-        if (xhttp.readyState != 4) { return; }
-
-        const status = xhttp.status;
-        const text = xhttp.responseText;
-
-        if (status == 200) {
-          const result = JSON.parse(text)
-          post_file(result.presigned_url);
-
-        } else {
-
-          const result = text || xhttp.statusText || 'Unable to get the result'
-          console.log(result);
-        }
-      };
-      
-      xhttp.open('GET', url, true);
-      xhttp.send();
-
-    };
 
     const AJAX = function(rq) {
-
       const xhttp = new XMLHttpRequest();
       xhttp.open(rq.method || 'GET', rq.url, true);
       xhttp.send(rq.data);
@@ -109,13 +37,47 @@
           if ((status == 200) || (rq.scode || []).includes(status)) { rs(xhttp); } else { rj(xhttp); }
         };
       });
+
     };
+    
+  </script>
 
-    const test_Ajax = function() {
+  <script>
+    // The url to get the presigned url
+    const url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/post_presigned_python';
 
+    const post_by_presigned_url = function() {
+      const file = document.getElementById("input-file");
+      let s3_key = null;
 
+      if (file.value == '') {
+        alert('No file selected');
+        return;
+      }
+
+      // Start to make chains of AJAX calls
       AJAX( { url: url }).then(function(v) {
+
+        const s3 = JSON.parse(v.response).presigned_url;
+
+        const data = new FormData();
+        const fields = s3.fields;
+        for ( let key in fields ) {
+          data.append(key, fields[key]);
+        }
+        data.append("file", file.files[0]);
+        
+        s3_key = fields.key;
+        return AJAX({ url: s3.url, method: 'POST', data: data, scode: [204] });
+
+      }).then(function(v) {
+
+        console.log(s3_key);
+      }).catch(function(v) {
+
+        alert('something wrong');
         console.log(v);
+
       });
     };
 
@@ -123,7 +85,6 @@
 
 <body>
 
-  <button onclick="test_Ajax()">Test AJAX</button>
   <button onclick="post_by_presigned_url()">Submit</button>
   <input autocomplete="off" id="input-file" type="file"><br>
 
