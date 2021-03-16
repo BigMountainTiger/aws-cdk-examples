@@ -46,10 +46,11 @@
     let base_url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/';
 
     let post_by_presigned_url = function() {
+      
       let file = document.getElementById("input-file");
       let s3_key = null;
 
-      if (file.value == '') {
+      if (!file.value) {
         alert('No file selected');
         return;
       }
@@ -75,22 +76,32 @@
       }).then(function(v) {
         
         let presigned_url = JSON.parse(v.response).presigned_url;
-        console.log(presigned_url);
+
+        document.getElementById('span-get-file').innerHTML = '<a target="_blank" href="'
+          + presigned_url + '">Download file from S3</a>';
 
       }).catch(function(v) {
-
-        alert('something wrong');
-        console.log(v);
-
+        document.getElementById('span-error').innerHTML = 'Error: please check the log';
       });
+    };
+
+    let clear_status = function() {
+      document.getElementById("input-file").value = null;
+      document.getElementById('span-get-file').innerHTML = null;
+      document.getElementById('span-error').innerHTML = null;
     };
 
   </script>
 
 <body>
 
+  <button onclick="clear_status()">Clear</button>
   <button onclick="post_by_presigned_url()">Submit</button>
-  <input autocomplete="off" id="input-file" type="file"><br>
+  <input autocomplete="off" id="input-file" type="file">
+  <br><br>
+
+  <span id="span-get-file"></span>
+  <span id="span-error"></span>
 
 </body>
 </html>
