@@ -10,7 +10,7 @@
 
   <script>
     window.onload = function() {
-      Promise = null;
+
       if (!Promise) {
         const load_promise = function() {
           const js = document.createElement("script");
@@ -94,19 +94,28 @@
 
     };
 
-    const AJAX = function() {
+    const AJAX = function(rq) {
+
+      const xhttp = new XMLHttpRequest();
+      xhttp.open(rq.method || 'GET', rq.url, true);
+      xhttp.send(rq.data);
+
       return new Promise(function(rs, rj) {
-        setTimeout(function() {
-          rs('OK');
-        }, 3000);
+
+        xhttp.onreadystatechange = function() {
+          if (xhttp.readyState != 4) { return; }
+
+          const status = xhttp.status;
+          if ((status == 200) || (rq.scode || []).includes(status)) { rs(xhttp); } else { rj(xhttp); }
+        };
       });
-
-
     };
 
     const test_Ajax = function() {
-      AJAX().then(function(v) {
-        alert(v);
+
+
+      AJAX( { url: url }).then(function(v) {
+        console.log(v);
       });
     };
 
