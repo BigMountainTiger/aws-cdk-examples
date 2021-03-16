@@ -99,7 +99,7 @@
 
       }).then(function(v) {
         loader.style.display = 'none';
-        
+
         let presigned_url = JSON.parse(v.response).presigned_url;
 
         document.getElementById('span-get-file').innerHTML = '<a target="_blank" href="'
@@ -117,18 +117,22 @@
     };
 
     let clear_status = function() {
-      document.getElementById("input-file").value = null;
       document.getElementById('span-get-file').innerHTML = null;
       document.getElementById('span-error').innerHTML = null;
+    };
+
+    let clear_all = function() {
+      document.getElementById("input-file").value = null;
+      clear_status();
     };
 
   </script>
 
 <body>
 
-  <button onclick="clear_status()">Clear</button>
+  <button onclick="clear_all()">Clear</button>
   <button onclick="post_by_presigned_url()">Submit</button>
-  <input autocomplete="off" id="input-file" type="file">
+  <input autocomplete="off" id="input-file" type="file" onchange="clear_status()"/>
   <br><br>
   <span class="loader"></span>
   <span id="span-get-file"></span>
