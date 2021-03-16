@@ -12,8 +12,8 @@
     window.onload = function() {
 
       if (!Promise) {
-        const load_promise = function() {
-          const js = document.createElement("script");
+        let load_promise = function() {
+          let js = document.createElement("script");
           js.type = 'text/javascript';
           js.src = 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.7.2/bluebird.min.js';
           document.body.appendChild(js);
@@ -23,8 +23,8 @@
       }
     };
 
-    const AJAX = function(rq) {
-      const xhttp = new XMLHttpRequest();
+    let AJAX = function(rq) {
+      let xhttp = new XMLHttpRequest();
       xhttp.open(rq.method || 'GET', rq.url, true);
       xhttp.send(rq.data);
 
@@ -33,7 +33,7 @@
         xhttp.onreadystatechange = function() {
           if (xhttp.readyState != 4) { return; }
 
-          const status = xhttp.status;
+          let status = xhttp.status;
           if ((status == 200) || (rq.scode || []).includes(status)) { rs(xhttp); } else { rj(xhttp); }
         };
       });
@@ -44,10 +44,10 @@
 
   <script>
     // The url to get the presigned url
-    const base_url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/';
+    let base_url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/';
 
-    const post_by_presigned_url = function() {
-      const file = document.getElementById("input-file");
+    let post_by_presigned_url = function() {
+      let file = document.getElementById("input-file");
       let s3_key = null;
 
       if (file.value == '') {
@@ -58,10 +58,10 @@
       // Start to make chains of AJAX calls
       AJAX( { url: base_url + 'post_presigned_python' }).then(function(v) {
 
-        const s3 = JSON.parse(v.response).presigned_url;
+        let s3 = JSON.parse(v.response).presigned_url;
 
-        const data = new FormData();
-        const fields = s3.fields;
+        let data = new FormData();
+        let fields = s3.fields;
         for ( let key in fields ) {
           data.append(key, fields[key]);
         }
@@ -75,7 +75,7 @@
 
       }).then(function(v) {
         
-        const presigned_url = JSON.parse(v.response).presigned_url;
+        let presigned_url = JSON.parse(v.response).presigned_url;
         console.log(presigned_url);
 
       }).catch(function(v) {
