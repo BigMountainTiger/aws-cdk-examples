@@ -9,6 +9,23 @@
   </head>
 
   <script>
+    window.onload = function() {
+      Promise = null;
+      if (!Promise) {
+        const load_promise = function() {
+          const js = document.createElement("script");
+          js.type = 'text/javascript';
+          js.src = 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.7.2/bluebird.min.js';
+          document.body.appendChild(js);
+        };
+
+        load_promise();
+      }
+    };
+    
+  </script>
+
+  <script>
     // The url to get the presigned url
     const url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/post_presigned_python';
 
@@ -77,25 +94,27 @@
 
     };
 
-    window.onload = function() {
-      
-      if (!Promise) {
-        
-        const load_promise = function() {
-          const js = document.createElement("script");
-          js.type = 'text/javascript';
-          js.src = 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.7.2/bluebird.min.js';
-          document.body.appendChild(js);
-        };
+    const AJAX = function() {
+      return new Promise(function(rs, rj) {
+        setTimeout(function() {
+          rs('OK');
+        }, 3000);
+      });
 
-        load_promise();
-      }
+
+    };
+
+    const test_Ajax = function() {
+      AJAX().then(function(v) {
+        alert(v);
+      });
     };
 
   </script>
 
 <body>
 
+  <button onclick="test_Ajax()">Test AJAX</button>
   <button onclick="post_by_presigned_url()">Submit</button>
   <input autocomplete="off" id="input-file" type="file"><br>
 
