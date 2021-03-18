@@ -102,6 +102,7 @@ class ApiCdkStack extends cdk.Stack {
     const handler_upload = add_lambda(role, './lambda/AFunction-upload', `${id}AFunction-upload`);
     const handler_upload_python = add_lambda_python(role, './lambda/AFunction-upload-python', `${id}AFunction-upload-python`);
     const handler_post_presigned_python = add_lambda_python(role, './lambda/AFunction-post-presigned-python', `${id}AFunction-AFunction-post-presigned-python`);
+    const handler_put_presigned_python = add_lambda_python(role, './lambda/AFunction-put-presigned-python', `${id}AFunction-AFunction-put-presigned-python`);
     const handler_get_presigned_python = add_lambda_python(role, './lambda/AFunction-get-presigned-python', `${id}AFunction-AFunction-get-presigned-python`);
 
     const api = new apigateway.RestApi(this, API_NAME, {
@@ -129,6 +130,9 @@ class ApiCdkStack extends cdk.Stack {
 
     resource = api.root.addResource('post_presigned_python');
     resource.addMethod('GET', new apigateway.LambdaIntegration(handler_post_presigned_python, { proxy: true }));
+
+    resource = api.root.addResource('put_presigned_python');
+    resource.addMethod('GET', new apigateway.LambdaIntegration(handler_put_presigned_python, { proxy: true }));
 
     resource = api.root.addResource('get_presigned_python').addResource('{key}');
     resource.addMethod('GET', new apigateway.LambdaIntegration(handler_get_presigned_python, { proxy: true }));
