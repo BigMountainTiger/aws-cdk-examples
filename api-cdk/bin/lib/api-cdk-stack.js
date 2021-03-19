@@ -105,6 +105,8 @@ class ApiCdkStack extends cdk.Stack {
     const handler_put_presigned_python = add_lambda_python(role, './lambda/AFunction-put-presigned-python', `${id}AFunction-AFunction-put-presigned-python`);
     const handler_get_presigned_python = add_lambda_python(role, './lambda/AFunction-get-presigned-python', `${id}AFunction-AFunction-get-presigned-python`);
 
+    const handler_all_presigned_python = add_lambda_python(role, './lambda/AFunction-all-presigned-python', `${id}AFunction-all-presigned-python`);
+
     const api = new apigateway.RestApi(this, API_NAME, {
       restApiName: API_NAME,
       description: API_NAME,
@@ -136,6 +138,10 @@ class ApiCdkStack extends cdk.Stack {
 
     resource = api.root.addResource('get_presigned_python').addResource('{key}');
     resource.addMethod('GET', new apigateway.LambdaIntegration(handler_get_presigned_python, { proxy: true }));
+
+    // Get all presigned URLs given the name
+    resource = api.root.addResource('get_all_presigned_python').addResource('{file_name}');
+    resource.addMethod('GET', new apigateway.LambdaIntegration(handler_all_presigned_python, { proxy: true }));
   }
 }
 
