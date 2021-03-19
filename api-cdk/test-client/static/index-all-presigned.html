@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+  </head>
+
+  <style>
+    .loader {
+      display: none;
+      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      animation: spin 2s linear infinite;
+    }
+    .loader {
+      border-top: 5px solid blue;
+      border-right: 5px solid green;
+      border-bottom: 5px solid red;
+      border-left: 5px solid pink;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+  </style>
+
+  <script>
+    window.onload = function() {
+
+      if (!Promise) {
+        let load_promise = function() {
+          let js = document.createElement("script");
+          js.type = 'text/javascript';
+          js.src = 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.7.2/bluebird.min.js';
+          document.body.appendChild(js);
+        };
+
+        load_promise();
+      }
+    };
+
+    let AJAX = function(rq) {
+      let xhttp = new XMLHttpRequest();
+      xhttp.open(rq.method || 'GET', rq.url, true);
+      xhttp.send(rq.data);
+      xhttp.ajax_request = rq;
+
+      return new Promise(function(rs, rj) {
+
+        xhttp.onreadystatechange = function() {
+          if (xhttp.readyState != 4) { return; }
+
+          let status = xhttp.status;
+          if ((status == 200) || (rq.scode || []).includes(status)) { rs(xhttp); } else { rj(xhttp); }
+        };
+      });
+
+    };
+    
+  </script>
+
+  <script>
+    let base_url = 'https://cwu3ebqzeb.execute-api.us-east-1.amazonaws.com/prod/';
+    
+    let post_by_presigned_url = function() {
+
+      let upload_method = document.getElementById('sel_method').value;
+      let loader = document.getElementsByClassName('loader')[0];
+      let file = document.getElementById("input-file");
+
+      if (!file.value) {
+        alert('No file selected');
+        return;
+      }
+
+      // Start to make chains of AJAX calls
+      let s3 = null;
+      AJAX( { url: base_url + 'get_all_presigned_python/' + escape(file.files[0].name) + '/' }).then(function(v) {
+
+        s3 = JSON.parse(v.response);
+
+        if (upload_method == 'POST') {
+
+          let data = new FormData();
+          let post_url = s3.post_url;
+          let fields = post_url.fields;
+          for ( let key in fields ) {
+            data.append(key, fields[key]);
+          }
+          data.append("file", file.files[0]);
+          
+          return AJAX({ url: post_url.url, method: 'POST', data: data, scode: [204] });
+        } else {
+
+          // PUT is selected
+          let put_url = s3.put_url;
+          return AJAX({ url: put_url, method: 'PUT', data: file.files[0] });
+        }
+
+      }).then(function(v) {
+        loader.style.display = 'none';
+
+        let get_url = s3.get_url;
+
+        document.getElementById('span-get-file').innerHTML = '<a target="_blank" href="'
+          + get_url + '">Download file from S3</a>';
+
+      }).catch(function(v) {
+        loader.style.display = 'none';
+
+        console.log("Error when making the following request");
+        console.log(v.ajax_request);
+        document.getElementById('span-error').innerHTML = 'Error: please check the browser console.log()';
+      });
+
+      loader.style.display = 'inline-block';
+    };
+
+    let clear_status = function() {
+      document.getElementById('span-get-file').innerHTML = null;
+      document.getElementById('span-error').innerHTML = null;
+    };
+
+    let clear_all = function() {
+      document.getElementById("input-file").value = null;
+      clear_status();
+    };
+
+  </script>
+
+<body>
+
+  <div>
+    <span>HTTP METHOD:</span>
+    <select onchange="clear_all()" autocomplete="off" id="sel_method">
+      <option>POST</option>
+      <option>PUT</option>
+    </select>
+  </div>
+  <br>
+  <button onclick="clear_all()">Clear</button>
+  <button onclick="post_by_presigned_url()">Submit</button>
+  <input autocomplete="off" id="input-file" type="file" onchange="clear_status()"/>
+  <br><br>
+  <span class="loader"></span>
+  <span id="span-get-file"></span>
+  <span id="span-error"></span>
+
+</body>
+</html>
