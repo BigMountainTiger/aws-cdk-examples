@@ -16,39 +16,41 @@ namespace DotnetAllPresigned
     {
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest apigProxyEvent, ILambdaContext context)
         {
+            Amazon.AWSConfigsS3.UseSignatureVersion4 = true;
 
-            var bucket = "api-cdk.huge.head.li-1";
-            var expires = DateTime.Now.AddMinutes(5);
+            var bucket = "api-cdk.huge.head.li";
+            var expires = DateTime.Now.AddHours(24);
             var fileName = apigProxyEvent.PathParameters["file_name"];
+            var key = $"{DateTimeOffset.Now.ToUnixTimeSeconds()}-{Guid.NewGuid().ToString()}/{fileName}";
 
             var get_url = await Task.Run(() => {
                 
-                var client = new AmazonS3Client(new AmazonS3Config {
-                    SignatureVersion = "s3v4"
-                });
+                var client = new AmazonS3Client();
 
                 var request = new GetPreSignedUrlRequest()
                 {
                     Verb = HttpVerb.GET,
                     BucketName = bucket,
-                    Key = fileName,
+                    Key = key,
+                    ResponseHeaderOverrides = new ResponseHeaderOverrides {
+                        ContentDisposition = $"attachment; filename =\"{fileName}\""
+                    },
                     Expires = expires
                 };
 
                 return client.GetPreSignedURL(request);
             });
 
+
             var put_url = await Task.Run(() => {
-                
-                var client = new AmazonS3Client(new AmazonS3Config {
-                    SignatureVersion = "s3v4"
-                });
+
+                var client = new AmazonS3Client();
 
                 var request = new GetPreSignedUrlRequest()
                 {
                     Verb = HttpVerb.PUT,
                     BucketName = bucket,
-                    Key = fileName,
+                    Key = key,
                     Expires = expires
                 };
 
@@ -65,7 +67,10 @@ namespace DotnetAllPresigned
             {
                 Body = JsonConvert.SerializeObject(response),
                 StatusCode = 200,
-                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+                Headers = new Dictionary<string, string> {
+                    { "Content-Type", "application/json" },
+                    { "Access-Control-Allow-Origin", "*" }
+                }
             };
         }
     }
