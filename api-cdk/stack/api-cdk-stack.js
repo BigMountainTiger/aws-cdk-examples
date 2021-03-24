@@ -96,6 +96,25 @@ class ApiCdkStack extends cdk.Stack {
       return func;
     };
 
+    const add_lambda_dotnet = (role, FUNCTION_NAME) => {
+      const path = `./lambda/${FUNCTION_NAME}/publish`;
+
+      const func = new lambda.Function(this, FUNCTION_NAME, {
+        runtime: lambda.Runtime.DOTNET_CORE_3_1,
+        functionName: FUNCTION_NAME,
+        timeout: cdk.Duration.seconds(120),
+        role: role,
+        code: lambda.Code.fromAsset(path),
+        handler: `${FUNCTION_NAME}::${FUNCTION_NAME}.Function::FunctionHandler`
+      });
+      
+      func.addPermission('ApiAccessPermission', {
+        principal: new iam.ServicePrincipal('apigateway.amazonaws.com')
+      })
+
+      return func;
+    };
+
     const role = add_lambda_role();
     const handler_base64 = add_lambda(role, './lambda/AFunction-base64', `${id}AFunction-base64`);
     const handler_download = add_lambda(role, './lambda/AFunction-download', `${id}AFunction-download`);
@@ -142,6 +161,10 @@ class ApiCdkStack extends cdk.Stack {
     // Get all presigned URLs given the name
     resource = api.root.addResource('get_all_presigned_python').addResource('{file_name}');
     resource.addMethod('GET', new apigateway.LambdaIntegration(handler_all_presigned_python, { proxy: true }));
+
+    const handler_DotnetAllPresigned = add_lambda_dotnet(role, 'DotnetAllPresigned');
+    resource = api.root.addResource('get_all_presigned_dotnet').addResource('{file_name}');
+    resource.addMethod('GET', new apigateway.LambdaIntegration(handler_DotnetAllPresigned, { proxy: true }));
   }
 }
 

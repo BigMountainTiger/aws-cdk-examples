@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd lambda/Dotnet-all-presigned
+cd lambda/DotnetAllPresigned
 
-dotnet publish
+dotnet publish --output publish
