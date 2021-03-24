@@ -21,7 +21,7 @@ namespace DotnetAllPresigned
             var bucket = "api-cdk.huge.head.li";
             var expires = DateTime.Now.AddHours(24);
             var fileName = apigProxyEvent.PathParameters["file_name"];
-            var key = $"{DateTimeOffset.Now.ToUnixTimeSeconds()}-{Guid.NewGuid().ToString()}/{fileName}";
+            var key = $"F-{DateTimeOffset.Now.ToUnixTimeSeconds()}-{Guid.NewGuid().ToString()}/{fileName}";
 
             var get_url = await Task.Run(() => {
                 
