@@ -2,4 +2,4 @@
 
 cd lambda/DotnetAllPresigned
 
-dotnet publish --output publish
+sh dotnet-publish
