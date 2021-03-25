@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package-dotnet-cli
+# https://docs.aws.amazon.com/codeartifact/latest/ug/nuget-cli.html#nuget-consume-cli
+
+# dotnet tool install -g AWS.CodeArtifact.NuGet.CredentialProvider
+# dotnet codeartifact-creds install
+
+
+cd examples/ExamplePackage
+
+dotnet pack
+
+dotnet nuget push ./bin/Debug/ExamplePackage.1.0.0.nupkg --source test-domain/test-nuget-repo
