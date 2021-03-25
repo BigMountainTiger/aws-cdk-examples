@@ -83,6 +83,7 @@ class ApiCdkStack extends cdk.Stack {
         runtime: lambda.Runtime.PYTHON_3_8,
         layers: [python_layer],
         functionName: FUNCTION_NAME,
+        memorySize: 1024,
         timeout: cdk.Duration.seconds(120),
         role: role,
         code: lambda.Code.fromAsset(path),
@@ -102,6 +103,7 @@ class ApiCdkStack extends cdk.Stack {
       const func = new lambda.Function(this, FUNCTION_NAME, {
         runtime: lambda.Runtime.DOTNET_CORE_3_1,
         functionName: FUNCTION_NAME,
+        memorySize: 1024,
         timeout: cdk.Duration.seconds(120),
         role: role,
         code: lambda.Code.fromAsset(path),

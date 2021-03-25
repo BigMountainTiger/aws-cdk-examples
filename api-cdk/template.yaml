@@ -252,6 +252,7 @@ Resources:
       Handler: app.lambdaHandler
       Layers:
         - Ref: APICDKSTACKLAYER7C9693A7
+      MemorySize: 1024
       Runtime: python3.8
       Timeout: 120
     DependsOn:
@@ -299,6 +300,7 @@ Resources:
       Handler: app.lambdaHandler
       Layers:
         - Ref: APICDKSTACKLAYER7C9693A7
+      MemorySize: 1024
       Runtime: python3.8
       Timeout: 120
     DependsOn:
@@ -346,6 +348,7 @@ Resources:
       Handler: app.lambdaHandler
       Layers:
         - Ref: APICDKSTACKLAYER7C9693A7
+      MemorySize: 1024
       Runtime: python3.8
       Timeout: 120
     DependsOn:
@@ -393,6 +396,7 @@ Resources:
       Handler: app.lambdaHandler
       Layers:
         - Ref: APICDKSTACKLAYER7C9693A7
+      MemorySize: 1024
       Runtime: python3.8
       Timeout: 120
     DependsOn:
@@ -440,6 +444,7 @@ Resources:
       Handler: app.lambdaHandler
       Layers:
         - Ref: APICDKSTACKLAYER7C9693A7
+      MemorySize: 1024
       Runtime: python3.8
       Timeout: 120
     DependsOn:
@@ -1716,7 +1721,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParametersc24ea47f61dc8b4d6e90a7c44e1f68a4deb35b581f057d6ac82f4afbcc340674S3Bucket63E3FAB2
+          Ref: AssetParametersc91c30f0467ee1ac1aa65a25892b09a9ee8985ff9d358582f6f3bce4daa5a283S3Bucket20B3AA4C
         S3Key:
           Fn::Join:
             - ""
@@ -1724,18 +1729,19 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParametersc24ea47f61dc8b4d6e90a7c44e1f68a4deb35b581f057d6ac82f4afbcc340674S3VersionKey70556DD2
+                      - Ref: AssetParametersc91c30f0467ee1ac1aa65a25892b09a9ee8985ff9d358582f6f3bce4daa5a283S3VersionKey3F14C18C
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParametersc24ea47f61dc8b4d6e90a7c44e1f68a4deb35b581f057d6ac82f4afbcc340674S3VersionKey70556DD2
+                      - Ref: AssetParametersc91c30f0467ee1ac1aa65a25892b09a9ee8985ff9d358582f6f3bce4daa5a283S3VersionKey3F14C18C
       Role:
         Fn::GetAtt:
           - APICDKSTACKMyRole834BC275
           - Arn
       FunctionName: DotnetAllPresigned
       Handler: DotnetAllPresigned::DotnetAllPresigned.Function::FunctionHandler
+      MemorySize: 1024
       Runtime: dotnetcore3.1
       Timeout: 120
     DependsOn:
@@ -1838,15 +1844,15 @@ Parameters:
   AssetParameters075926a12d5534b858b1fecc8f6728711d5fff6f9a4cc05ab0cf00535cfba05eArtifactHash641F2238:
     Type: String
     Description: Artifact hash for asset "075926a12d5534b858b1fecc8f6728711d5fff6f9a4cc05ab0cf00535cfba05e"
-  AssetParametersc24ea47f61dc8b4d6e90a7c44e1f68a4deb35b581f057d6ac82f4afbcc340674S3Bucket63E3FAB2:
+  AssetParametersc91c30f0467ee1ac1aa65a25892b09a9ee8985ff9d358582f6f3bce4daa5a283S3Bucket20B3AA4C:
     Type: String
-    Description: S3 bucket for asset "c24ea47f61dc8b4d6e90a7c44e1f68a4deb35b581f057d6ac82f4afbcc340674"
-  AssetParametersc24ea47f61dc8b4d6e90a7c44e1f68a4deb35b581f057d6ac82f4afbcc340674S3VersionKey70556DD2:
+    Description: S3 bucket for asset "c91c30f0467ee1ac1aa65a25892b09a9ee8985ff9d358582f6f3bce4daa5a283"
+  AssetParametersc91c30f0467ee1ac1aa65a25892b09a9ee8985ff9d358582f6f3bce4daa5a283S3VersionKey3F14C18C:
     Type: String
-    Description: S3 key for asset version "c24ea47f61dc8b4d6e90a7c44e1f68a4deb35b581f057d6ac82f4afbcc340674"
-  AssetParametersc24ea47f61dc8b4d6e90a7c44e1f68a4deb35b581f057d6ac82f4afbcc340674ArtifactHashB844614F:
+    Description: S3 key for asset version "c91c30f0467ee1ac1aa65a25892b09a9ee8985ff9d358582f6f3bce4daa5a283"
+  AssetParametersc91c30f0467ee1ac1aa65a25892b09a9ee8985ff9d358582f6f3bce4daa5a283ArtifactHash169FF4B0:
     Type: String
-    Description: Artifact hash for asset "c24ea47f61dc8b4d6e90a7c44e1f68a4deb35b581f057d6ac82f4afbcc340674"
+    Description: Artifact hash for asset "c91c30f0467ee1ac1aa65a25892b09a9ee8985ff9d358582f6f3bce4daa5a283"
 Outputs:
   APICDKSTACKAPIGWEndpointF8CFD52F:
     Value:
