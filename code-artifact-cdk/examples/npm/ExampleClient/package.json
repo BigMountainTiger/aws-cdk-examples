@@ -1,0 +1,11 @@
+{
+  "name": "exampleclient",
+  "version": "1.0.0",
+  "description": "exampleclient",
+  "main": "index.js",
+  "author": "Song Li",
+  "private": true,
+  "dependencies": {
+    "@example/examplepackage": "^1.0.0"
+  }
+}

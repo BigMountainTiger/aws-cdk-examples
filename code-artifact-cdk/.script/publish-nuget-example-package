@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package-dotnet-cli
+#!/bin/bash
+
 # https://docs.aws.amazon.com/codeartifact/latest/ug/nuget-cli.html#nuget-consume-cli
 
 # dotnet tool install -g AWS.CodeArtifact.NuGet.CredentialProvider
@@ -9,7 +11,7 @@
 
 # aws codeartifact login --tool dotnet --domain testdomain --domain-owner 660079349745 --repository testnugetrepo
 
-cd examples/ExamplePackage
+cd examples/nuget/ExamplePackage
 
 dotnet pack
 

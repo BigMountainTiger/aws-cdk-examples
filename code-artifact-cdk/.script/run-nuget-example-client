@@ -2,6 +2,6 @@
 
 # dotnet nuget locals --clear all
 
-cd examples/ExampleClient
+cd examples/nuget/ExampleClient
 
 dotnet run

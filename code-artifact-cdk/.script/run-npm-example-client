@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd examples/npm/ExampleClient
+
+npm i
+node index.js
