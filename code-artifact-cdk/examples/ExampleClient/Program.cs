@@ -1,4 +1,5 @@
 ﻿using System;
+using ExamplePackage;
 
 namespace ExampleClient
 {
@@ -6,7 +7,7 @@ namespace ExampleClient
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine(SimpleExample.GetAString());
         }
     }
 }

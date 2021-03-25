@@ -6,8 +6,8 @@ class CodeArtifactCdkStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    const DOMAIN_NAME = 'test-domain';
-    const REPO_NAME = 'test-nuget-repo';
+    const DOMAIN_NAME = 'testdomain';
+    const REPO_NAME = 'testnugetrepo';
 
     new codeartifact.CfnDomain(this, `${id}-nuget-domain`, {
       domainName: DOMAIN_NAME

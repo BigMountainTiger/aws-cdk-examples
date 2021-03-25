@@ -5,10 +5,12 @@
 
 # dotnet tool install -g AWS.CodeArtifact.NuGet.CredentialProvider
 # dotnet codeartifact-creds install
+# dotnet codeartifact-creds configure set profile huge-head-li-2021
 
+# aws codeartifact login --tool dotnet --domain testdomain --domain-owner 660079349745 --repository testnugetrepo
 
 cd examples/ExamplePackage
 
 dotnet pack
 
-dotnet nuget push ./bin/Debug/ExamplePackage.1.0.0.nupkg --source test-domain/test-nuget-repo
+dotnet nuget push ./bin/Debug/ExamplePackage.2.0.0.nupkg --source testdomain/testnugetrepo
