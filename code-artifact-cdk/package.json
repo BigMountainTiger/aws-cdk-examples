@@ -5,6 +5,6 @@
   "private": true,
   "dependencies": {
     "@aws-cdk/aws-codeartifact": "^1.95.0",
-    "@aws-cdk/core": "1.94.1"
+    "@aws-cdk/core": "1.95.0"
   }
 }
