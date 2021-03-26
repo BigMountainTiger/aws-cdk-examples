@@ -16,6 +16,13 @@
 
 # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html
 
+# export AWS_ACCESS_KEY_ID=access...id
+# export AWS_SECRET_ACCESS_KEY=secrte...access...key
+
+# dotnet nuget list source
+# dotnet nuget add source "https://testdomain-660079349745.d.codeartifact.us-east-1.amazonaws.com/nuget/testnugetrepo/v3/index.json" -n testdomain/testnugetrepo
+# dotnet nuget remove testdomain/testnugetrepo
+
 publish_nuget() {
   package_directory="nuget-package-directory"
 
