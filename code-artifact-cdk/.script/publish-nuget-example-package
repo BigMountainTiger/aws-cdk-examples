@@ -14,6 +14,8 @@
 # Cross account
 # https://docs.aws.amazon.com/codeartifact/latest/ug/domain-policies.html#enabling-cross-acount-access-to-a-domain
 
+# https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html
+
 publish_nuget() {
   package_directory="nuget-package-directory"
 
