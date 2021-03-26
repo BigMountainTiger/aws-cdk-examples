@@ -14,17 +14,20 @@
 # Cross account
 # https://docs.aws.amazon.com/codeartifact/latest/ug/domain-policies.html#enabling-cross-acount-access-to-a-domain
 
+publish_nuget() {
+  package_directory="nuget-package-directory"
+
+  dotnet clean
+  status=$(echo $(dotnet pack -o ${package_directory} | grep "Successfully created package"))
+
+  echo ${status}
+
+  nupkg=$(echo ${status} | grep -o "${package_directory}.*")
+  nupkg=$(echo ${nupkg::-2})
+  echo $nupkg
+
+  dotnet nuget push $nupkg --skip-duplicate --source testdomain/testnugetrepo
+};
+
 cd examples/nuget/ExamplePackage
-
-package_directory="nuget-package-directory"
-
-dotnet clean
-status=$(echo $(dotnet pack -o ${package_directory} | grep "Successfully created package"))
-
-echo ${status}
-
-nupkg=$(echo ${status} | grep -o "${package_directory}.*")
-nupkg=$(echo ${nupkg::-2})
-echo $nupkg
-
-dotnet nuget push $nupkg --skip-duplicate --source testdomain/testnugetrepo
+publish_nuget
