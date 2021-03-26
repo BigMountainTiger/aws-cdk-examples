@@ -23,6 +23,24 @@
 # dotnet nuget add source "https://testdomain-660079349745.d.codeartifact.us-east-1.amazonaws.com/nuget/testnugetrepo/v3/index.json" -n testdomain/testnugetrepo
 # dotnet nuget remove testdomain/testnugetrepo
 
+# Cross account permission, need to provide the following permission to the account to access
+# the code-artifact
+# {
+#     "Version": "2012-10-17",
+#     "Statement": [
+#         {
+#             "Effect": "Allow",
+#             "Action": "codeartifact:*",
+#             "Resource": "*"
+#         },
+#         {
+#             "Effect": "Allow",
+#             "Action": "sts:GetServiceBearerToken",
+#             "Resource": "*"
+#         }
+#     ]
+# }
+
 publish_nuget() {
   package_directory="nuget-package-directory"
 
