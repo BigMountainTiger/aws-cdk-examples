@@ -30,4 +30,5 @@ publish_nuget() {
 };
 
 cd examples/nuget/ExamplePackage
+
 publish_nuget
