@@ -11,8 +11,20 @@
 
 # aws codeartifact login --tool dotnet --domain testdomain --domain-owner 660079349745 --repository testnugetrepo
 
+# Cross account
+# https://docs.aws.amazon.com/codeartifact/latest/ug/domain-policies.html#enabling-cross-acount-access-to-a-domain
+
 cd examples/nuget/ExamplePackage
 
-dotnet pack
+package_directory="nuget-package-directory"
 
-dotnet nuget push ./bin/Debug/ExamplePackage.2.0.0.nupkg --source testdomain/testnugetrepo
+dotnet clean
+status=$(echo $(dotnet pack -o ${package_directory} | grep "Successfully created package"))
+
+echo ${status}
+
+nupkg=$(echo ${status} | grep -o "${package_directory}.*")
+nupkg=$(echo ${nupkg::-2})
+echo $nupkg
+
+dotnet nuget push $nupkg --skip-duplicate --source testdomain/testnugetrepo
