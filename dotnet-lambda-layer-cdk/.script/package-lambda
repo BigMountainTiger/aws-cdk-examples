@@ -12,4 +12,4 @@ package_file="${publish_directory}/package.zip"
 layer_zip="/home/song/Sandbox/aws-cdk-examples/dotnet-lambda-layer-cdk/lambda/LambdaDotnetLayer/publish/package.zip"
 
 dotnet clean
-dotnet lambda package --function-layers "${layer_zip}" -o ${package_file}
+dotnet lambda package --function-layers "${layer_zip}" --output ${package_file}
