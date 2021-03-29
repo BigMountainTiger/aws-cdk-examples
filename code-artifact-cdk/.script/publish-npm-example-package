@@ -9,4 +9,6 @@
 cd examples/npm/ExamplePackage
 
 # aws codeartifact login --tool npm --domain testdomain --repository testnugetrepo
+# npm publish --registry https://testdomain-660079349745.d.codeartifact.us-east-1.amazonaws.com/npm/testnugetrepo/
+
 npm publish
