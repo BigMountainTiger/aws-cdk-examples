@@ -29,12 +29,12 @@ Resources:
         - Ref: DOTNETLambdaLayerCDKSTACKLambdaRole3BBB0B67
     Metadata:
       aws:cdk:path: DOTNET-LambdaLayer-CDK-STACK/DOTNET-LambdaLayer-CDK-STACK-Lambda_Role/DefaultPolicy/Resource
-  DOTNETLambdaLayerCDKSTACKLambdaDotnetLayerExampleB6CC4939:
-    Type: AWS::Lambda::Function
+  DOTNETLambdaLayerCDKSTACKLambdaDotnetLayer0C03975B:
+    Type: AWS::Lambda::LayerVersion
     Properties:
-      Code:
+      Content:
         S3Bucket:
-          Ref: AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cS3Bucket70E3778C
+          Ref: AssetParameters74322ffafe26a2a1119b0e69ec5802a706ffef059a4dea8a9dd9dcd0e47824d4S3BucketED65954F
         S3Key:
           Fn::Join:
             - ""
@@ -42,18 +42,47 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cS3VersionKeyAABF7849
+                      - Ref: AssetParameters74322ffafe26a2a1119b0e69ec5802a706ffef059a4dea8a9dd9dcd0e47824d4S3VersionKey96F2F1DA
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cS3VersionKeyAABF7849
+                      - Ref: AssetParameters74322ffafe26a2a1119b0e69ec5802a706ffef059a4dea8a9dd9dcd0e47824d4S3VersionKey96F2F1DA
+      CompatibleRuntimes:
+        - dotnetcore3.1
+      Description: DOTNET-LambdaLayer-CDK-STACK-LambdaDotnetLayer
+      LayerName: DOTNET-LambdaLayer-CDK-STACK-LambdaDotnetLayer
+    Metadata:
+      aws:cdk:path: DOTNET-LambdaLayer-CDK-STACK/DOTNET-LambdaLayer-CDK-STACK-LambdaDotnetLayer/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/dotnet-lambda-layer-cdk/lambda/LambdaDotnetLayer/publish/package.zip
+      aws:asset:property: Content
+  DOTNETLambdaLayerCDKSTACKLambdaDotnetLayerExampleB6CC4939:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters09408a2d09cb2369e9165c395f396abc0373a42846a0817bec3ea814de29b3f0S3BucketE713A837
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters09408a2d09cb2369e9165c395f396abc0373a42846a0817bec3ea814de29b3f0S3VersionKeyAC86C15C
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters09408a2d09cb2369e9165c395f396abc0373a42846a0817bec3ea814de29b3f0S3VersionKeyAC86C15C
       Role:
         Fn::GetAtt:
           - DOTNETLambdaLayerCDKSTACKLambdaRole3BBB0B67
           - Arn
       FunctionName: DOTNET-LambdaLayer-CDK-STACK-LambdaDotnetLayerExample
       Handler: LambdaDotnetLayerExample::LambdaDotnetLayerExample.Function::FunctionHandler
+      Layers:
+        - Ref: DOTNETLambdaLayerCDKSTACKLambdaDotnetLayer0C03975B
       MemorySize: 1024
       Runtime: dotnetcore3.1
       Timeout: 120
@@ -65,13 +94,22 @@ Resources:
       aws:asset:path: /home/song/Sandbox/aws-cdk-examples/dotnet-lambda-layer-cdk/lambda/LambdaDotnetLayerExample/publish/package.zip
       aws:asset:property: Code
 Parameters:
-  AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cS3Bucket70E3778C:
+  AssetParameters74322ffafe26a2a1119b0e69ec5802a706ffef059a4dea8a9dd9dcd0e47824d4S3BucketED65954F:
     Type: String
-    Description: S3 bucket for asset "e2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876c"
-  AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cS3VersionKeyAABF7849:
+    Description: S3 bucket for asset "74322ffafe26a2a1119b0e69ec5802a706ffef059a4dea8a9dd9dcd0e47824d4"
+  AssetParameters74322ffafe26a2a1119b0e69ec5802a706ffef059a4dea8a9dd9dcd0e47824d4S3VersionKey96F2F1DA:
     Type: String
-    Description: S3 key for asset version "e2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876c"
-  AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cArtifactHashAFEC6662:
+    Description: S3 key for asset version "74322ffafe26a2a1119b0e69ec5802a706ffef059a4dea8a9dd9dcd0e47824d4"
+  AssetParameters74322ffafe26a2a1119b0e69ec5802a706ffef059a4dea8a9dd9dcd0e47824d4ArtifactHashF52501B8:
     Type: String
-    Description: Artifact hash for asset "e2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876c"
+    Description: Artifact hash for asset "74322ffafe26a2a1119b0e69ec5802a706ffef059a4dea8a9dd9dcd0e47824d4"
+  AssetParameters09408a2d09cb2369e9165c395f396abc0373a42846a0817bec3ea814de29b3f0S3BucketE713A837:
+    Type: String
+    Description: S3 bucket for asset "09408a2d09cb2369e9165c395f396abc0373a42846a0817bec3ea814de29b3f0"
+  AssetParameters09408a2d09cb2369e9165c395f396abc0373a42846a0817bec3ea814de29b3f0S3VersionKeyAC86C15C:
+    Type: String
+    Description: S3 key for asset version "09408a2d09cb2369e9165c395f396abc0373a42846a0817bec3ea814de29b3f0"
+  AssetParameters09408a2d09cb2369e9165c395f396abc0373a42846a0817bec3ea814de29b3f0ArtifactHash61ABD6F0:
+    Type: String
+    Description: Artifact hash for asset "09408a2d09cb2369e9165c395f396abc0373a42846a0817bec3ea814de29b3f0"
 
