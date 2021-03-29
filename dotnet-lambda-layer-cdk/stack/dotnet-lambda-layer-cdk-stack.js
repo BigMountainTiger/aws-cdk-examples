@@ -26,6 +26,29 @@ class DotnetLambdaLayerCdkStack extends cdk.Stack {
 
     const role = add_lambda_role();
 
+    const LAYER_NAME = `${id}-LambdaDotnetLayer`;
+    const layer_path = 'lambda/LambdaDotnetLayer/publish/package.zip';
+    const layer = new lambda.LayerVersion(this, LAYER_NAME, {
+      layerVersionName: LAYER_NAME,
+      code: lambda.Code.fromAsset(layer_path),
+      compatibleRuntimes: [lambda.Runtime.DOTNET_CORE_3_1],
+      description: LAYER_NAME
+    });
+
+    const FUNCTION_NAME = `${id}-LambdaDotnetLayerExample`;
+    const function_path = 'lambda/LambdaDotnetLayerExample/publish/package.zip';
+    new lambda.Function(this, FUNCTION_NAME, {
+      runtime: lambda.Runtime.DOTNET_CORE_3_1,
+      layers: [layer],
+      functionName: FUNCTION_NAME,
+      memorySize: 1024,
+      timeout: cdk.Duration.seconds(120),
+      role: role,
+      code: lambda.Code.fromAsset(function_path),
+      handler: `LambdaDotnetLayerExample::LambdaDotnetLayerExample.Function::FunctionHandler`
+    });
+    
+
   }
 }
 

@@ -5,4 +5,5 @@ cd lambda/LambdaDotnetLayerExample
 package_directory="publish/package.zip"
 
 donet clean
-dotnet lambda package -o ${package_directory}
+dotnet lambda package -o ${package_directory} \
+  --function-layers arn:aws:lambda:us-east-1:660079349745:layer:DOTNET-LambdaLayer-CDK-STACK-LambdaDotnetLayer:1

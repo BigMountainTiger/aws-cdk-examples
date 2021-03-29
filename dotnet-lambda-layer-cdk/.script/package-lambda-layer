@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd lambda/LambdaDotnetLayer
+
+package_directory="publish/package.zip"
+
+donet clean
+dotnet lambda package -o ${package_directory}

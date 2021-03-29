@@ -8,7 +8,7 @@ using Amazon.Lambda.APIGatewayEvents;
 using ExampleNuget;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
-namespace DotnetAllPresigned
+namespace LambdaDotnetLayerExample
 {
     public class Function
     {

@@ -1,0 +1,77 @@
+Resources:
+  DOTNETLambdaLayerCDKSTACKLambdaRole3BBB0B67:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      RoleName: DOTNET-LambdaLayer-CDK-STACK-Lambda_Role
+    Metadata:
+      aws:cdk:path: DOTNET-LambdaLayer-CDK-STACK/DOTNET-LambdaLayer-CDK-STACK-Lambda_Role/Resource
+  DOTNETLambdaLayerCDKSTACKLambdaRoleDefaultPolicy522A99AA:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: DOTNETLambdaLayerCDKSTACKLambdaRoleDefaultPolicy522A99AA
+      Roles:
+        - Ref: DOTNETLambdaLayerCDKSTACKLambdaRole3BBB0B67
+    Metadata:
+      aws:cdk:path: DOTNET-LambdaLayer-CDK-STACK/DOTNET-LambdaLayer-CDK-STACK-Lambda_Role/DefaultPolicy/Resource
+  DOTNETLambdaLayerCDKSTACKLambdaDotnetLayerExampleB6CC4939:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cS3Bucket70E3778C
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cS3VersionKeyAABF7849
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cS3VersionKeyAABF7849
+      Role:
+        Fn::GetAtt:
+          - DOTNETLambdaLayerCDKSTACKLambdaRole3BBB0B67
+          - Arn
+      FunctionName: DOTNET-LambdaLayer-CDK-STACK-LambdaDotnetLayerExample
+      Handler: LambdaDotnetLayerExample::LambdaDotnetLayerExample.Function::FunctionHandler
+      MemorySize: 1024
+      Runtime: dotnetcore3.1
+      Timeout: 120
+    DependsOn:
+      - DOTNETLambdaLayerCDKSTACKLambdaRoleDefaultPolicy522A99AA
+      - DOTNETLambdaLayerCDKSTACKLambdaRole3BBB0B67
+    Metadata:
+      aws:cdk:path: DOTNET-LambdaLayer-CDK-STACK/DOTNET-LambdaLayer-CDK-STACK-LambdaDotnetLayerExample/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/dotnet-lambda-layer-cdk/lambda/LambdaDotnetLayerExample/publish/package.zip
+      aws:asset:property: Code
+Parameters:
+  AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cS3Bucket70E3778C:
+    Type: String
+    Description: S3 bucket for asset "e2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876c"
+  AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cS3VersionKeyAABF7849:
+    Type: String
+    Description: S3 key for asset version "e2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876c"
+  AssetParameterse2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876cArtifactHashAFEC6662:
+    Type: String
+    Description: Artifact hash for asset "e2193456f1524d44cc8f08649cac9b22a3e63e2ef2c1fb6441d05029ceb3876c"
+
