@@ -2,6 +2,9 @@
 
 # https://docs.aws.amazon.com/codeartifact/latest/ug/using-npm.html
 
+# -- Need the domain owner if access from another account
+# aws codeartifact login --tool npm --domain my_domain --domain-owner 111122223333 --repository my_repo
+
 
 cd examples/npm/ExamplePackage
 
