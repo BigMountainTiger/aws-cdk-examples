@@ -4,3 +4,5 @@ https://referbruv.com/blog/posts/deploying-custom-class-libraries-in-aws-lambda-
 Nuget is needed, because Dotnet need to compile the code
 Amazon.Lambda.Tools is needed to publish the layer and lambdas - dotnet tool install -g Amazon.Lambda.Tools
 
+https://github.com/aws/aws-extensions-for-dotnet-cli/issues/79
+
