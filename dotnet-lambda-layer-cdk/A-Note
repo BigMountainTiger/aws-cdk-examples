@@ -6,3 +6,7 @@ Amazon.Lambda.Tools is needed to publish the layer and lambdas - dotnet tool ins
 
 https://github.com/aws/aws-extensions-for-dotnet-cli/issues/79
 
+dotnet command line
+https://github.com/aws/aws-extensions-for-dotnet-cli
+
+
