@@ -21,7 +21,7 @@
 
 # dotnet nuget list source
 # dotnet nuget add source "https://testdomain-660079349745.d.codeartifact.us-east-1.amazonaws.com/nuget/testnugetrepo/v3/index.json" -n testdomain/testnugetrepo
-# dotnet nuget remove testdomain/testnugetrepo
+# dotnet nuget remove source testdomain/testnugetrepo
 
 # Cross account permission, need to provide the following permission to the account to access
 # the code-artifact
@@ -41,21 +41,42 @@
 #     ]
 # }
 
+# Add the following permission to code-pipeline
+# policyStatement = new Amazon.CDK.AWS.IAM.PolicyStatement();
+# policyStatement.AddAllResources();
+# policyStatement.AddActions(new string[] { "codeartifact:*", "sts:GetServiceBearerToken" });
+# project.AddToRolePolicy(policyStatement);
+
+dotnet tool install -g AWS.CodeArtifact.NuGet.CredentialProvider
+dotnet codeartifact-creds install
+
+repo="testdomain/testnugetrepo"
+repo_url="https://testdomain-660079349745.d.codeartifact.us-east-1.amazonaws.com/nuget/testnugetrepo/v3/index.json"
+if [ -z "$(dotnet nuget list source | grep ${repo})" ]
+then
+  dotnet nuget add source "${repo_url}" -n ${repo}
+fi
+
 publish_nuget() {
   package_directory="nuget-package-directory"
 
   dotnet clean
-  status=$(echo $(dotnet pack -o ${package_directory} | grep "Successfully created package"))
+  status=$(dotnet pack -o ${package_directory} | grep "Successfully created package")
 
   echo ${status}
 
-  nupkg=$(echo ${status} | grep -o "${package_directory}.*")
-  nupkg=$(echo ${nupkg::-2})
-  echo $nupkg
+  if [ -n "${status}" ]
+  then
+    nupkg=$(echo ${status} | grep -o "${package_directory}.*")
+    nupkg=$(echo ${nupkg::-2})
+    echo $nupkg
 
-  dotnet nuget push $nupkg --skip-duplicate --source testdomain/testnugetrepo
+    dotnet nuget push $nupkg --skip-duplicate --source ${repo}
+  fi
+
 };
 
+# Go to the directory and make the publish
 cd examples/nuget/ExamplePackage
 
 publish_nuget
