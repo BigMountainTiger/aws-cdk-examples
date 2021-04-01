@@ -2,6 +2,7 @@ const cdk = require('@aws-cdk/core');
 const lambda = require('@aws-cdk/aws-lambda');
 const iam = require('@aws-cdk/aws-iam');
 const apigateway = require('@aws-cdk/aws-apigateway');
+const ssm = require('@aws-cdk/aws-ssm');
 
 class SsmExampleStack extends cdk.Stack {
 
@@ -22,6 +23,12 @@ class SsmExampleStack extends cdk.Stack {
         actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents']
       }));
 
+      role.addToPolicy(new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        resources: ['*'],
+        actions: ['ssm:GetParameter']
+      }));
+
       return role;
     };
 
@@ -33,6 +40,9 @@ class SsmExampleStack extends cdk.Stack {
         runtime: lambda.Runtime.PYTHON_3_8,
         functionName: FUNCTION_NAME,
         memorySize: 128,
+        environment: {
+          env_key: 'ENV-VALUE'
+        },
         timeout: cdk.Duration.seconds(120),
         role: role,
         code: lambda.Code.fromAsset(path),
@@ -45,6 +55,11 @@ class SsmExampleStack extends cdk.Stack {
 
       return func;
     };
+
+    new ssm.StringParameter(this, `${id}-StringParameter`, {
+      parameterName: 'ENV-VALUE',
+      stringValue: 'This is the SSM value'
+    });
 
     const func = add_lambda(role, './lambda/test_lambda', `${id}-TEST-LAMBDA`);
 
