@@ -1,0 +1,308 @@
+Resources:
+  SSNExampleSTACKLAMBDAROLE600598CF:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      RoleName: SSN-Example-STACK-LAMBDA-ROLE
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-LAMBDA-ROLE/Resource
+  SSNExampleSTACKLAMBDAROLEDefaultPolicy9F55870E:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: SSNExampleSTACKLAMBDAROLEDefaultPolicy9F55870E
+      Roles:
+        - Ref: SSNExampleSTACKLAMBDAROLE600598CF
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-LAMBDA-ROLE/DefaultPolicy/Resource
+  SSNExampleSTACKTESTLAMBDA8AF731FD:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters005dffd6778a471765f9265658596f6a13b22c72e452d935247817917a27b340S3BucketD09D069F
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters005dffd6778a471765f9265658596f6a13b22c72e452d935247817917a27b340S3VersionKey1A52FA96
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters005dffd6778a471765f9265658596f6a13b22c72e452d935247817917a27b340S3VersionKey1A52FA96
+      Role:
+        Fn::GetAtt:
+          - SSNExampleSTACKLAMBDAROLE600598CF
+          - Arn
+      FunctionName: SSN-Example-STACK-TEST-LAMBDA
+      Handler: app.lambdaHandler
+      MemorySize: 128
+      Runtime: python3.8
+      Timeout: 120
+    DependsOn:
+      - SSNExampleSTACKLAMBDAROLEDefaultPolicy9F55870E
+      - SSNExampleSTACKLAMBDAROLE600598CF
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-TEST-LAMBDA/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/ssm-example/lambda/test_lambda
+      aws:asset:property: Code
+  SSNExampleSTACKTESTLAMBDAApiAccessPermissionCE080F37:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - SSNExampleSTACKTESTLAMBDA8AF731FD
+          - Arn
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-TEST-LAMBDA/ApiAccessPermission
+  SSNExampleSTACKAPI3D1246A8:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      BinaryMediaTypes:
+        - multipart/form-data
+      Description: SSN-Example-STACK-API
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: SSN-Example-STACK-API
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/Resource
+  SSNExampleSTACKAPICloudWatchRoleA081EFDC:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/CloudWatchRole/Resource
+  SSNExampleSTACKAPIAccountE7F723F7:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - SSNExampleSTACKAPICloudWatchRoleA081EFDC
+          - Arn
+    DependsOn:
+      - SSNExampleSTACKAPI3D1246A8
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/Account
+  SSNExampleSTACKAPIDeployment4066106D97e8b37f5e3df1114a5a455ca0ae3ffe:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: SSNExampleSTACKAPI3D1246A8
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - SSNExampleSTACKAPIOPTIONS57B7D339
+      - SSNExampleSTACKAPItestGET98722F48
+      - SSNExampleSTACKAPItestOPTIONSA9E886A8
+      - SSNExampleSTACKAPItest16B62F22
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/Deployment/Resource
+  SSNExampleSTACKAPIDeploymentStageprodD8B71591:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: SSNExampleSTACKAPI3D1246A8
+      DeploymentId:
+        Ref: SSNExampleSTACKAPIDeployment4066106D97e8b37f5e3df1114a5a455ca0ae3ffe
+      StageName: prod
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/DeploymentStage.prod/Resource
+  SSNExampleSTACKAPIOPTIONS57B7D339:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Fn::GetAtt:
+          - SSNExampleSTACKAPI3D1246A8
+          - RootResourceId
+      RestApiId:
+        Ref: SSNExampleSTACKAPI3D1246A8
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/Default/OPTIONS/Resource
+  SSNExampleSTACKAPItest16B62F22:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - SSNExampleSTACKAPI3D1246A8
+          - RootResourceId
+      PathPart: test
+      RestApiId:
+        Ref: SSNExampleSTACKAPI3D1246A8
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/Default/test/Resource
+  SSNExampleSTACKAPItestOPTIONSA9E886A8:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Ref: SSNExampleSTACKAPItest16B62F22
+      RestApiId:
+        Ref: SSNExampleSTACKAPI3D1246A8
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/Default/test/OPTIONS/Resource
+  SSNExampleSTACKAPItestGETApiPermissionSSNExampleSTACKSSNExampleSTACKAPI4E467F08GETtestCAC2CD51:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - SSNExampleSTACKTESTLAMBDA8AF731FD
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: SSNExampleSTACKAPI3D1246A8
+            - /
+            - Ref: SSNExampleSTACKAPIDeploymentStageprodD8B71591
+            - /GET/test
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/Default/test/GET/ApiPermission.SSNExampleSTACKSSNExampleSTACKAPI4E467F08.GET..test
+  SSNExampleSTACKAPItestGETApiPermissionTestSSNExampleSTACKSSNExampleSTACKAPI4E467F08GETtestA3D559B5:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - SSNExampleSTACKTESTLAMBDA8AF731FD
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: SSNExampleSTACKAPI3D1246A8
+            - /test-invoke-stage/GET/test
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/Default/test/GET/ApiPermission.Test.SSNExampleSTACKSSNExampleSTACKAPI4E467F08.GET..test
+  SSNExampleSTACKAPItestGET98722F48:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId:
+        Ref: SSNExampleSTACKAPItest16B62F22
+      RestApiId:
+        Ref: SSNExampleSTACKAPI3D1246A8
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - SSNExampleSTACKTESTLAMBDA8AF731FD
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: SSN-Example-STACK/SSN-Example-STACK-API/Default/test/GET/Resource
+Parameters:
+  AssetParameters005dffd6778a471765f9265658596f6a13b22c72e452d935247817917a27b340S3BucketD09D069F:
+    Type: String
+    Description: S3 bucket for asset "005dffd6778a471765f9265658596f6a13b22c72e452d935247817917a27b340"
+  AssetParameters005dffd6778a471765f9265658596f6a13b22c72e452d935247817917a27b340S3VersionKey1A52FA96:
+    Type: String
+    Description: S3 key for asset version "005dffd6778a471765f9265658596f6a13b22c72e452d935247817917a27b340"
+  AssetParameters005dffd6778a471765f9265658596f6a13b22c72e452d935247817917a27b340ArtifactHashBAC97802:
+    Type: String
+    Description: Artifact hash for asset "005dffd6778a471765f9265658596f6a13b22c72e452d935247817917a27b340"
+Outputs:
+  SSNExampleSTACKAPIEndpointFFA55B2E:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: SSNExampleSTACKAPI3D1246A8
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: SSNExampleSTACKAPIDeploymentStageprodD8B71591
+          - /
+
