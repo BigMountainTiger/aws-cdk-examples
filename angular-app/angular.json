@@ -26,10 +26,12 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css",
-              "./node_modules/jsoneditor/dist/jsoneditor.min.css"
+              "./node_modules/jsoneditor/dist/jsoneditor.min.css",
+              "./node_modules/cropperjs/dist/cropper.min.css"
             ],
             "scripts": [
-              "./node_modules/jsoneditor/dist/jsoneditor.min.js"
+              "./node_modules/jsoneditor/dist/jsoneditor.min.js",
+              "./node_modules/cropperjs/dist/cropper.min.js"
             ],
             "allowedCommonJsDependencies": [
               "crypto-js/lib-typedarrays",
