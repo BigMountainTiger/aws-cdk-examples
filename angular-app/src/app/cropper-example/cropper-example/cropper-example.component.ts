@@ -70,7 +70,23 @@ export class CropperExampleComponent implements OnInit {
   }
 
   public handleFileInput(files): void {
-    console.log(files);
+    const file = files[0];
+    const reader = new FileReader();
+
+
+    reader.addEventListener("load", () => {
+      let base64 = reader.result as string;
+      const img = document.getElementById('image') as HTMLImageElement;
+
+      this.clearCropper();
+      img.src = base64;
+
+      this.createCropper();
+
+    }, false);
+
+    reader.readAsDataURL(file); 
+    console.log('Read file');
   }
 
 }
