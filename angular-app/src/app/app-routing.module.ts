@@ -25,6 +25,9 @@ const routes: Routes = [
   { path: 'ag-grid-example',
     loadChildren: () => import('./ag-grid-example/ag-grid-example.module').then(m => m.AgGridExampleModule) },
 
+  { path: 'cropper-example',
+    loadChildren: () => import('./cropper-example/cropper-example.module').then(m => m.CropperExampleModule) },
+
   { path: '**', component: PageNotFoundComponent }
 ];
 
