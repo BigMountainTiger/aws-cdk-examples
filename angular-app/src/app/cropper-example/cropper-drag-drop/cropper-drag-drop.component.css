@@ -1,0 +1,10 @@
+#drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  width: 480px;
+  min-height: 200px;
+  margin: 4px auto;
+}
+#drop-area.highlight {
+  border-color: purple;
+}
