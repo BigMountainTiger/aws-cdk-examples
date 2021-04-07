@@ -21,14 +21,13 @@ export class CropperExampleComponent implements OnInit {
   private createCropper(): void {
     this.clearCropper();
 
-    const GetBlob =  this.onGetBlob;
-    const that = this;
+    const context = this;
     const img = document.getElementById('image') as HTMLImageElement;
     this.cropper = new Cropper(img, {
       aspectRatio: 1 / 1,
       viewMode: 1,
-      crop(event) {
-        GetBlob.apply(that);
+      crop: (event) => {
+        context.onGetBlob();
       },
     });
   }
@@ -58,15 +57,15 @@ export class CropperExampleComponent implements OnInit {
     }
 
     this.cropper.getCroppedCanvas().toBlob(blob => {
-      console.log(blob);
+      const type = blob.type;
 
+      // The buffer is the binary to save
       const buffer = blob.arrayBuffer();
       buffer.then(b => {
         const base64 = arrayBufferToBase64(b);
-        console.log(base64);
         
         const cropped = document.getElementById('cropped') as HTMLImageElement;
-        cropped.src = 'data:image/png;base64, ' + base64;
+        cropped.src = 'data:' + type + ';base64, ' + base64;
       })
     });
   }
@@ -88,12 +87,11 @@ export class CropperExampleComponent implements OnInit {
     }, false);
 
     reader.readAsDataURL(file); 
-    console.log('Read file');
   }
 
   public onNgbModal(): void {
     this._modalService.open(CropperPopupComponent, {
-      size: 'lg'
+      size: 'sm'
     });
   }
 

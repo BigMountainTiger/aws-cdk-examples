@@ -1,4 +1,12 @@
-<div style="width: 100%; height: 200px;">
-xx
+<div>
 
+  <img id="image-display" style="width: 100%; min-height: 200px; padding: 2px;">
+
+  <div style="text-align: center;">
+    <label class="btn btn-primary" (click)="onCancel()">Cancel</label>
+    <label for="myFile-popup" class="btn btn-primary">
+      Select a file
+      <input id="myFile-popup" style="display: none;" type="file" (change)="handleFileInput($event.target.files)"/>
+    </label>
+  </div>
 </div>
