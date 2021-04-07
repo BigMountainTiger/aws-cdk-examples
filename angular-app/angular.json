@@ -30,8 +30,7 @@
               "./node_modules/cropperjs/dist/cropper.min.css"
             ],
             "scripts": [
-              "./node_modules/jsoneditor/dist/jsoneditor.min.js",
-              "./node_modules/cropperjs/dist/cropper.min.js"
+              "./node_modules/jsoneditor/dist/jsoneditor.min.js"
             ],
             "allowedCommonJsDependencies": [
               "crypto-js/lib-typedarrays",
