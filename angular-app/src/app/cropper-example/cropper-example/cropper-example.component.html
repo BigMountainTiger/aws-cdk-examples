@@ -18,6 +18,18 @@
 
 <!-- https://images2.minutemediacdn.com/image/upload/c_crop,h_1188,w_2121,x_0,y_142/f_auto,q_auto,w_1100/v1554733134/shape/mentalfloss/78996-istock-682216682.jpg -->
 
+<div>
+  <label for="myFile" style="vertical-align: top;" class="btn btn-primary">
+    Select a file
+    <input id="myFile" style="display: none;" type="file" (change)="handleFileInput($event.target.files)"/>
+  </label>
+
+  <button class="btn btn-primary" (click)="onClearCropper()">Clear Cropper</button>
+  <button class="btn btn-primary" (click)="onCreateCropper()">Create Cropper</button>
+  <button class="btn btn-primary" (click)="onGetBlob()">Get Blob</button>
+  <button class="btn btn-primary" (click)="onNgbModal()">NgbModal</button>
+</div>
+
 <div style="width: 100%;">
   <div style="display: inline-block; height: 400px;">
     <img id="image" height="400px"
@@ -28,11 +40,3 @@
   </div>
 </div>
 
-<div>
-  <input type="file" id="myFile" (change)="handleFileInput($event.target.files)"/>
-</div>
-<div>
-  <button (click)="onClearCropper()">Clear Cropper</button>
-  <button (click)="onCreateCropper()">Create Cropper</button>
-  <button (click)="onGetBlob()">Get Blob</button>
-</div>

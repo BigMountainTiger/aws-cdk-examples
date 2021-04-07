@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Cropper from 'cropperjs';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-cropper-example',
@@ -9,7 +10,7 @@ import Cropper from 'cropperjs';
 export class CropperExampleComponent implements OnInit {
   private cropper: Cropper;
 
-  constructor() { }
+  constructor(private _modalService: NgbModal) { }
 
   private clearCropper(): void {
     if (this.cropper)
@@ -87,6 +88,10 @@ export class CropperExampleComponent implements OnInit {
 
     reader.readAsDataURL(file); 
     console.log('Read file');
+  }
+
+  public onNgbModal(): void {
+    console.log(this._modalService);
   }
 
 }
