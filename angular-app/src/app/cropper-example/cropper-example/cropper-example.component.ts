@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import Cropper from 'cropperjs';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CropperPopupComponent } from '../cropper-popup/cropper-popup.component';
+import { CropperDragDropComponent } from '../cropper-drag-drop/cropper-drag-drop.component';
 
 @Component({
   selector: 'app-cropper-example',
@@ -89,10 +90,15 @@ export class CropperExampleComponent implements OnInit {
     reader.readAsDataURL(file); 
   }
 
-  public onNgbModal(): void {
+  public onCropperPopup(): void {
     this._modalService.open(CropperPopupComponent, {
       size: 'sm'
     });
   }
 
+  public onFileDragDrop(): void {
+    this._modalService.open(CropperDragDropComponent, {
+      size: 'lg'
+    });
+  }
 }
