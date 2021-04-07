@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Cropper from 'cropperjs';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CropperPopupComponent } from '../cropper-popup/cropper-popup.component';
 
 @Component({
   selector: 'app-cropper-example',
@@ -91,7 +92,9 @@ export class CropperExampleComponent implements OnInit {
   }
 
   public onNgbModal(): void {
-    console.log(this._modalService);
+    this._modalService.open(CropperPopupComponent, {
+      size: 'lg'
+    });
   }
 
 }

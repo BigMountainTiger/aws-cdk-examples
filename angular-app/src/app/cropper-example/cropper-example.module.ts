@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { CropperExampleRoutingModule } from './cropper-example-routing.module';
 import { CropperExampleComponent } from './cropper-example/cropper-example.component';
+import { CropperPopupComponent } from './cropper-popup/cropper-popup.component';
 
 
 @NgModule({
   declarations: [
-    CropperExampleComponent
+    CropperExampleComponent,
+    CropperPopupComponent
   ],
   imports: [
     CommonModule,
