@@ -28,6 +28,9 @@ const routes: Routes = [
   { path: 'cropper-example',
     loadChildren: () => import('./cropper-example/cropper-example.module').then(m => m.CropperExampleModule) },
 
+  { path: 'playground',
+    loadChildren: () => import('./playground/playground.module').then(m => m.PlaygroundModule) },
+
   { path: '**', component: PageNotFoundComponent }
 ];
 
