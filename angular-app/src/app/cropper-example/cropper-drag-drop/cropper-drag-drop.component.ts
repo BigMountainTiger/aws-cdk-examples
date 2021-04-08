@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Cropper from 'cropperjs';
 
 @Component({
@@ -10,14 +11,10 @@ export class CropperDragDropComponent implements OnInit {
   private cropper: Cropper;
   private img: HTMLImageElement;
 
-  constructor() { }
+  constructor(private _modalService: NgbModal) { }
 
   ngOnInit(): void {
-    const context = this;
     this.img = document.getElementById('image-ok') as HTMLImageElement;
-
-    console.log(this.img);
-
     const dropArea = document.getElementById("drop-area");
 
     const preventDefaults = (e) => {
@@ -54,7 +51,7 @@ export class CropperDragDropComponent implements OnInit {
       var dt = e.dataTransfer
       var files = dt.files;
 
-      context.handleFileInput(files);
+      this.handleFileInput(files);
 
     }, false);
 
@@ -84,6 +81,10 @@ export class CropperDragDropComponent implements OnInit {
     }, false);
 
     reader.readAsDataURL(file); 
+  }
+
+  public onCancel(): void {
+    this._modalService.dismissAll();
   }
 }
 

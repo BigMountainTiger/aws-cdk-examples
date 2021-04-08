@@ -1,6 +1,12 @@
-<ul>
-  <li><a target="_blank" href="https://codepen.io/joezimjs/pen/yPWQbd">https://codepen.io/joezimjs/pen/yPWQbd</a></li>
-</ul>
 <div id="drop-area">
-  <img id="image-ok" style="width: 100%; min-height: 200px; max-height: 400px; padding: 2px;">
+  <img id="image-ok" style="width: 100%; min-height: 200px; max-height: 400px; margin: 0px; padding: 0px; left: -2px;">
 </div>
+<div style="text-align: center;">
+  <label class="btn btn-primary" (click)="onCancel()">Cancel</label>
+  <label for="myFile-popup" class="btn btn-primary">
+    Select a file
+    <input id="myFile-popup" style="display: none;" type="file" (change)="handleFileInput($event.target.files)"/>
+  </label>
+</div>
+<br >
+
