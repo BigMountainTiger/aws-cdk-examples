@@ -16,6 +16,7 @@ export class CropperDragDropComponent implements OnInit {
   ngOnInit(): void {
     this.img = document.getElementById('image-ok') as HTMLImageElement;
     const dropArea = document.getElementById("drop-area");
+    const dropContainer = document.getElementById('drop-container');
 
     const preventDefaults = (e) => {
       e.preventDefault()
@@ -25,9 +26,9 @@ export class CropperDragDropComponent implements OnInit {
     const highlight = (highlight) => {
 
       if (highlight == 'on')
-        dropArea.classList.add('highlight');
+        dropContainer.classList.add('highlight');
       else
-        dropArea.classList.remove('highlight');
+        dropContainer.classList.remove('highlight');
     };
 
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
