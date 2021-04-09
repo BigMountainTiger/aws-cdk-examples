@@ -100,6 +100,7 @@ export class CropperExampleComponent implements OnInit {
   public onFileDragDrop(): void {
     this._modalService.open(CropperDragDropComponent, {
       size: 'lg',
+      centered: true,
       backdrop: 'static'
     });
   }
