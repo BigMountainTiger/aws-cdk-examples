@@ -31,13 +31,18 @@
   color: #ffffff;
 }
 
-.drop-container {
+#profile-picture-file-drop-container {
   position: relative;
   border: 3px dashed #707070;
   min-height: 200px;
 }
 
-.drop-container>div {
+#profile-picture-file-drop-container.on {
+  border-color: rgb(28, 0, 128);
+  border-width: 4px;
+}
+
+#profile-picture-file-drop-container>div {
   position: absolute;
   top: 0px;
   right: 0px;
