@@ -3,10 +3,11 @@
   <div class="VA-Office-Phone" style="width: 100%;">Change Profile Photo</div>
   <img class="iconclose" src="/assets/images/Icon_close.svg" (click)="onClose()"/>
 </div>
-<div style="height: 300px; display: none;">
-  <div style="width: 100%; padding: 6px;">
+<div style="height: 300px;">
+  <div *ngIf="status != 'DONE'" style="width: 100%; padding: 6px;">
     <div class="drop-container">
-      <div style="text-align: center;">
+
+      <div *ngIf="status == 'INIT'" style="text-align: center;">
         <img src="/assets/images/upload-icon.PNG" />
         <div class="There-are-35-templat">
           <span style="font-size: 16px; font-weight: bold;">Upload Photo</span><br>
@@ -14,7 +15,7 @@
         </div>
       </div>
   
-      <div style="text-align: center; background-color: white;">
+      <div *ngIf="status == 'LOADING'" style="text-align: center; background-color: white;">
         <div class="ispinner ispinner-large" style="margin: 60px auto 20px auto;">
           <div class="ispinner-blade"></div>
           <div class="ispinner-blade"></div>
@@ -30,7 +31,7 @@
         </div>
       </div>
   
-      <div style="text-align: center; background-color: white;">
+      <div *ngIf="status == 'FAIL'" style="text-align: center; background-color: white;">
         <img src="/assets/images/Icon_alert-triangle.svg" style="margin-top: 5px; margin-bottom: 5px;" />
         <div class="Rectangle-Copy-2" style="margin: auto;"></div>
         <div class="There-are-35-templat" style="margin-top: 10px;">
@@ -40,9 +41,11 @@
       </div>
   
     </div>
+
     <div style="padding: 10px">
       <div style="text-align: center;">
-        <label class="btn btn-primary">CHOOSE FILE</label>
+        <label for="profile-picture-file-input" class="btn btn-primary">CHOOSE FILE</label>
+        <input id="profile-picture-file-input" style="display: none;" type="file" (change)="handleFileInput($event.target.files)"/>
       </div>
       <div class="There-are-35-templat">
         For best results, use a square image.<br>
@@ -50,19 +53,19 @@
       </div>
     </div>
   </div>
-</div>
 
-<div style="height: 300px; text-align: center; background-color: white;">
-  <div class="There-are-35-templat" style="margin-top: 50px;">
-    <span style="font-size: 24px; font-weight: normal; color: #12273c; font-stretch: condensed;">You have successfully uploaded your photo</span>
-  </div>
-
-  <div class="There-are-35-templat" style="margin-top: 50px;">
-    <span style="font-size: 12px; font-weight: 500;">Your photo should be updated momentarily.</span><br>
-    <span style="font-size: 12px; font-weight: 500;">You may need to refresh the page for it to appear.</span>
-  </div>
-
-  <div style="text-align: center; margin-top: 50px;">
-    <label class="btn btn-primary" (click)="onClose()">OK</label>
+  <div *ngIf="status == 'DONE'" style="text-align: center; background-color: white;">
+    <div class="There-are-35-templat" style="padding-top: 50px;">
+      <span style="font-size: 24px; font-weight: normal; color: #12273c; font-stretch: condensed;">You have successfully uploaded your photo</span>
+    </div>
+  
+    <div class="There-are-35-templat" style="margin-top: 50px;">
+      <span style="font-size: 12px; font-weight: 500;">Your photo should be updated momentarily.</span><br>
+      <span style="font-size: 12px; font-weight: 500;">You may need to refresh the page for it to appear.</span>
+    </div>
+  
+    <div style="text-align: center; margin-top: 50px;">
+      <label class="btn btn-primary" (click)="onClose()">OK</label>
+    </div>
   </div>
 </div>
