@@ -74,6 +74,6 @@ export class JustPopupComponent implements OnInit, AfterViewInit {
     this.status = 'LOADING';
     setTimeout(() => {
       this.status = 'DONE';
-    }, 1000);
+    }, 2 * 1000);
   }
 }
