@@ -1,0 +1,57 @@
+.Rectangle-Copy-6 {
+  height: 68px;
+  border-radius: 3px 3px 0px 0px;
+  background-color: #12273c;
+}
+
+.iconclose {
+  position: absolute; 
+  top: 22px;
+  right: 22px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.VA-Office-Phone {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  opacity: 0.95;
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: bold;
+  font-stretch: condensed;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.57px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.drop-container {
+  position: relative;
+  border: 3px dashed #707070;
+  min-height: 200px;
+}
+
+.btn-ackground {
+  font-family: Roboto;
+  font-weight: bold;
+  font-stretch: condensed;
+  background-color: #457d7a;
+}
+
+.There-are-35-templat {
+  font-family: Montserrat;
+  font-size: 9px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #56595a;
+}
