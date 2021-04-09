@@ -3,6 +3,7 @@ import Cropper from 'cropperjs';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CropperPopupComponent } from '../cropper-popup/cropper-popup.component';
 import { CropperDragDropComponent } from '../cropper-drag-drop/cropper-drag-drop.component';
+import { JustPopupComponent } from '../just-popup/just-popup.component';
 
 @Component({
   selector: 'app-cropper-example',
@@ -100,6 +101,12 @@ export class CropperExampleComponent implements OnInit {
     this._modalService.open(CropperDragDropComponent, {
       size: 'lg',
       backdrop: 'static'
+    });
+  }
+
+  public onJustPopup(): void {
+    this._modalService.open(JustPopupComponent, {
+      size: 'lg'
     });
   }
 }
