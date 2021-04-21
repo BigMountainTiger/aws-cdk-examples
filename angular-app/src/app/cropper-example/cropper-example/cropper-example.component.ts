@@ -4,7 +4,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CropperPopupComponent } from '../cropper-popup/cropper-popup.component';
 import { CropperDragDropComponent } from '../cropper-drag-drop/cropper-drag-drop.component';
 import { JustPopupComponent } from '../just-popup/just-popup.component';
-import { SimplePopupComponent } from '../simple-popup/simple-popup/simple-popup.component';
+import { SimplePopupComponent } from '../simple-popup/simple-popup.component';
 
 
 @Component({

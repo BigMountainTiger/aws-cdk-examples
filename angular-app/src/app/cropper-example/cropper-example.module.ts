@@ -6,8 +6,7 @@ import { CropperExampleComponent } from './cropper-example/cropper-example.compo
 import { CropperPopupComponent } from './cropper-popup/cropper-popup.component';
 import { CropperDragDropComponent } from './cropper-drag-drop/cropper-drag-drop.component';
 import { JustPopupComponent } from './just-popup/just-popup.component';
-import { SimplePopupComponent } from './simple-popup/simple-popup/simple-popup.component';
-
+import { SimplePopupComponent, FileDragDropDirective } from './simple-popup/simple-popup.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +14,8 @@ import { SimplePopupComponent } from './simple-popup/simple-popup/simple-popup.c
     CropperPopupComponent,
     CropperDragDropComponent,
     JustPopupComponent,
-    SimplePopupComponent
+    SimplePopupComponent,
+    FileDragDropDirective
   ],
   imports: [
     CommonModule,
