@@ -7,6 +7,7 @@ import { CropperPopupComponent } from './cropper-popup/cropper-popup.component';
 import { CropperDragDropComponent } from './cropper-drag-drop/cropper-drag-drop.component';
 import { JustPopupComponent } from './just-popup/just-popup.component';
 import { SimplePopupComponent, FileDragDropDirective } from './simple-popup/simple-popup.component';
+import { AnExampleModuleModule } from './an-example-module/an-example-module.module';
 
 @NgModule({
   declarations: [
@@ -15,11 +16,12 @@ import { SimplePopupComponent, FileDragDropDirective } from './simple-popup/simp
     CropperDragDropComponent,
     JustPopupComponent,
     SimplePopupComponent,
-    FileDragDropDirective
+    FileDragDropDirective,
   ],
   imports: [
     CommonModule,
-    CropperExampleRoutingModule
+    CropperExampleRoutingModule,
+    AnExampleModuleModule
   ]
 })
 export class CropperExampleModule { }
