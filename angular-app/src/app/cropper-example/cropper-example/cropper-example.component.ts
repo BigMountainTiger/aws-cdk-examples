@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import Cropper from 'cropperjs';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CropperPopupComponent } from '../cropper-popup/cropper-popup.component';
@@ -12,10 +12,16 @@ import { SimplePopupComponent } from '../simple-popup/simple-popup.component';
   templateUrl: './cropper-example.component.html',
   styleUrls: ['./cropper-example.component.css']
 })
-export class CropperExampleComponent implements OnInit {
+export class CropperExampleComponent implements OnInit, AfterViewInit {
   private cropper: Cropper;
 
   constructor(private _modalService: NgbModal) { }
+
+  ngAfterViewInit(): void {
+    // Object.keys(window).forEach(key => {
+    //     console.log(key);
+    // });
+  }
 
   private clearCropper(): void {
     if (this.cropper)

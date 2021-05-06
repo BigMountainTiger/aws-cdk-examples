@@ -1,3 +1,4 @@
 export enum Abcd {
-  INIT
+  INIT,
+  FAIL
 }
