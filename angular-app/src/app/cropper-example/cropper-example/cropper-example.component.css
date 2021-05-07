@@ -2,3 +2,23 @@
   margin-right: 2px;
   width: 150px;
 }
+
+.box {
+  width:138px;
+  border-radius:500px 500px 0 0;
+  background:
+    linear-gradient(180deg,transparent 50%,#fff 0) top/100% 200%,
+    radial-gradient(farthest-side at bottom,#fff calc(100% - 20px),transparent 0),
+    linear-gradient(to left, #457d7a, rgba(240, 220, 141, 0.62), #a5210c);
+}
+.box::before {
+  content:"";
+  display:block;
+  padding-top:50%;
+}
+
+.path {
+  width: 28.1px;
+  height: 60.3px;
+  background-color: #12273c;
+}
