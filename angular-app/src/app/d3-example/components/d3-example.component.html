@@ -14,15 +14,18 @@
 
 <br>
 
-<div>
-  <div class="mygauge">
-    <div class="box"></div>
-    <div class="css-needle">
-      <svg width="138" height="75">
-        <circle cx="50%" cy="69" r="6" class="pointer"></circle>
-        <circle cx="50%" cy="69" r="1" class="center"></circle>
-        <polyline [attr.points]="needle_pointer()" class="pointer"></polyline>
-      </svg>
+<!-- Tested css scale here -->
+<div style="display: inline-block;">
+  <div style="width: 207px; height: 112.5px;">
+    <div class="mygauge" style="transform: scale(1.5); transform-origin: top left;">
+      <div class="box"></div>
+      <div class="css-needle">
+        <svg width="138" height="75">
+          <polyline [attr.points]="needle_pointer()" class="pointer"></polyline>
+          <circle cx="50%" cy="69" r="6" class="pointer"></circle>
+          <circle cx="50%" cy="69" r="1" class="center"></circle>
+        </svg>
+      </div>
     </div>
   </div>
 </div>
