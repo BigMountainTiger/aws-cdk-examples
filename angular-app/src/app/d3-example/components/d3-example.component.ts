@@ -48,6 +48,7 @@ export class D3ExampleComponent implements OnInit, AfterViewInit {
         .attr('width', c.width).attr('height', (c.height + c.r));
 
       svg.append('circle').attr('cx', '50%').attr('cy', c.height).attr('r', c.r).style('fill', c.fill);
+      svg.append('circle').attr('cx', '50%').attr('cy', c.height).attr('r', 1).style('fill', "#808080");
       // var points = `16 ${c.height}, ${c.height} ${c.height - c.r}, ${c.height} ${c.height + c.r}`;
       var points = getPoints(0);
       svg.append('polyline')

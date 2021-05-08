@@ -34,4 +34,12 @@
   left: 0px
 }
 
+.center {
+  fill: rgb(128, 128, 128);
+}
+
+.pointer {
+  fill: rgb(18, 39, 60);
+}
+
 

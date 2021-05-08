@@ -19,8 +19,9 @@
     <div class="box"></div>
     <div class="css-needle">
       <svg width="138" height="75">
-        <circle cx="50%" cy="69" r="6" style="fill: rgb(18, 39, 60);"></circle>
-        <polyline [attr.points]="needle_pointer()" style="fill: rgb(18, 39, 60);"></polyline>
+        <circle cx="50%" cy="69" r="6" class="pointer"></circle>
+        <circle cx="50%" cy="69" r="1" class="center"></circle>
+        <polyline [attr.points]="needle_pointer()" class="pointer"></polyline>
       </svg>
     </div>
   </div>
