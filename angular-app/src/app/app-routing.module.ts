@@ -31,6 +31,8 @@ const routes: Routes = [
   { path: 'playground',
     loadChildren: () => import('./playground/playground.module').then(m => m.PlaygroundModule) },
 
+  { path: 'd3-example', loadChildren: () => import('./d3-example/d3-example.module').then(m => m.D3ExampleModule) },
+
   { path: '**', component: PageNotFoundComponent }
 ];
 

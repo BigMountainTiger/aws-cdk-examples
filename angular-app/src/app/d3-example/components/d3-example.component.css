@@ -1,0 +1,37 @@
+.mygauge {
+  position: relative;
+  width: 138px;
+  height: 75px;
+}
+
+.box {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width:100%;
+  border-radius:500px 500px 0 0;
+  background:
+    linear-gradient(180deg,transparent 50%,#fff 0) top/100% 200%,
+    radial-gradient(farthest-side at bottom,#fff calc(100% - 20px),transparent 0),
+    linear-gradient(to left, #457d7a, rgba(240, 220, 141, 0.62), #a5210c);
+}
+.box::before {
+  content:"";
+  display:block;
+  padding-top:50%;
+}
+
+.needle {
+  position: absolute;
+  top: 0px;
+  left: 0px
+}
+
+.css-needle {
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+  left: 0px
+}
+
+

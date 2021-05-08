@@ -1,0 +1,27 @@
+<ul>
+
+  <li><a href="https://www.geekstrick.com/integrate-d3-with-angular-9/">https://www.geekstrick.com/integrate-d3-with-angular-9/</a></li>
+  <li><a href="https://blog.logrocket.com/data-visualization-angular-d3/v">https://blog.logrocket.com/data-visualization-angular-d3/</a></li>
+  
+</ul>
+
+<div>
+  <div class="mygauge">
+    <div class="box"></div>
+    <div class="needle"></div>
+  </div>
+</div>
+
+<br>
+
+<div>
+  <div class="mygauge">
+    <div class="box"></div>
+    <div class="css-needle">
+      <svg width="138" height="75">
+        <circle cx="50%" cy="69" r="6" style="fill: rgb(18, 39, 60);"></circle>
+        <polyline [attr.points]="needle_pointer()" style="fill: rgb(18, 39, 60);"></polyline>
+      </svg>
+    </div>
+  </div>
+</div>
