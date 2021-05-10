@@ -12,6 +12,8 @@
 
   & > .rainbow {
     border-radius:500px 500px 0 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     background:
       linear-gradient(180deg, transparent 50%, #fff 0) top/100% 200%,
       radial-gradient(farthest-side at bottom, #fff calc(100% - 20px), transparent 0),
@@ -31,7 +33,7 @@
       fill: rgb(18, 39, 60);
     }
 
-    & > .needle-center {
+    & > .needle-nail {
       fill: rgb(128, 128, 128);
     }
   }
