@@ -42,4 +42,9 @@
   fill: rgb(18, 39, 60);
 }
 
-
+.row {
+  margin: 20px 30px auto 30px;
+  display: flex;
+  justify-content: space-between;
+  width: 600px;
+}
