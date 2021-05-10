@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { IGaugeData } from '../dash-gauge/dash-gauge.component';
 import * as d3 from 'd3';
 
 @Component({
@@ -7,6 +8,12 @@ import * as d3 from 'd3';
   styleUrls: ['./d3-example.component.css']
 })
 export class D3ExampleComponent implements OnInit, AfterViewInit {
+
+  public GaugeData:IGaugeData = {
+    Min: 0,
+    Max: 100,
+    Value: 0
+  };
 
   constructor() { }
 
@@ -66,6 +73,7 @@ export class D3ExampleComponent implements OnInit, AfterViewInit {
 
   public getPoints(rotation) {
 
+
     const c = { width: 138, height: 69, r: 6 };
 
     const rotate = (s, angle) => {
@@ -94,6 +102,23 @@ export class D3ExampleComponent implements OnInit, AfterViewInit {
       data += (180 / 30);
 
       this.need_data = (data > 180)? 0: data;
+
+    }, 1000)
+
+    setInterval(() => {
+      // This is using the gauge component
+      let min = this.GaugeData.Min;
+      let max = this.GaugeData.Max;
+      let value = this.GaugeData.Value
+      value += ((max - min) / 30);
+
+      value = (value > max)? min: value;
+
+      this.GaugeData = {
+        Min: min,
+        Max: max,
+        Value: value
+      }
 
     }, 1000)
   }
