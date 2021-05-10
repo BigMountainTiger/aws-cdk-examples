@@ -1,0 +1,40 @@
+.dash-gauge {
+  position: relative;
+  width: 138px;
+  height: 75px;
+
+  & > div, svg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width:100%;
+  }
+
+  & > .rainbow {
+    border-radius:500px 500px 0 0;
+    background:
+      linear-gradient(180deg, transparent 50%, #fff 0) top/100% 200%,
+      radial-gradient(farthest-side at bottom, #fff calc(100% - 20px), transparent 0),
+      linear-gradient(to left, #457d7a, rgba(240, 220, 141, 0.62), #a5210c);
+
+    &::before {
+      content:"";
+      display:block;
+      padding-top:50%;
+    }
+  }
+
+  & > svg {
+    height: 100%;
+    
+    & > .needle {
+      fill: rgb(18, 39, 60);
+    }
+
+    & > .needle-center {
+      fill: rgb(128, 128, 128);
+    }
+  }
+}
+
+
