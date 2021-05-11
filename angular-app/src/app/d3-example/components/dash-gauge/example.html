@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Gauge experiment</title>
+
+  <style>
+    .dash-gauge {
+      position: relative;
+      width: 138px;
+      height: 75px;
+    }
+
+    .dash-gauge>div,
+    .dash-gauge svg {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+    }
+
+    .dash-gauge>.rainbow {
+      border-radius: 500px 500px 0 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(180deg, transparent 50%, #fff 0) top/100% 200%,
+        radial-gradient(farthest-side at bottom, #fff calc(100% - 20px), transparent 0),
+        linear-gradient(to left, #457d7a, rgba(240, 220, 141, 0.62), #a5210c);
+    }
+
+    .dash-gauge>.rainbow::before {
+      content: "";
+      display: block;
+      padding-top: 50%;
+    }
+
+    .dash-gauge>svg {
+      height: 100%;
+    }
+
+    .dash-gauge>svg>.needle {
+      fill: #12273c;
+    }
+
+    .dash-gauge>svg>.needle-nail {
+      fill: gray;
+    }
+  </style>
+
+  <script>
+    const Needlepath = (rotation) => {
+      const constants = {
+        width: 138,
+        needle_length: 53,
+        needle_center_radius: 6
+      };
+
+      const rotate = (s, angle) => {
+        const a = (s.a - angle) * (Math.PI / 180);
+        return {
+          x: constants.width / 2 + s.r * Math.cos(a),
+          y: constants.width / 2 - s.r * Math.sin(a)
+        };
+      };
+
+      const p1 = rotate({ r: constants.needle_length, a: 180 }, rotation);
+      const p2 = rotate({ r: constants.needle_center_radius, a: 90 }, rotation);
+      const p3 = rotate({ r: constants.needle_center_radius, a: 270 }, rotation);
+
+      return `${p1.x} ${p1.y}, ${p2.x} ${p2.y}, ${p3.x} ${p3.y}`;
+    };
+
+    let data = 0;
+    window.onload = () => {
+      
+      const needle = document.getElementById('needle');
+      setInterval(() => {
+        
+        data += (180 / 30);
+        data = (data > 180)? 0: data;
+
+        const path = Needlepath(data);
+        needle.setAttribute('points', path);
+
+      }, 1000);
+    };
+  </script>
+</head>
+
+<body>
+  <div>
+    <div class="dash-gauge">
+      <div class="rainbow"></div>
+      <svg>
+        <polyline id="needle" points="16 69, 69 63, 69 75" class="needle"></polyline>
+        <circle cx="50%" cy="69" r="6" class="needle"></circle>
+        <circle cx="50%" cy="69" r="1" class="needle-nail"></circle>
+      </svg>
+    </div>
+  </div>
+</body>
+
+</html>
