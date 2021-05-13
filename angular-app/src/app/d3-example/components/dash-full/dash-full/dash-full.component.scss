@@ -1,0 +1,36 @@
+.app-dash-full {
+  background-color: transparent;
+
+  & > .title {
+    margin-bottom: 5px;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.39px;
+    color: #12273c;
+  }
+
+  & > .label {
+    margin-top: 5px;
+
+    & > .measurement {
+      display: inline-block;
+      font-family: RobotoMono;
+      font-size: 30px;
+      font-weight: 500;
+      letter-spacing: 0.75px;
+      color: #12273c;
+    }
+
+    & > .measurement-unit {
+      display: inline-block;
+      width: 110px;
+      margin-left: 8px;
+      font-family: Montserrat;
+      font-size: 9px;
+      font-weight: bold;
+      letter-spacing: 0.25px;
+      color: #596776;
+    }
+  }
+}
