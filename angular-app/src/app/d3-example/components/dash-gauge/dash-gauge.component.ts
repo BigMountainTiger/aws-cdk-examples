@@ -17,8 +17,12 @@ export class DashGaugeComponent implements OnInit {
     needle_length: 53,
     needle_center_radius: 6
   };
-  
-  @Input() public GaugeData: IGaugeData;
+
+  @Input() public GaugeData: IGaugeData = {
+    Min: 0,
+    Max: 180,
+    Value: 0
+  };
 
   constructor() { }
 
@@ -39,10 +43,10 @@ export class DashGaugeComponent implements OnInit {
     const data = this.GaugeData;
     let rotation = 180 * (data.Value / (data.Max - data.Min));
 
-    rotation = (rotation < 0)? 0: ((rotation > 180)? 180: rotation);
-    const p1 = rotate({r: constants.needle_length, a: 180}, rotation);
-    const p2 = rotate({r: constants.needle_center_radius, a: 90}, rotation);
-    const p3 = rotate({r: constants.needle_center_radius, a: 270}, rotation);
+    rotation = (rotation < 0) ? 0 : ((rotation > 180) ? 180 : rotation);
+    const p1 = rotate({ r: constants.needle_length, a: 180 }, rotation);
+    const p2 = rotate({ r: constants.needle_center_radius, a: 90 }, rotation);
+    const p3 = rotate({ r: constants.needle_center_radius, a: 270 }, rotation);
 
     return `${p1.x} ${p1.y}, ${p2.x} ${p2.y}, ${p3.x} ${p3.y}`;
   }

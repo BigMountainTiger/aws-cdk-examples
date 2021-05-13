@@ -27,13 +27,6 @@
   left: 0px
 }
 
-.css-needle {
-  position: absolute;
-  z-index: 1;
-  top: 0px;
-  left: 0px
-}
-
 .center {
   fill: rgb(128, 128, 128);
 }

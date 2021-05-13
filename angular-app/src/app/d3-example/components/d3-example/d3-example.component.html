@@ -5,12 +5,7 @@
   
 </ul>
 
-<div>
-  <div class="mygauge">
-    <div class="box"></div>
-    <div class="needle"></div>
-  </div>
-</div>
+<app-dash-full></app-dash-full>
 
 <br>
 
@@ -19,7 +14,7 @@
   <div style="width: 207px; height: 112.5px;">
     <div class="mygauge" style="transform: scale(1.5); transform-origin: top left;">
       <div class="box"></div>
-      <div class="css-needle">
+      <div class="needle">
         <svg width="138" height="75">
           <polyline [attr.points]="needle_pointer()" class="pointer"></polyline>
           <circle cx="50%" cy="69" r="6" class="pointer"></circle>

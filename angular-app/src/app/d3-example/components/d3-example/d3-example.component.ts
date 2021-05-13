@@ -34,7 +34,6 @@ export class D3ExampleComponent implements OnInit, AfterViewInit {
 
     const rotate = (s, angle) => {
       const a = s.a - angle;
-      console.log(a);
       return {
         x: c.height + s.r * Math.cos(d2r(a)),
         y: c.height - s.r * Math.sin(d2r(a))
