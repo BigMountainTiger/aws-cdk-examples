@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 export interface IGaugeData {
   Min: number;
@@ -8,6 +8,7 @@ export interface IGaugeData {
 
 @Component({
   selector: 'app-dash-gauge',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dash-gauge.component.html',
   styleUrls: ['./dash-gauge.component.scss']
 })
