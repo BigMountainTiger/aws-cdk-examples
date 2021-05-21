@@ -1,0 +1,10 @@
+{
+  "name": "api-handler",
+  "version": "1.0.0",
+  "author": "Song Li",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0"
+  }
+}
