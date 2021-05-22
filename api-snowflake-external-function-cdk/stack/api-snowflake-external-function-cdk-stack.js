@@ -52,6 +52,20 @@ class ApiSnowflakeExternalFunctionCdkStack extends cdk.Stack {
 
     })();
 
+    ((api) => {
+      const ROLE_NAME = `${id}-SNOWFLAKE`;
+      const role = new iam.Role(this, ROLE_NAME, {
+        roleName: ROLE_NAME,
+        assumedBy: new iam.AnyPrincipal()
+      });
+
+      role.addToPolicy(new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        resources: [api.arnForExecuteApi()],
+        actions: ['*']
+      }));
+    })(api);
+
     api.root.addMethod('POST', new apigateway.LambdaIntegration(func, { proxy: true }));
 
   }
