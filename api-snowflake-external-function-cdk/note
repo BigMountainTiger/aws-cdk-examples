@@ -3,13 +3,11 @@
 //https://docs.snowflake.com/en/sql-reference/external-functions-creating-aws.html#label-external-functions-creating-aws-create-external-function
 //https://docs.snowflake.com/en/sql-reference/external-functions-creating-aws.html#label-external-functions-creating-aws-call-external-function
 //https://docs.snowflake.com/en/sql-reference/external-functions-data-format.html
-
-//IAM logic
 //https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html
-
 
 SHOW integrations;
 SHOW external functions;
+DROP function my_external_function();
 
 create or replace api integration api_integration_01
     api_provider=aws_api_gateway
@@ -17,10 +15,11 @@ create or replace api integration api_integration_01
     api_allowed_prefixes=('https://jqr34w4uq0.execute-api.us-east-1.amazonaws.com/prod/')
     enabled=true;
     
-create or replace external function my_external_function()
+create or replace external function my_external_function(msg varchar, detail varchar)
     returns variant
     api_integration = api_integration_01
     as 'https://jqr34w4uq0.execute-api.us-east-1.amazonaws.com/prod/'
 
 
-select my_external_function();
+select my_external_function('This is my message', 'The is a test message');
+
