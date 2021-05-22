@@ -40,13 +40,17 @@ const inform = async (msg) => {
 exports.handler = async (event, context) => {
   const body = JSON.parse(event.body || '{}');
 
-  inform({
+  await inform({
     channel: SONG_ID,
     text: 'This is a test'
   });
 
   return {
     statusCode: 200,
-    body: JSON.stringify('OK')
+    body: JSON.stringify({
+      data: [
+        [0, 'success']
+      ]
+    })
   };
 };

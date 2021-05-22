@@ -1,0 +1,20 @@
+//https://docs.snowflake.com/en/sql-reference/external-functions-creating-aws.html#step-3-create-the-external-function
+//https://docs.snowflake.com/en/sql-reference/external-functions-creating-aws.html#label-external-functions-creating-aws-create-api-integration
+//https://docs.snowflake.com/en/sql-reference/external-functions-creating-aws.html#label-external-functions-creating-aws-create-external-function
+//https://docs.snowflake.com/en/sql-reference/external-functions-creating-aws.html#label-external-functions-creating-aws-call-external-function
+//https://docs.snowflake.com/en/sql-reference/external-functions-data-format.html
+
+SHOW integrations;
+
+create or replace api integration api_integration_01
+    api_provider=aws_api_gateway
+    api_aws_role_arn='arn:aws:iam::660079349745:role/SNOWFLAKE'
+    api_allowed_prefixes=('https://2qh862xtei.execute-api.us-east-1.amazonaws.com/prod/')
+    enabled=true;
+    
+create external function my_external_function()
+    returns variant
+    api_integration = api_integration_01
+    as 'https://2qh862xtei.execute-api.us-east-1.amazonaws.com/prod/';
+    
+select my_external_function();
