@@ -8,6 +8,8 @@
 SHOW integrations;
 SHOW external functions;
 
+-- DROP FUNCTION  my_external_function(varchar);
+
 create or replace api integration api_integration_01
     api_provider=aws_api_gateway
     api_aws_role_arn='arn:aws:iam::660079349745:role/SNOWFLAKE'
