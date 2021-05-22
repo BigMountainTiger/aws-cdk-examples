@@ -29,12 +29,12 @@ Resources:
         - Ref: ApiSnowflakeExternalFunctionCdkStacklambdarole2E25FB11
     Metadata:
       aws:cdk:path: ApiSnowflakeExternalFunctionCdkStack/ApiSnowflakeExternalFunctionCdkStack-lambda-role/DefaultPolicy/Resource
-  ApiSnowflakeExternalFunctionCdkStackapihandler41EC88AA:
-    Type: AWS::Lambda::Function
+  ApiSnowflakeExternalFunctionCdkStackhandlerdependencylayer5BDE7FC9:
+    Type: AWS::Lambda::LayerVersion
     Properties:
-      Code:
+      Content:
         S3Bucket:
-          Ref: AssetParametersb6019b302f1ae6b85b615bb72dc2db8d8a1b8e85fdec38f7a30c8e78d349450bS3Bucket6565017A
+          Ref: AssetParameters44414e2a463ae002eab1f23d045059803bbde7e43d5ad3d8ee324657f3b386c3S3BucketCF633354
         S3Key:
           Fn::Join:
             - ""
@@ -42,18 +42,47 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParametersb6019b302f1ae6b85b615bb72dc2db8d8a1b8e85fdec38f7a30c8e78d349450bS3VersionKey1EAE5F37
+                      - Ref: AssetParameters44414e2a463ae002eab1f23d045059803bbde7e43d5ad3d8ee324657f3b386c3S3VersionKey838357DF
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParametersb6019b302f1ae6b85b615bb72dc2db8d8a1b8e85fdec38f7a30c8e78d349450bS3VersionKey1EAE5F37
+                      - Ref: AssetParameters44414e2a463ae002eab1f23d045059803bbde7e43d5ad3d8ee324657f3b386c3S3VersionKey838357DF
+      CompatibleRuntimes:
+        - nodejs14.x
+      Description: ApiSnowflakeExternalFunctionCdkStack-handler-dependency-layer
+      LayerName: ApiSnowflakeExternalFunctionCdkStack-handler-dependency-layer
+    Metadata:
+      aws:cdk:path: ApiSnowflakeExternalFunctionCdkStack/ApiSnowflakeExternalFunctionCdkStack-handler-dependency-layer/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-snowflake-external-function-cdk/lambda/dependencies
+      aws:asset:property: Content
+  ApiSnowflakeExternalFunctionCdkStackapihandler41EC88AA:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters85f9d26ea19ddeee3599b634ea05ecc08400b2d6f36f0dc5b508aa452ecba114S3BucketBD0563F6
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters85f9d26ea19ddeee3599b634ea05ecc08400b2d6f36f0dc5b508aa452ecba114S3VersionKeyE8510C0D
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters85f9d26ea19ddeee3599b634ea05ecc08400b2d6f36f0dc5b508aa452ecba114S3VersionKeyE8510C0D
       Role:
         Fn::GetAtt:
           - ApiSnowflakeExternalFunctionCdkStacklambdarole2E25FB11
           - Arn
       FunctionName: ApiSnowflakeExternalFunctionCdkStack-api-handler
       Handler: index.handler
+      Layers:
+        - Ref: ApiSnowflakeExternalFunctionCdkStackhandlerdependencylayer5BDE7FC9
       Runtime: nodejs14.x
       Timeout: 15
     DependsOn:
@@ -61,7 +90,7 @@ Resources:
       - ApiSnowflakeExternalFunctionCdkStacklambdarole2E25FB11
     Metadata:
       aws:cdk:path: ApiSnowflakeExternalFunctionCdkStack/ApiSnowflakeExternalFunctionCdkStack-api-handler/Resource
-      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-snowflake-external-function-cdk/lambda/api-handler
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-snowflake-external-function-cdk/lambda/handler
       aws:asset:property: Code
   ApiSnowflakeExternalFunctionCdkStackapihandlerApiAccessPermission9065F686:
     Type: AWS::Lambda::Permission
@@ -209,16 +238,63 @@ Resources:
               - /invocations
     Metadata:
       aws:cdk:path: ApiSnowflakeExternalFunctionCdkStack/ApiSnowflakeExternalFunctionCdkStack-API/Default/POST/Resource
+  ApiSnowflakeExternalFunctionCdkStackSNOWFLAKE41F28F29:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS: "*"
+        Version: "2012-10-17"
+      RoleName: ApiSnowflakeExternalFunctionCdkStack-SNOWFLAKE
+    Metadata:
+      aws:cdk:path: ApiSnowflakeExternalFunctionCdkStack/ApiSnowflakeExternalFunctionCdkStack-SNOWFLAKE/Resource
+  ApiSnowflakeExternalFunctionCdkStackSNOWFLAKEDefaultPolicy6C19D9E2:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: "*"
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":execute-api:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":"
+                  - Ref: ApiSnowflakeExternalFunctionCdkStackAPIE5E914DA
+                  - /*/*/*
+        Version: "2012-10-17"
+      PolicyName: ApiSnowflakeExternalFunctionCdkStackSNOWFLAKEDefaultPolicy6C19D9E2
+      Roles:
+        - Ref: ApiSnowflakeExternalFunctionCdkStackSNOWFLAKE41F28F29
+    Metadata:
+      aws:cdk:path: ApiSnowflakeExternalFunctionCdkStack/ApiSnowflakeExternalFunctionCdkStack-SNOWFLAKE/DefaultPolicy/Resource
 Parameters:
-  AssetParametersb6019b302f1ae6b85b615bb72dc2db8d8a1b8e85fdec38f7a30c8e78d349450bS3Bucket6565017A:
+  AssetParameters44414e2a463ae002eab1f23d045059803bbde7e43d5ad3d8ee324657f3b386c3S3BucketCF633354:
     Type: String
-    Description: S3 bucket for asset "b6019b302f1ae6b85b615bb72dc2db8d8a1b8e85fdec38f7a30c8e78d349450b"
-  AssetParametersb6019b302f1ae6b85b615bb72dc2db8d8a1b8e85fdec38f7a30c8e78d349450bS3VersionKey1EAE5F37:
+    Description: S3 bucket for asset "44414e2a463ae002eab1f23d045059803bbde7e43d5ad3d8ee324657f3b386c3"
+  AssetParameters44414e2a463ae002eab1f23d045059803bbde7e43d5ad3d8ee324657f3b386c3S3VersionKey838357DF:
     Type: String
-    Description: S3 key for asset version "b6019b302f1ae6b85b615bb72dc2db8d8a1b8e85fdec38f7a30c8e78d349450b"
-  AssetParametersb6019b302f1ae6b85b615bb72dc2db8d8a1b8e85fdec38f7a30c8e78d349450bArtifactHashB46E3353:
+    Description: S3 key for asset version "44414e2a463ae002eab1f23d045059803bbde7e43d5ad3d8ee324657f3b386c3"
+  AssetParameters44414e2a463ae002eab1f23d045059803bbde7e43d5ad3d8ee324657f3b386c3ArtifactHash020E4332:
     Type: String
-    Description: Artifact hash for asset "b6019b302f1ae6b85b615bb72dc2db8d8a1b8e85fdec38f7a30c8e78d349450b"
+    Description: Artifact hash for asset "44414e2a463ae002eab1f23d045059803bbde7e43d5ad3d8ee324657f3b386c3"
+  AssetParameters85f9d26ea19ddeee3599b634ea05ecc08400b2d6f36f0dc5b508aa452ecba114S3BucketBD0563F6:
+    Type: String
+    Description: S3 bucket for asset "85f9d26ea19ddeee3599b634ea05ecc08400b2d6f36f0dc5b508aa452ecba114"
+  AssetParameters85f9d26ea19ddeee3599b634ea05ecc08400b2d6f36f0dc5b508aa452ecba114S3VersionKeyE8510C0D:
+    Type: String
+    Description: S3 key for asset version "85f9d26ea19ddeee3599b634ea05ecc08400b2d6f36f0dc5b508aa452ecba114"
+  AssetParameters85f9d26ea19ddeee3599b634ea05ecc08400b2d6f36f0dc5b508aa452ecba114ArtifactHash8245EDCD:
+    Type: String
+    Description: Artifact hash for asset "85f9d26ea19ddeee3599b634ea05ecc08400b2d6f36f0dc5b508aa452ecba114"
 Outputs:
   ApiSnowflakeExternalFunctionCdkStackAPIEndpointAD5C72C1:
     Value:

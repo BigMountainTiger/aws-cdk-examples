@@ -23,13 +23,25 @@ class ApiSnowflakeExternalFunctionCdkStack extends cdk.Stack {
       return role;
     })();
 
-    const func = ((role, path, FUNCTION_NAME) => {
+    const layer = ((path) => {
+      const LAYER_NAME = `${id}-handler-dependency-layer`;
+
+      return new lambda.LayerVersion(this, LAYER_NAME, {
+        layerVersionName: LAYER_NAME,
+        code: lambda.Code.fromAsset(path),
+        compatibleRuntimes: [lambda.Runtime.NODEJS_14_X],
+        description: LAYER_NAME
+      });
+    })('./lambda/dependencies');
+
+    const func = ((role, layer, path, FUNCTION_NAME) => {
 
       const func = new lambda.Function(this, FUNCTION_NAME, {
         runtime: lambda.Runtime.NODEJS_14_X,
         functionName: FUNCTION_NAME,
         timeout: cdk.Duration.seconds(15),
         role: role,
+        layers: [layer],
         code: lambda.Code.fromAsset(path),
         handler: 'index.handler'
       });
@@ -39,7 +51,7 @@ class ApiSnowflakeExternalFunctionCdkStack extends cdk.Stack {
       })
 
       return func;
-    })(role, './lambda/api-handler', `${id}-api-handler`);
+    })(role, layer, './lambda/handler', `${id}-api-handler`);
 
     const api = (() => { 
       
