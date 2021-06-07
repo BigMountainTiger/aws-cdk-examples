@@ -14,6 +14,35 @@ class CodeArtifactCdkStack extends cdk.Stack {
       domainName: DOMAIN_NAME
     });
 
+    const permissionGroup = new iam.Group(this, '${id}-permission-group', {
+      groupName: `${DOMAIN_NAME}-permission-group`,
+    });
+
+    permissionGroup.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      resources: ['*'],
+      actions: ['sts:GetServiceBearerToken']
+    }));
+
+    permissionGroup.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      resources: ['*'],
+      actions: [
+        // 'codeartifact:ListPackageVersionAssets',
+        // 'codeartifact:ListPackageVersionDependencies',
+        // 'codeartifact:ListPackageVersions',
+        // 'codeartifact:ListPackages',
+        // 'codeartifact:DescribePackageVersion',
+        // 'codeartifact:DescribeRepository',
+        'codeartifact:GetAuthorizationToken',
+        // 'codeartifact:GetPackageVersionReadme',
+        // 'codeartifact:GetRepositoryEndpoint',
+        // 'codeartifact:GetPackageVersionAsset',
+        'codeartifact:ReadFromRepository',
+        'codeartifact:PublishPackageVersion'
+      ]
+    }));
+
     const document = new iam.PolicyDocument({
       statements: [
         new iam.PolicyStatement({

@@ -4,4 +4,7 @@
 
 cd examples/nuget/ExampleClient
 
+dotnet clean
+dotnet nuget locals --clear all
+
 dotnet run
