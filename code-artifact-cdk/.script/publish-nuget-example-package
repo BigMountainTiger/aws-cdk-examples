@@ -11,6 +11,9 @@
 
 # aws codeartifact login --tool dotnet --domain testdomain --domain-owner 660079349745 --repository testnugetrepo
 
+# aws cli credential presedence
+# https://docs.aws.amazon.com/cli/latest/topic/config-vars.html
+
 # Cross account
 # https://docs.aws.amazon.com/codeartifact/latest/ug/domain-policies.html#enabling-cross-acount-access-to-a-domain
 
