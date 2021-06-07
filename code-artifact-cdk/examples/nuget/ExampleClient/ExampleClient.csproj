@@ -9,6 +9,4 @@
     <PackageReference Include="ExamplePackage" Version="2.0.0" />
   </ItemGroup>
 
-
-
 </Project>
