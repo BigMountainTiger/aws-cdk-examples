@@ -2,13 +2,18 @@
 
 # https://docs.aws.amazon.com/codeartifact/latest/ug/using-npm.html
 
+# Clean the npm cache so it will re-download from the registry
+# npm cache clean --force
+
 # -- Need the domain owner if access from another account
 # aws codeartifact login --tool npm --domain my_domain --domain-owner 111122223333 --repository my_repo
 
 
 cd examples/npm/ExamplePackage
 
-# aws codeartifact login --tool npm --domain testdomain --repository testnugetrepo
-# npm publish --registry https://testdomain-660079349745.d.codeartifact.us-east-1.amazonaws.com/npm/testnugetrepo/
+# This command will add an entry to the .npmrc (in the home directory) file with the authentication token that valid for 12 hours
+aws codeartifact login --tool npm --domain experimental-domain --repository experimental-repository --namespace @example
+
+# npm publish --registry https://experimental-domain-660079349745.d.codeartifact.us-east-1.amazonaws.com/npm/experimental-repository/
 
 npm publish

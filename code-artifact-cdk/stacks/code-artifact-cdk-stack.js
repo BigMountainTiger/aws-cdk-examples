@@ -13,6 +13,7 @@ class CodeArtifactCdkStack extends cdk.Stack {
 
     const MINIMAL_ALLOWED_ACTIONS = [
       'codeartifact:GetAuthorizationToken',
+      'codeartifact:GetRepositoryEndpoint',
       'codeartifact:ReadFromRepository',
       'codeartifact:PublishPackageVersion'
     ];
