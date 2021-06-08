@@ -21,7 +21,7 @@ class CodeArtifactCdkStack extends cdk.Stack {
       domainName: DOMAIN_NAME
     });
 
-    const document = new iam.PolicyDocument({
+    domain.permissionsPolicyDocument = new iam.PolicyDocument({
       statements: [
         new iam.PolicyStatement({
           effect: iam.Effect.ALLOW,
@@ -42,13 +42,13 @@ class CodeArtifactCdkStack extends cdk.Stack {
       ]
     });
 
-    domain.permissionsPolicyDocument = document;
-
-    new codeartifact.CfnRepository(this, `${id}-repository`, {
+    const repository = new codeartifact.CfnRepository(this, `${id}-repository`, {
       domainName: DOMAIN_NAME,
       repositoryName: REPO_NAME,
       description: REPO_NAME,
     })
+
+    repository.node.addDependency(domain);
 
     const permissionGroup = new iam.Group(this, `${id}-permission-group`, {
       groupName: USERGROUP_NAME,
