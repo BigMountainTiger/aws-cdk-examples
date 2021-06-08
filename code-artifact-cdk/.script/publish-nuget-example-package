@@ -53,8 +53,8 @@
 dotnet tool install -g AWS.CodeArtifact.NuGet.CredentialProvider
 dotnet codeartifact-creds install
 
-repo="testdomain/testnugetrepo"
-repo_url="https://testdomain-660079349745.d.codeartifact.us-east-1.amazonaws.com/nuget/testnugetrepo/v3/index.json"
+repo="experimental-domain/experimental-repository"
+repo_url="https://experimental-domain-660079349745.d.codeartifact.us-east-1.amazonaws.com/nuget/experimental-repository/v3/index.json"
 if [ -z "$(dotnet nuget list source | grep ${repo})" ]
 then
   dotnet nuget add source "${repo_url}" -n ${repo}
