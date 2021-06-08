@@ -7,15 +7,51 @@ class CodeArtifactCdkStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    const DOMAIN_NAME = 'testdomain';
-    const REPO_NAME = 'testnugetrepo';
+    const DOMAIN_NAME = 'experimental-domain';
+    const REPO_NAME = 'experimental-repository';
+    const USERGROUP_NAME = 'experiment-code-artifact-user-group';
 
-    const domain = new codeartifact.CfnDomain(this, `${id}-nuget-domain`, {
-      domainName: DOMAIN_NAME
+    const MINIMAL_ALLOWED_ACTIONS = [
+      'codeartifact:GetAuthorizationToken',
+      'codeartifact:ReadFromRepository',
+      'codeartifact:PublishPackageVersion'
+    ];
+
+    const domain = new codeartifact.CfnDomain(this, `${id}-domain`, {
+      domainName: DOMAIN_NAME,
     });
 
-    const permissionGroup = new iam.Group(this, '${id}-permission-group', {
-      groupName: `${DOMAIN_NAME}-permission-group`,
+    const document = new iam.PolicyDocument({
+      statements: [
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          resources: ['*'],
+          actions: MINIMAL_ALLOWED_ACTIONS,
+          principals: [
+            new iam.ArnPrincipal('arn:aws:iam::537548412289:root')
+          ]
+        }),
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          resources: ['*'],
+          actions: MINIMAL_ALLOWED_ACTIONS,
+          principals: [
+            new iam.ArnPrincipal('arn:aws:iam::123129172005:root')
+          ]
+        })
+      ]
+    });
+
+    domain.permissionsPolicyDocument = document;
+
+    new codeartifact.CfnRepository(this, `${id}-repository`, {
+      domainName: DOMAIN_NAME,
+      repositoryName: REPO_NAME,
+      description: REPO_NAME,
+    })
+
+    const permissionGroup = new iam.Group(this, `${id}-permission-group`, {
+      groupName: USERGROUP_NAME,
     });
 
     permissionGroup.addToPolicy(new iam.PolicyStatement({
@@ -27,50 +63,8 @@ class CodeArtifactCdkStack extends cdk.Stack {
     permissionGroup.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       resources: ['*'],
-      actions: [
-        // 'codeartifact:ListPackageVersionAssets',
-        // 'codeartifact:ListPackageVersionDependencies',
-        // 'codeartifact:ListPackageVersions',
-        // 'codeartifact:ListPackages',
-        // 'codeartifact:DescribePackageVersion',
-        // 'codeartifact:DescribeRepository',
-        'codeartifact:GetAuthorizationToken',
-        // 'codeartifact:GetPackageVersionReadme',
-        // 'codeartifact:GetRepositoryEndpoint',
-        // 'codeartifact:GetPackageVersionAsset',
-        'codeartifact:ReadFromRepository',
-        'codeartifact:PublishPackageVersion'
-      ]
+      actions: MINIMAL_ALLOWED_ACTIONS
     }));
-
-    const document = new iam.PolicyDocument({
-      statements: [
-        new iam.PolicyStatement({
-          effect: iam.Effect.ALLOW,
-          resources: ['*'],
-          actions: ['codeartifact:*'],
-          principals: [
-            new iam.ArnPrincipal('arn:aws:iam::537548412289:root')
-          ]
-        }),
-        new iam.PolicyStatement({
-          effect: iam.Effect.ALLOW,
-          resources: ['*'],
-          actions: ['codeartifact:*'],
-          principals: [
-            new iam.ArnPrincipal('arn:aws:iam::123129172005:root')
-          ]
-        })
-      ]
-    });
-
-    domain.permissionsPolicyDocument = document;
-
-    new codeartifact.CfnRepository(this, `${id}-nuget-repository`, {
-      domainName: DOMAIN_NAME,
-      repositoryName: REPO_NAME,
-      description: REPO_NAME
-    })
   }
 }
 

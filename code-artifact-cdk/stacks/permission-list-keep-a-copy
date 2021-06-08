@@ -1,0 +1,21 @@
+List of the actions
+https://docs.aws.amazon.com/service-authorization/latest/reference/list_awscodeartifact.html#awscodeartifact-resources-for-iam-policies
+
+actions: [
+  'codeartifact:ListDomains',
+  'codeartifact:DescribeDomain',
+  'codeartifact:GetDomainPermissionsPolicy',
+  'codeartifact:ListRepositories',
+  'codeartifact:ListPackageVersionAssets',
+  'codeartifact:ListPackageVersionDependencies',
+  'codeartifact:ListPackageVersions',
+  'codeartifact:ListPackages',
+  'codeartifact:DescribePackageVersion',
+  'codeartifact:DescribeRepository',
+  'codeartifact:GetPackageVersionReadme',
+  'codeartifact:GetRepositoryEndpoint',
+  'codeartifact:GetPackageVersionAsset',
+  'codeartifact:GetAuthorizationToken',
+  'codeartifact:ReadFromRepository',
+  'codeartifact:PublishPackageVersion'
+]
