@@ -18,7 +18,7 @@ class CodeArtifactCdkStack extends cdk.Stack {
     ];
 
     const domain = new codeartifact.CfnDomain(this, `${id}-domain`, {
-      domainName: DOMAIN_NAME,
+      domainName: DOMAIN_NAME
     });
 
     const document = new iam.PolicyDocument({

@@ -4,8 +4,8 @@
   "author": "Song Li",
   "private": true,
   "dependencies": {
-    "@aws-cdk/aws-codeartifact": "^1.95.0",
-    "@aws-cdk/aws-iam": "^1.95.1",
-    "@aws-cdk/core": "1.95.0"
+    "@aws-cdk/aws-codeartifact": "^1.107.0",
+    "@aws-cdk/aws-iam": "^1.107.0",
+    "@aws-cdk/core": "^1.107.0"
   }
 }
