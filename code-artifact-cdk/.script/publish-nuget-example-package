@@ -9,6 +9,9 @@
 # dotnet codeartifact-creds install
 # dotnet codeartifact-creds configure set profile huge-head-li-2021
 
+# Remove the named profile to use the default
+# dotnet codeartifact-creds configure unset profile
+
 # aws codeartifact login --tool dotnet --domain testdomain --domain-owner 660079349745 --repository testnugetrepo
 
 # aws cli credential presedence
