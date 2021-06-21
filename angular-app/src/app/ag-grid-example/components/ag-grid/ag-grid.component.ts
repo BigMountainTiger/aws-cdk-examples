@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AllModules } from '@ag-grid-enterprise/all-modules';
 
 @Component({
   selector: 'app-ag-grid',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ag-grid.component.css']
 })
 export class AgGridComponent implements OnInit {
+  public modules = AllModules;
   public columnDefs = [
     { field: 'make', sortable: true, filter: true },
     { field: 'model', sortable: true, filter: true },

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { AllModules } from '@ag-grid-enterprise/all-modules';
+
 import { GroupGridDataService } from '../../services/group-grid-data.service';
 
 @Component({
@@ -8,6 +10,7 @@ import { GroupGridDataService } from '../../services/group-grid-data.service';
   styleUrls: ['./group-ag-grid.component.css']
 })
 export class GroupAgGridComponent implements OnInit {
+  public modules = AllModules;
   public columnDefs;
   public rowData;
 
