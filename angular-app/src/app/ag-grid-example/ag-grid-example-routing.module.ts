@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AgGridComponent } from './components/ag-grid/ag-grid.component';
 import { ContainerComponent } from './components/container/container.component';
+import { GroupAgGridComponent } from './components/group-ag-grid/group-ag-grid.component';
 
 const routes: Routes = [
   {
@@ -10,8 +11,16 @@ const routes: Routes = [
     component: ContainerComponent,
     children: [
       {
-        path: '',
+        path: 'simple',
         component: AgGridComponent
+      },
+      {
+        path: 'group',
+        component: GroupAgGridComponent
+      },
+      {
+        path: '**',
+        redirectTo: 'simple'
       }
     ]
   }
