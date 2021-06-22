@@ -8,9 +8,9 @@ export class GroupGridDataService {
 
   public getColumnDefs() {
     const columns = [
-      { field: 'country', rowGroup: true, hide: true },
-      { field: 'company', sortable: true, filter: true },
-      { field: 'office', sortable: true, filter: true },
+      { field: 'country.name', rowGroup: true, hide: true },
+      { field: 'company', rowGroup: true, hide: true },
+      { field: 'office', rowGroup: true, hide: true },
       { field: 'data1', sortable: true, filter: true },
       { field: 'data2', sortable: true, filter: true },
     ];
@@ -30,7 +30,10 @@ export class GroupGridDataService {
             for (let i = 0; i < 2; i++) {
 
               const entry = {
-                country: 'Country No.' + country,
+                country: {
+                  id: country,
+                  name: 'Country No.' + country
+                },
                 company: 'Company No.' + company,
                 office: 'Office No.' + office,
                 data1: 'Data-1 No.' + i,

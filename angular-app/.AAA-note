@@ -28,6 +28,9 @@ https://angular.io/guide/router-tutorial-toh#milestone-5-route-guards
 
 AG Grid ng
 https://www.ag-grid.com/documentation/angular/getting-started/
+We need npm package "ag-grid-angular" and "ag-grid-community" / "@ag-grid-enterprise/all-modules"
+AG Grid enterprise includes AG Grid community
+The CSS is in the community download. It is used in the "styles.css" file
 
 
 
