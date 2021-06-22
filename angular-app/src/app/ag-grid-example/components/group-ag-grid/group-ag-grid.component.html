@@ -1,8 +1,10 @@
-<ag-grid-angular
+<ag-grid-angular 
+    #myGrid
     style="height: 500px;"
-    class="ag-theme-alpine"
-    [rowData]="rowData"
+    class="ag-theme-alpine" 
+    [rowData]="rowData" 
     [columnDefs]="columnDefs"
-    [modules]="modules"
->
+    [modules]="modules" 
+    [autoGroupColumnDef]="autoGroupColumnDef">
 </ag-grid-angular>
+

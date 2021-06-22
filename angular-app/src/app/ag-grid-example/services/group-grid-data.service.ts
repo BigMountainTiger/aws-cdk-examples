@@ -8,14 +8,28 @@ export class GroupGridDataService {
 
   public getColumnDefs() {
     const columns = [
-      { field: 'country.name', rowGroup: true, hide: true },
-      { field: 'company', rowGroup: true, hide: true },
-      { field: 'office', rowGroup: true, hide: true },
+      { field: 'countryName', rowGroup: true, rowGroupIndex: 0 },
+      { field: 'company', rowGroup: true, rowGroupIndex: 1 },
+      { field: 'office', rowGroup: true, rowGroupIndex: 2 },
       { field: 'data1', sortable: true, filter: true },
       { field: 'data2', sortable: true, filter: true },
     ];
 
     return columns;
+  }
+
+  private shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+  
+    while (0 !== currentIndex) {
+  
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
   }
 
   public getData() {
@@ -34,6 +48,7 @@ export class GroupGridDataService {
                   id: country,
                   name: 'Country No.' + country
                 },
+                countryName: 'Country No.' + country,
                 company: 'Company No.' + company,
                 office: 'Office No.' + office,
                 data1: 'Data-1 No.' + i,
@@ -47,6 +62,7 @@ export class GroupGridDataService {
         }
       }
 
+      this.shuffle(data);
       subject.next(data);
       subject.complete();
 

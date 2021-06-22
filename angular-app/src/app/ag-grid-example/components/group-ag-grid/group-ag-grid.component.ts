@@ -11,8 +11,30 @@ import { GroupGridDataService } from '../../services/group-grid-data.service';
 })
 export class GroupAgGridComponent implements OnInit {
   public modules = AllModules;
+  public autoGroupColumnDef =  {
+    headerName: '',
+    minWidth: 400,
+    comparator: (a, b) => {
+      const a_n = a.countryName;
+      const b_n = b.countryName;
+
+      console.log(a_n);
+
+      if (a_n < b_n) {
+        return -1;
+      }
+
+      if (a_n > b_n) {
+        return 1;
+      }
+
+      return 0;
+    }
+  };
   public columnDefs;
   public rowData;
+
+  // https://www.ag-grid.com/angular-grid/grid-interface/
 
   constructor(private service: GroupGridDataService) { }
 
