@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, ViewChild } from '@angular/core';
+import * as _ from 'lodash';
 import { AllModules } from '@ag-grid-enterprise/all-modules';
 
 import { GroupGridDataService } from '../../services/group-grid-data.service';
@@ -10,8 +10,11 @@ import { GroupGridDataService } from '../../services/group-grid-data.service';
   styleUrls: ['./group-ag-grid.component.css']
 })
 export class GroupAgGridComponent implements OnInit {
+  @ViewChild('myGrid') public myGrid;
   public modules = AllModules;
+
   public autoGroupColumnDef =  {
+    colId: 'group',
     headerName: '',
     minWidth: 400,
     comparator: (a, b) => {
@@ -46,6 +49,23 @@ export class GroupAgGridComponent implements OnInit {
     }, (err) => {
       console.log(err);
     });
+
+  }
+
+  public RunCommand() {
+    // this.myGrid.columnApi.applyColumnState({ state: [{colId: 'contryName', sort: 'asc'}]});
+
+    this.service.shuffle(this.rowData);
+    this.rowData = _.clone(this.rowData);
+
+    this.myGrid.api.setRowData(this.rowData);
+    
+    // this.service.getData().subscribe((data) => {
+    //   this.service.shuffle(data);
+    //   this.rowData = data;
+    // }, (err) => {
+    //   console.log(err);
+    // });
 
   }
 

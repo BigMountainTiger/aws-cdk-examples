@@ -1,3 +1,4 @@
+import { ColDef } from '@ag-grid-enterprise/all-modules';
 import { Injectable } from '@angular/core';
 import { AsyncSubject } from "rxjs";
 
@@ -6,19 +7,39 @@ import { AsyncSubject } from "rxjs";
 })
 export class GroupGridDataService {
 
-  public getColumnDefs() {
+  public getColumnDefs(): ColDef[] {
+    const keyCreator = (p) => {
+      return p.value.name;
+    };
+
     const columns = [
-      { field: 'countryName', rowGroup: true, rowGroupIndex: 0 },
-      { field: 'company', rowGroup: true, rowGroupIndex: 1 },
-      { field: 'office', rowGroup: true, rowGroupIndex: 2 },
-      { field: 'data1', sortable: true, filter: true },
+      { 
+        colId: 'country', 
+        field: 'country',
+        keyCreator: keyCreator,
+        rowGroup: true, 
+        rowGroupIndex: 0 
+      },
+      { 
+        field: 'company', 
+        keyCreator: keyCreator,
+        rowGroup: true, 
+        rowGroupIndex: 1 
+      },
+      { 
+        field: 'office', 
+        keyCreator: keyCreator,
+        rowGroup: true, 
+        rowGroupIndex: 2 
+      },
+      { colId: 'data1', field: 'data1', sortable: true, filter: true },
       { field: 'data2', sortable: true, filter: true },
     ];
 
     return columns;
   }
 
-  private shuffle(array) {
+  public shuffle(array) {
     let currentIndex = array.length,  randomIndex;
   
     while (0 !== currentIndex) {
@@ -49,8 +70,16 @@ export class GroupGridDataService {
                   name: 'Country No.' + country
                 },
                 countryName: 'Country No.' + country,
-                company: 'Company No.' + company,
-                office: 'Office No.' + office,
+                company: {
+                  id: company,
+                  name: 'Company No.' + company
+                },
+                companyName: 'Company No.' + company,
+                office: {
+                  id: office,
+                  name: 'Office No.' + office
+                },
+                officeName: 'Office No.' + office,
                 data1: 'Data-1 No.' + i,
                 data2: 'Data-2 No.' + i,
               };
@@ -62,7 +91,7 @@ export class GroupGridDataService {
         }
       }
 
-      this.shuffle(data);
+      // this.shuffle(data);
       subject.next(data);
       subject.complete();
 
