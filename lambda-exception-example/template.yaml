@@ -79,6 +79,173 @@ Resources:
       Principal: apigateway.amazonaws.com
     Metadata:
       aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-Lambda-Exception-Example/ApiAccessPermission
+  LambdaExceptionExampleStackAPIGWay2C0CCEA6:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      BinaryMediaTypes:
+        - multipart/form-data
+      Description: Lambda-Exception-Example-Stack-API-GWay
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: Lambda-Exception-Example-Stack-API-GWay
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-API-GWay/Resource
+  LambdaExceptionExampleStackAPIGWayCloudWatchRole0E410F0C:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-API-GWay/CloudWatchRole/Resource
+  LambdaExceptionExampleStackAPIGWayAccount206645D9:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - LambdaExceptionExampleStackAPIGWayCloudWatchRole0E410F0C
+          - Arn
+    DependsOn:
+      - LambdaExceptionExampleStackAPIGWay2C0CCEA6
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-API-GWay/Account
+  LambdaExceptionExampleStackAPIGWayDeployment03ADFC0C940d770785498886123355a7ca1fd6ff:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: LambdaExceptionExampleStackAPIGWay2C0CCEA6
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - LambdaExceptionExampleStackAPIGWayGET40C179BA
+      - LambdaExceptionExampleStackAPIGWayOPTIONS72BF368A
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-API-GWay/Deployment/Resource
+  LambdaExceptionExampleStackAPIGWayDeploymentStageprod4B3E2406:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: LambdaExceptionExampleStackAPIGWay2C0CCEA6
+      DeploymentId:
+        Ref: LambdaExceptionExampleStackAPIGWayDeployment03ADFC0C940d770785498886123355a7ca1fd6ff
+      StageName: prod
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-API-GWay/DeploymentStage.prod/Resource
+  LambdaExceptionExampleStackAPIGWayOPTIONS72BF368A:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Fn::GetAtt:
+          - LambdaExceptionExampleStackAPIGWay2C0CCEA6
+          - RootResourceId
+      RestApiId:
+        Ref: LambdaExceptionExampleStackAPIGWay2C0CCEA6
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-API-GWay/Default/OPTIONS/Resource
+  LambdaExceptionExampleStackAPIGWayGETApiPermissionLambdaExceptionExampleStackLambdaExceptionExampleStackAPIGWay40F480CFGET0EC54D13:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - LambdaExceptionExampleStackLambdaExceptionExampleB195BEBF
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: LambdaExceptionExampleStackAPIGWay2C0CCEA6
+            - /
+            - Ref: LambdaExceptionExampleStackAPIGWayDeploymentStageprod4B3E2406
+            - /GET/
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-API-GWay/Default/GET/ApiPermission.LambdaExceptionExampleStackLambdaExceptionExampleStackAPIGWay40F480CF.GET..
+  LambdaExceptionExampleStackAPIGWayGETApiPermissionTestLambdaExceptionExampleStackLambdaExceptionExampleStackAPIGWay40F480CFGETC6091C41:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - LambdaExceptionExampleStackLambdaExceptionExampleB195BEBF
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: LambdaExceptionExampleStackAPIGWay2C0CCEA6
+            - /test-invoke-stage/GET/
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-API-GWay/Default/GET/ApiPermission.Test.LambdaExceptionExampleStackLambdaExceptionExampleStackAPIGWay40F480CF.GET..
+  LambdaExceptionExampleStackAPIGWayGET40C179BA:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId:
+        Fn::GetAtt:
+          - LambdaExceptionExampleStackAPIGWay2C0CCEA6
+          - RootResourceId
+      RestApiId:
+        Ref: LambdaExceptionExampleStackAPIGWay2C0CCEA6
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - LambdaExceptionExampleStackLambdaExceptionExampleB195BEBF
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-API-GWay/Default/GET/Resource
 Parameters:
   AssetParametersffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35S3Bucket28D2BFA8:
     Type: String
@@ -89,4 +256,18 @@ Parameters:
   AssetParametersffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35ArtifactHash18A73E48:
     Type: String
     Description: Artifact hash for asset "ffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35"
+Outputs:
+  LambdaExceptionExampleStackAPIGWayEndpoint2F784B6B:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: LambdaExceptionExampleStackAPIGWay2C0CCEA6
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: LambdaExceptionExampleStackAPIGWayDeploymentStageprod4B3E2406
+          - /
 

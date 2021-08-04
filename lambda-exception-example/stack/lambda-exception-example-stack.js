@@ -50,6 +50,22 @@ class LambdaExceptionExampleStack extends cdk.Stack {
       return func;
     })();
 
+    const API_NAME = `${id}-API-GWay`;
+    const api = (() => {
+      
+      return new apigateway.RestApi(this, API_NAME, {
+        restApiName: API_NAME,
+        description: API_NAME,
+        defaultCorsPreflightOptions: {
+          allowOrigins: apigateway.Cors.ALL_ORIGINS,
+          allowMethods: apigateway.Cors.ALL_METHODS,
+        },
+        binaryMediaTypes: ['multipart/form-data'],
+        endpointTypes: [apigateway.EndpointType.REGIONAL]
+      });
+    })();
+
+    api.root.addMethod('GET', new apigateway.LambdaIntegration(func, { proxy: true }))
   }
 }
 
