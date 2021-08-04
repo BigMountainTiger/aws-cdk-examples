@@ -1,0 +1,8 @@
+{
+  "name": "lambda-exception-example",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/core": "1.116.0"
+  }
+}
