@@ -1,0 +1,92 @@
+Resources:
+  LambdaExceptionExampleStackLambdaRoleB80571EE:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      RoleName: Lambda-Exception-Example-Stack-Lambda-Role
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-Lambda-Role/Resource
+  LambdaExceptionExampleStackLambdaRoleDefaultPolicy15CA11E7:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+            Effect: Allow
+            Resource: arn:aws:s3:::*
+        Version: "2012-10-17"
+      PolicyName: LambdaExceptionExampleStackLambdaRoleDefaultPolicy15CA11E7
+      Roles:
+        - Ref: LambdaExceptionExampleStackLambdaRoleB80571EE
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-Lambda-Role/DefaultPolicy/Resource
+  LambdaExceptionExampleStackLambdaExceptionExampleB195BEBF:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParametersffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35S3Bucket28D2BFA8
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35S3VersionKey983FD815
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35S3VersionKey983FD815
+      Role:
+        Fn::GetAtt:
+          - LambdaExceptionExampleStackLambdaRoleB80571EE
+          - Arn
+      FunctionName: Lambda-Exception-Example-Stack-Lambda-Exception-Example
+      Handler: index.handler
+      Runtime: nodejs14.x
+      Timeout: 60
+    DependsOn:
+      - LambdaExceptionExampleStackLambdaRoleDefaultPolicy15CA11E7
+      - LambdaExceptionExampleStackLambdaRoleB80571EE
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-Lambda-Exception-Example/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/lambda-exception-example/lambda/javascript/lambda-exception-example
+      aws:asset:property: Code
+  LambdaExceptionExampleStackLambdaExceptionExampleApiAccessPermission96532E23:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - LambdaExceptionExampleStackLambdaExceptionExampleB195BEBF
+          - Arn
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      aws:cdk:path: Lambda-Exception-Example-Stack/Lambda-Exception-Example-Stack-Lambda-Exception-Example/ApiAccessPermission
+Parameters:
+  AssetParametersffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35S3Bucket28D2BFA8:
+    Type: String
+    Description: S3 bucket for asset "ffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35"
+  AssetParametersffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35S3VersionKey983FD815:
+    Type: String
+    Description: S3 key for asset version "ffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35"
+  AssetParametersffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35ArtifactHash18A73E48:
+    Type: String
+    Description: Artifact hash for asset "ffd4e0bc6b3b2c1821b9652bcc27ba08e38e5d0818b386220ddcdf9d63b05c35"
+
