@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# https://docs.aws.amazon.com/cli/latest/reference/sqs/purge-queue.html
+# Need purge permission to proceed
+
+QUEUE_URL="https://sqs.us-east-1.amazonaws.com/660079349745/SQS-Cross-Account-Access-Stack-TEST-QUEUE.fifo"
+
+aws sqs purge-queue --queue-url ${QUEUE_URL}
