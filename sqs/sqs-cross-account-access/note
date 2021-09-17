@@ -1,0 +1,4 @@
+Tested to use another account credential to insert into the queue
+
+Modify the .aws/credentials file to use the credentials of another account,
+The message is inserted successfully.

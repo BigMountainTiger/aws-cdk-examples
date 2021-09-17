@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# https://docs.aws.amazon.com/cli/latest/reference/sqs/send-message.html
+
+QUEUE_URL="https://sqs.us-east-1.amazonaws.com/660079349745/SQS-Cross-Account-Access-Stack-TEST-QUEUE.fifo"
+BODY="This is the message body"
+GROUP_ID="TEST_GROUP_ID"
+DUPLICATION_ID=$(uuidgen)
+
+aws sqs send-message --queue-url ${QUEUE_URL} \
+  --message-body "${BODY}" \
+  --message-group-id ${GROUP_ID} \
+  --message-deduplication-id ${DUPLICATION_ID}

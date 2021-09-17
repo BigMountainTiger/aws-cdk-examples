@@ -1,0 +1,14 @@
+{
+  "name": "sqs-cross-account-access",
+  "version": "0.1.0",
+  "author": {
+    "name": "Song Li",
+    "email": "da_tou_li@yahoo.com"
+  },
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/aws-iam": "^1.123.0",
+    "@aws-cdk/aws-sqs": "^1.123.0",
+    "@aws-cdk/core": "1.123.0"
+  }
+}
