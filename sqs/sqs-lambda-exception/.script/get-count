@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# https://docs.aws.amazon.com/cli/latest/reference/sqs/get-queue-attributes.html
+
+QUEUE_NAME="SQS-Lambda-Exception-STACK-TEST-QUEUE"
+QUEUE_URL="https://sqs.us-east-1.amazonaws.com/660079349745/${QUEUE_NAME}"
+
+aws sqs get-queue-attributes \
+  --queue-url ${QUEUE_URL} \
+  --attribute-names ApproximateNumberOfMessages ApproximateNumberOfMessagesNotVisible

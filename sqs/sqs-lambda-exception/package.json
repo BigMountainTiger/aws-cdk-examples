@@ -1,0 +1,15 @@
+{
+  "name": "sqs-lambda-exception",
+  "version": "0.1.0",
+  "author": {
+    "name": "Song Li"
+  },
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/aws-iam": "^1.123.0",
+    "@aws-cdk/aws-lambda": "^1.123.0",
+    "@aws-cdk/aws-lambda-event-sources": "^1.123.0",
+    "@aws-cdk/aws-sqs": "^1.123.0",
+    "@aws-cdk/core": "1.123.0"
+  }
+}

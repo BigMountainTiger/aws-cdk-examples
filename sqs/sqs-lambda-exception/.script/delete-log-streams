@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# https://stackoverflow.com/questions/42134873/delete-all-log-streams-of-a-log-group-using-aws-cli
+
+LAMBDA_NAME="SQS-Lambda-Exception-STACK-SQS-Consumer-Function"
+LOG_GROUP_NAME="/aws/lambda/${LAMBDA_NAME}"
+
+aws logs describe-log-streams --log-group-name $LOG_GROUP_NAME \
+  --query 'logStreams[*].logStreamName' \
+  --output table | awk '{print $2}' | grep -v ^$ | \
+  while read x; do aws logs delete-log-stream --log-group-name $LOG_GROUP_NAME --log-stream-name $x; done

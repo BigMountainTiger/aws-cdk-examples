@@ -1,0 +1,33 @@
+1. An SQS needs to explicitly grant persmissions on it for it to be accessible (See CDK Stack)
+  - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-basic-examples-of-sqs-policies.html
+
+2. Lambda integration with SQS, the lambda needs 'sqs:DeleteMessage', 'sqs:GetQueueAttributes', 'sqs:ReceiveMessage' persmissions
+  - https://docs.aws.amazon.com/lambda/latest/dg/with-sqs-example.html
+  - If exceptions thrown from the lambda, the message will remain in the queue and visible after the visibility timeout
+  - If there is a dead-letter queue, it will be moved to the dead-letter queue after the "Max Receive Count"
+
+3. Delivery Delay - Delay queues let you postpone the delivery of new messages to a queue for a number of seconds
+  - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-delay-queues.html
+  - It affects the messages when it is first time added to the queue, default 0, max 15 minutes
+
+4. Visibility Timeout - When a message is returned by a "Receive Message" call, it is set invisible to other calls until the timeout
+  - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html
+  - Default 30 seconds, min 0, max 12 hours
+
+5. Receive Message WaitTime - Long polling / short polling
+  - When issuing "aws sqs receive-message", how long to wait if no message in the queeue at the time of request. If not provided as a parameter, 
+    default is the value set on the queue
+  - Receive Message WaitTime can be set on the queue so it takes effect on all the requests by default.
+
+6. SQS can be accessed by other accounts if permission is granted
+
+7. SQS message retention time is 1 minute to 14 days. Default it 4 days.
+
+8. Max message size is 256K.
+
+9. You can access SQS using HTTP directly if permission is granted
+  - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-making-api-requests.html
+  
+
+More - https://aws.amazon.com/sqs/faqs/
+

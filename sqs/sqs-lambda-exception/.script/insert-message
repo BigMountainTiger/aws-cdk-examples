@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# https://docs.aws.amazon.com/cli/latest/reference/sqs/send-message.html
+
+QUEUE_NAME="SQS-Lambda-Exception-STACK-TEST-QUEUE"
+QUEUE_URL="https://sqs.us-east-1.amazonaws.com/660079349745/${QUEUE_NAME}"
+BODY="This is the message body"
+
+aws sqs send-message --queue-url ${QUEUE_URL} \
+  --message-body "${BODY}" \
+
+# Get the message count
+.script/get-count

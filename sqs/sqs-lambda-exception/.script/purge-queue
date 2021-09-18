@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# https://docs.aws.amazon.com/cli/latest/reference/sqs/purge-queue.html
+# Need purge permission to proceed
+
+PROFILE=${1}
+
+QUEUE_NAME="SQS-Lambda-Exception-STACK-TEST-QUEUE"
+QUEUE_URL="https://sqs.us-east-1.amazonaws.com/660079349745/${QUEUE_NAME}"
+
+if [ -z "${PROFILE}" ]
+then
+  aws sqs purge-queue --queue-url ${QUEUE_URL}
+else
+  aws sqs purge-queue --queue-url ${QUEUE_URL} --region us-east-1 --profile ${PROFILE}
+fi
+
+# Get the message count
+.script/get-count
