@@ -1,0 +1,12 @@
+{
+  "name": "sqs-auth-params",
+  "version": "0.1.0",
+  "author": {
+    "name": "Song Li"
+  },
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/aws-sqs": "^1.123.0",
+    "@aws-cdk/core": "1.123.0"
+  }
+}

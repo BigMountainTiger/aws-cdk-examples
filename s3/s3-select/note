@@ -1,0 +1,9 @@
+CLI
+https://docs.aws.amazon.com/cli/latest/reference/s3api/select-object-content.html
+
+Python
+https://aws.amazon.com/blogs/aws/s3-glacier-select/
+
+HEADER INFO - "NONE" OR "USE" OR "IGNORE"
+https://stackoverflow.com/questions/55858368/s3-select-retrieve-headers-in-the-csv
+

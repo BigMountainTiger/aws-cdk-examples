@@ -28,6 +28,7 @@
 9. You can access SQS using HTTP directly if permission is granted
   - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-making-api-requests.html
   
+10. SQS is not designed for an end-user to interact directly, so the security is not managed for end-users
 
 More - https://aws.amazon.com/sqs/faqs/
 

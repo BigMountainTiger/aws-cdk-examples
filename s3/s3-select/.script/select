@@ -1,0 +1,29 @@
+#!/bin/bash
+
+QUERY() {
+
+  BUCKET="api-cdk.huge.head.li"
+  FILE="example.csv"
+
+  # If a file name is given other than "/dev/stdout". The result will be written into a file
+  aws s3api select-object-content \
+  --bucket "${BUCKET}" \
+  --key ${FILE} \
+  --expression "$1" \
+  --expression-type "SQL" \
+  --input-serialization "$2" \
+  --output-serialization '{"CSV": {"FieldDelimiter": ","}}' /dev/stdout
+
+}
+
+echo "Example 1"
+
+QUERY "SELECT * FROM s3object s where s.Name = 'Trump'" \
+  '{"CSV": {"FieldDelimiter": ",", "FileHeaderInfo": "Use"}}'
+
+echo
+echo "Exampe 2"
+
+QUERY "SELECT * FROM s3object LIMIT 2" \
+  '{"CSV": {"FieldDelimiter": ",", "FileHeaderInfo": "NONE"}}'
+

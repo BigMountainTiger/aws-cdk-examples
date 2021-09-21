@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# https://docs.aws.amazon.com/cli/latest/reference/sqs/receive-message.html
+
+QUEUE_NAME="SQS-AuthParams-STACK-TEST-QUEUE"
+QUEUE_URL="https://sqs.us-east-1.amazonaws.com/660079349745/${QUEUE_NAME}"
+
+# --wait-time-seconds overrides the "ReceiveMessageWaitTimeSeconds" on the queue
+# If not specified here, the queue setting "ReceiveMessageWaitTimeSeconds" takes effect
+
+# Max long polling time is 20 seconds
+
+aws sqs receive-message \
+  --queue-url ${QUEUE_URL} \
+  --wait-time-seconds 1
+

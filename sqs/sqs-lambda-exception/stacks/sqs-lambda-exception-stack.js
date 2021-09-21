@@ -25,7 +25,7 @@ class SqsLambdaExceptionStack extends cdk.Stack {
           queue: dead_letter_queue
         },
         deliveryDelay: cdk.Duration.seconds(1), // The delay time before available to the queue
-        receiveMessageWaitTime: cdk.Duration.seconds(20), // Long pooling wait time to get messages from the queue
+        receiveMessageWaitTime: cdk.Duration.seconds(20), // Long pooling wait time to get messages from the queue. Default 0
         visibilityTimeout: cdk.Duration.minutes(3)
       });
   

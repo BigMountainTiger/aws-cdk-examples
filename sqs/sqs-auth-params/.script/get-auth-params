@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd a_test_client
+
+python get_auth_params.py

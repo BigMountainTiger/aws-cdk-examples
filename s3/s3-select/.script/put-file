@@ -1,0 +1,6 @@
+#!/bin/bash
+
+BUCKET="api-cdk.huge.head.li"
+FILE="example.csv"
+
+aws s3 cp ${FILE} s3://${BUCKET}/
