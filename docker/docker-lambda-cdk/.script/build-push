@@ -1,0 +1,30 @@
+#!/bin/bash
+
+cd lambdas/PDF/Word2pdf
+
+DIR=publish
+TAG=word2pdf-lambda
+if [ -d "$DIR" ]; then
+    printf '%s\n' "Removing ($DIR)"
+    rm -rf "$DIR"
+fi
+
+dotnet publish -c Release -o $DIR
+
+docker build -t word2pdf-lambda:$TAG .
+docker system prune -f
+
+REPO_NAME=word2pdf-lambda
+
+aws ecr describe-repositories --repository-names ${REPO_NAME} || \
+aws ecr create-repository --repository-name ${REPO_NAME} --image-scanning-configuration scanOnPush=true
+
+docker tag word2pdf-lambda:$TAG 005256505030.dkr.ecr.us-east-1.amazonaws.com/word2pdf-lambda:$TAG
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 005256505030.dkr.ecr.us-east-1.amazonaws.com
+
+docker push 005256505030.dkr.ecr.us-east-1.amazonaws.com/word2pdf-lambda:$TAG
+
+aws lambda update-function-code --function-name DOCKER-Lambda-CDK-STACK-PDF \
+  --image-uri 005256505030.dkr.ecr.us-east-1.amazonaws.com/word2pdf-lambda:$TAG
+

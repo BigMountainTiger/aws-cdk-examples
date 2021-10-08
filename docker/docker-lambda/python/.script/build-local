@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd Word2pdf
+
+docker build -t word2pdf-lambda:0.0.1 .
+docker system prune -f

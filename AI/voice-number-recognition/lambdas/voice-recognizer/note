@@ -1,0 +1,3 @@
+# Need to modify silero_stt function in the "snakers4_silero-models_master/hubconf.py" file 
+# to load the local model. No way to load from the internet from a lambda
+# models = OmegaConf.load('/opt/snakers4_silero-models_master/models.yml')

@@ -1,0 +1,79 @@
+<!-- https://medium.com/@bryanjenningz/how-to-record-and-play-audio-in-javascript-faa1b2b3e49b -->
+<!-- https://medium.com/jeremy-gottfrieds-tech-blog/javascript-tutorial-record-audio-and-encode-it-to-mp3-2eedcd466e78 -->
+<!-- https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Voice Recording Example</title>
+<style>
+  button {
+    width: 150px;
+    height: 50px;
+  }
+</style>
+
+<script>
+
+  let recorder = null;
+  let chunks = [];
+  let blob = null;
+  
+  const start = () => {
+    clearSavelink();
+    chunks = [];
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(s => {
+      recorder = new MediaRecorder(s);
+      recorder.addEventListener('dataavailable', e => chunks.push(e.data));
+      recorder.start();
+    });
+  };
+
+  const stop = () => {
+    recorder.addEventListener('stop', () => {
+
+      blob = new Blob(chunks);
+      createSavelink(blob);
+      play(blob);
+    });
+
+    recorder.stop();
+  };
+
+  const createSavelink = (blob) => {
+
+    var link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = 'recording.ogx';
+    link.innerHTML = 'Click here to download the file';
+    document.getElementById('savelink').appendChild(link);
+  };
+
+  const play = (blob) => {
+    const url = URL.createObjectURL(blob);
+
+    const audio = new Audio(url);
+    audio.play();
+  };
+
+  const clearSavelink = () => {
+    document.getElementById('savelink').innerHTML = "";
+  };
+
+</script>
+
+</head>
+<body>
+
+<h1>Voice Recording Example</h1>
+<div>
+  <button type="button" onclick="return start()">Start</button>
+  <button type="button" onclick="return stop()">Stop</button>
+</div>
+<div id="savelink">
+
+</div>
+
+</body>
+</html>

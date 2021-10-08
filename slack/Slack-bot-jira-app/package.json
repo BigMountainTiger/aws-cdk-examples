@@ -1,0 +1,13 @@
+{
+  "name": "bot-template-cdk",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/aws-apigateway": "^1.39.0",
+    "@aws-cdk/aws-iam": "^1.39.0",
+    "@aws-cdk/aws-lambda": "^1.39.0",
+    "@aws-cdk/aws-lambda-event-sources": "^1.39.0",
+    "@aws-cdk/aws-sqs": "^1.39.0",
+    "@aws-cdk/core": "1.39.0"
+  }
+}

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# dotnet tool install -g AWS.CodeArtifact.NuGet.CredentialProvider
+# dotnet codeartifact-creds install
+# dotnet codeartifact-creds configure set profile .aws_profile
+
+publish_nuget() {
+  package_directory="nuget-package-directory"
+
+  dotnet clean
+  status=$(echo $(dotnet pack -o ${package_directory} | grep "Successfully created package"))
+
+  echo ${status}
+
+  nupkg=$(echo ${status} | grep -o "${package_directory}.*")
+  nupkg=$(echo ${nupkg::-2})
+  echo $nupkg
+
+  dotnet nuget push $nupkg --skip-duplicate --source testdomain/testnugetrepo
+}
+
+cd nuget/ExampleNuget
+
+publish_nuget

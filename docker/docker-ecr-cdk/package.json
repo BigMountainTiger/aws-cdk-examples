@@ -1,0 +1,10 @@
+{
+  "name": "docker-ecr-cdk",
+  "version": "0.1.0",
+  "author": "Song Li",
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/aws-ecr": "^1.60.0",
+    "@aws-cdk/core": "1.60.0"
+  }
+}

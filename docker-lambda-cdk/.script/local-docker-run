@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker run -v ~/.aws:/root/.aws:ro -p 9000:8080 --rm word2pdf-lambda:word2pdf-lambda

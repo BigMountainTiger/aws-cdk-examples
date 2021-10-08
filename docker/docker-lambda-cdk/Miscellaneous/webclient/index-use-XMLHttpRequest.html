@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+<link rel="stylesheet" href="./index.css">
+<script src="./test-data.js"></script>
+
+<script>
+  const send_request = function() {
+    clear_status();
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState != 4) { return; }
+
+      const status = xhttp.status;
+      const text = xhttp.responseText;
+      if (status == 200) {
+        const result = JSON.parse(text)
+        document.getElementById('span_get_pdf').innerHTML = '<a target="_blank" href="'
+          + result.presigned_url + '">Get the Receipt</a></br>';
+
+      } else {
+        const result = text || xhttp.statusText || 'Unable to get the result'
+        document.getElementById('pre_create_response').textContent = JSON.stringify(result, null, 2);
+      }
+    };
+    
+    xhttp.open('POST', url, true);
+    xhttp.setRequestHeader('x-api-key', x_api_key);
+    xhttp.setRequestHeader('Authorization', authorization);
+    xhttp.send(JSON.stringify(request_data));
+  };
+
+  const clear_status = function() {
+    document.getElementById('div_status').textContent = null;
+    document.getElementById('pre_create_response').textContent = null;
+    document.getElementById('span_get_pdf').innerHTML = null;
+  };
+
+  const window_onload = function() {
+    document.getElementById('pre_request_data').textContent = JSON.stringify(request_data, null, 2);
+  };
+
+</script>
+</head>
+
+<body onload="window_onload()">
+  <fieldset>
+    <legend>Get a PDF Receipt</legend>
+    <div class="div_label">Sample Request Data</div>
+    <pre id="pre_request_data"></pre>
+    <div id="div_status"></div>
+    <pre id="pre_create_response"></pre>
+    <span id="span_get_pdf"></span>
+    <br />
+    <button onclick="clear_status()">Clear</button>
+    <button onclick="send_request()">Send Request</button>
+  </fieldset>
+</body>
+
+</html>

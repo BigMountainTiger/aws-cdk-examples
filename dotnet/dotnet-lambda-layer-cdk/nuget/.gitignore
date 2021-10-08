@@ -1,0 +1,5 @@
+bin/
+obj/
+publish/
+result/
+nuget-package-directory/

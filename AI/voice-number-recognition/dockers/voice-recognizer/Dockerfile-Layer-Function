@@ -1,0 +1,12 @@
+FROM 660079349745.dkr.ecr.us-east-1.amazonaws.com/voice-recognizer-python:0.0.1
+
+ADD snakers4_silero-models_master /opt/snakers4_silero-models_master
+RUN chmod 755 /opt/snakers4_silero-models_master/model/en_v5.jit
+ADD files /opt/files
+
+WORKDIR /var/task/
+COPY app.py .
+COPY identifier.py .
+
+ENTRYPOINT [ "python3.9", "-m", "awslambdaric" ]
+CMD [ "app.lambdaHandler" ]

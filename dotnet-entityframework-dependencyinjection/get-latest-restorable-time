@@ -1,7 +1,0 @@
-#!/bin/bash
-
-content=$(aws rds describe-db-instances --db-instance-identifier database-sql-server)
-DBInstance=$(echo $content | jq .DBInstances[0])
-LatestRestorableTime=$(echo $DBInstance | jq .LatestRestorableTime)
-
-echo $LatestRestorableTime

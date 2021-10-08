@@ -1,0 +1,12 @@
+{
+  "name": "slack-notify-api",
+  "version": "0.1.0",
+  "author": "Song Li",
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/aws-apigateway": "^1.64.1",
+    "@aws-cdk/aws-iam": "^1.64.1",
+    "@aws-cdk/aws-lambda": "^1.64.1",
+    "@aws-cdk/core": "^1.64.1"
+  }
+}

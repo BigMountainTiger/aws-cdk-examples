@@ -1,9 +1,0 @@
-{
-  "name": "experiment-1",
-  "version": "1.0.0",
-  "author": "Song Li",
-  "private": true,
-  "dependencies": {
-    "aws-sdk": "^2.738.0"
-  }
-}

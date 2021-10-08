@@ -1,0 +1,25 @@
+ARG DEP="lambda-dependencies"
+FROM ubuntu:21.04
+
+RUN apt-get update
+RUN apt-get install python3.9 -y
+RUN apt-get install python3-pip -y
+RUN apt-get install ffmpeg -y
+RUN apt-get autoremove -y
+RUN python3.9 -m pip install awslambdaric
+RUN python3.9 -m pip install torch==1.9.1+cpu torchvision==0.10.1+cpu torchaudio==0.9.1 \
+  -f https://download.pytorch.org/whl/torch_stable.html
+
+COPY requirements.txt .
+RUN python3.9 -m pip install -r requirements.txt
+
+ADD snakers4_silero-models_master /opt/snakers4_silero-models_master
+RUN chmod 755 /opt/snakers4_silero-models_master/model/en_v5.jit
+ADD files /opt/files
+
+WORKDIR /var/task/
+COPY app.py .
+COPY identifier.py .
+
+ENTRYPOINT [ "python3.9", "-m", "awslambdaric" ]
+CMD [ "app.lambdaHandler" ]

@@ -1,0 +1,69 @@
+https://docs.aws.amazon.com/cdk/api/latest/docs/aws-stepfunctions-readme.html
+
+https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-lambda.html
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-lambda.html
+
+sam local start-lambda -t template.yaml -p 3001
+
+aws lambda invoke --function-name STEP_FUNCTION_EXAMPLE_SUM_LAMBDA \
+	--cli-binary-format raw-in-base64-out \
+	--payload '{ "x": 3, "y": 2 }' \
+	--endpoint-url http://127.0.0.1:3001 \
+	--no-verify-ssl sam-local-response-out.txt && \
+    cat sam-local-response-out.txt && echo && \
+    rm sam-local-response-out.txt
+
+https://docs.amazonaws.cn/en_us/step-functions/latest/dg/sfn-local-config-options.html
+
+docker run -p 8083:8083 -d \
+  --rm \
+  --network host \
+  --env-file ./local-run/aws-stepfunctions-local-credentials.txt \
+  amazon/aws-stepfunctions-local
+
+aws stepfunctions --endpoint http://localhost:8083 create-state-machine --definition "{\
+  \"StartAt\": \"STEP_FUNCTION_EXAMPLE_STEP_1_SUM\",\
+  \"States\": {\
+    \"STEP_FUNCTION_EXAMPLE_STEP_1_SUM\": {\
+      \"Next\": \"STEP_FUNCTION_EXAMPLE_STEP_WAIT\",\
+      \"Type\": \"Task\",\
+      \"InputPath\": \"$\",\
+      \"OutputPath\": \"$.Payload\",\
+      \"Resource\": \"arn:aws:states:::lambda:invoke\",\
+      \"Parameters\": {\
+        \"FunctionName\": \"arn:aws:lambda:us-east-1:123456789012:function:STEP_FUNCTION_EXAMPLE_SUM_LAMBDA\",\
+        \"Payload.$\": \"$\"\
+      }\
+    },\
+    \"STEP_FUNCTION_EXAMPLE_STEP_WAIT\": {\
+      \"Type\": \"Wait\",\
+      \"Seconds\": 3,\
+      \"Next\": \"STEP_FUNCTION_EXAMPLE_STEP_1_SQUARE\"\
+    },\
+    \"STEP_FUNCTION_EXAMPLE_STEP_1_SQUARE\": {\
+      \"End\": true,\
+      \"Type\": \"Task\",\
+      \"InputPath\": \"$.Payload\",\
+      \"OutputPath\": \"$.Payload\",\
+      \"Resource\": \"arn:aws:states:::lambda:invoke\",\
+      \"Parameters\": {\
+        \"FunctionName\": \"arn:aws:lambda:us-east-1:123456789012:function:STEP_FUNCTION_EXAMPLE_SQUARE_LAMBDA\",\
+        \"Payload.$\": \"$\"\
+      }\
+    }\
+  },\
+  \"TimeoutSeconds\": 300\
+}" --name "STEP_TEST_STATE_MACHINE" --role-arn "arn:aws:iam::123456789012:role/DummyRole"
+
+aws stepfunctions --endpoint http://localhost:8083 start-execution \
+	--state-machine arn:aws:states:us-east-1:123456789012:stateMachine:STEP_TEST_STATE_MACHINE \
+	--input '{"x": 3, "y": 5}' \
+	--name test
+
+aws stepfunctions --endpoint http://localhost:8083 describe-execution \
+	--execution-arn arn:aws:states:us-east-1:123456789012:execution:STEP_TEST_STATE_MACHINE:test
+
+https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
+docker system prune -a
+docker container stop $(docker container ls -a -q)
+docker container rm -f $(docker container ls -a -q)

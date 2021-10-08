@@ -1,8 +1,0 @@
-{
-  "app": "dotnet run -p src/DotnetPipeline/DotnetPipeline.csproj",
-  "versionReporting": false,
-  "context": {
-    "@aws-cdk/core:enableStackNameDuplicates": "true",
-    "aws-cdk:enableDiffNoFail": "true"
-  }
-}

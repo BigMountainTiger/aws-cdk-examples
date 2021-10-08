@@ -1,0 +1,29 @@
+ARG DEP_DIR="docker-dependencies"
+
+FROM public.ecr.aws/lambda/dotnet:5.0
+
+ARG DEP_DIR
+
+# RUN yum install -y amazon-linux-extras 
+# RUN amazon-linux-extras install epel -y
+# RUN yum install -y libgdiplus
+# RUN yum install -y tar
+
+RUN yum install -y gcc openssl-devel bzip2-devel libffi-devel
+RUN cd /opt
+COPY ${DEP_DIR}/Python-3.8.6.tgz Python-3.8.6.tgz
+RUN tar xzf Python-3.8.6.tgz
+RUN cd Python-3.8.6
+RUN ls -l
+RUN ls -l Python-3.8.6
+RUN ./configure --enable-optimizations
+RUN make altinstall
+RUN rm -f /opt/Python-3.8.6.tgz
+
+WORKDIR /app/
+
+RUN mkdir result
+ADD word-pdf/bin/Debug/net5.0/publish/ word-pdf/
+
+ENTRYPOINT [ "word-pdf/word-pdf" ]
+CMD []

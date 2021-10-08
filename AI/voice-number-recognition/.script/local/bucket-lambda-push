@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DEPLOYMENT="deployment"
+FILE="${DEPLOYMENT}/AABucketFunction.zip"
+
+cd s3-lambda/
+zip -r "../${FILE}" *
+
+cd ..
+aws s3 cp "${FILE}" s3://api-cdk.huge.head.li

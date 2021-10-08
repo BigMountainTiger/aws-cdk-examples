@@ -1,0 +1,17 @@
+#!/bin/bash
+
+NAME="voice-recognizer:0.0.1"
+
+# docker run -p 9000:8080 -e AWS_LAMBDA_RUNTIME_API=localhost:9000 ${NAME}
+docker run -d -p 9000:8080 ${NAME}
+echo "Docker container started"
+echo
+
+# This simulates a lambda invocation
+curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
+
+echo
+echo "Stoping the container"
+echo
+docker stop $(docker ps -q --filter ancestor=${NAME})
+docker container prune -f

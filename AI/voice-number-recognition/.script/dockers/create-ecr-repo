@@ -1,0 +1,12 @@
+#!/bin/bash
+
+create_ecr_repository() {
+  NAME="$1"
+  result=$(aws ecr describe-repositories --repository-names ${NAME} || \
+    aws ecr create-repository --repository-name ${NAME} --image-scanning-configuration scanOnPush=false --image-tag-mutability MUTABLE)
+
+  echo "Created ${NAME}"
+}
+
+# create_ecr_repository "voice-recognizer-python"
+create_ecr_repository "voice-recognizer"

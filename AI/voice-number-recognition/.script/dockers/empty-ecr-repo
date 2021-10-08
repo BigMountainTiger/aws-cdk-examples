@@ -1,0 +1,15 @@
+#!/bin/bash
+
+REGION="us-east-1"
+
+delete() {
+  REPO="$1"
+
+  IMAGES_TO_DELETE=$( aws ecr list-images --region $REGION --repository-name $REPO --filter "tagStatus=UNTAGGED" --query 'imageIds[*]' --output json )
+  aws ecr batch-delete-image --region $REGION --repository-name $REPO --image-ids "$IMAGES_TO_DELETE" || true
+}
+
+# delete "voice-recognizer"
+# delete "voice-recognizer-python"
+
+echo 'Disabled the deletion on purpose. Modify the empty-ecr-repo file to enable it'

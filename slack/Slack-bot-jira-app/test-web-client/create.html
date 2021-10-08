@@ -1,0 +1,90 @@
+<html>
+
+<style>
+  body {
+    font-family: sans-serif;
+  }
+
+  fieldset>legend {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  button {
+    width: 150px;
+  }
+
+  #div_status, .div_label {
+    font-weight: 600;
+  }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script>
+  const urlBase = 'https://o75t8p1795.execute-api.us-east-1.amazonaws.com/prod/service-desk/';
+</script>
+
+<script>
+  // The JSON data to create a ticket
+  const create_data = {
+    user: {
+      email: "song@monsterlg.com"
+    },
+    request: {
+      summary: "Test - Please Ignore",
+      description: "This is a test Jira ticket, please ignore it",
+      request_type: "Feature",
+      affected_application: "CRM",
+      priority: "CRITICAL",
+      duedate: "12/18/2020",
+      justification: "please ignore - Required if duedate is given - A string of length <= 3000"
+    }
+  };
+
+  const create_ticket = function() {
+    clear_status();
+
+    const url = urlBase + 'create';
+    console.log(url);
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: JSON.stringify(create_data),
+      contentType: 'text/plain'
+    }).always(function(jqx, status) {
+      console.log(jqx);
+      const result = jqx.responseJSON || jqx;
+      
+      document.getElementById('div_status').textContent = 'Status: ' + status;
+      document.getElementById('pre_create_response').textContent = JSON.stringify(result, null, 2);
+    });
+    
+  };
+
+  const clear_status = function() {
+    console.log('Clear the status');
+    document.getElementById('div_status').textContent = null;
+    document.getElementById('pre_create_response').textContent = null;
+  };
+
+  $(document).ready(function() {
+    document.getElementById('pre_create_data').textContent = JSON.stringify(create_data, null, 2);
+  });
+
+</script>
+
+<body>
+  <fieldset>
+    <legend>Create a ticket</legend>
+    <div class="div_label">Sample Data</div>
+    <pre id="pre_create_data"></pre>
+    <div id="div_status"></div>
+    <pre id="pre_create_response"></pre>
+    <button onclick="clear_status()">Clear</button>
+    <button onclick="create_ticket()">Create Ticket</button>
+  </fieldset>
+</body>
+
+</html>

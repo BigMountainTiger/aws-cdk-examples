@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd dockers/voice-recognizer
+
+DOCKER_FILE="Dockerfile-Amazon-Python-Minial"
+
+docker build -f ${DOCKER_FILE} -t voice-recognizer:0.0.1 . 
+docker image prune -f

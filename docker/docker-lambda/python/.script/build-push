@@ -1,0 +1,26 @@
+#!/bin/bash
+
+cd Word2pdf
+
+docker build -t word2pdf-lambda:0.0.1 .
+docker system prune -f
+
+REPO_NAME=word2pdf-lambda
+
+# aws ecr describe-repositories --repository-names ${REPO_NAME} || \
+# aws ecr create-repository --repository-name ${REPO_NAME} --image-scanning-configuration scanOnPush=false
+
+docker tag word2pdf-lambda:0.0.1 005256505030.dkr.ecr.us-east-1.amazonaws.com/word2pdf-lambda:0.0.1
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 005256505030.dkr.ecr.us-east-1.amazonaws.com
+
+docker push 005256505030.dkr.ecr.us-east-1.amazonaws.com/word2pdf-lambda:0.0.1
+
+docker system prune -f
+
+ECR_REGION=us-east-1
+IMAGES_TO_DELETE=$( aws ecr list-images --region $ECR_REGION --repository-name $REPO_NAME --filter "tagStatus=UNTAGGED" --query 'imageIds[*]' --output json )
+aws ecr batch-delete-image --region $ECR_REGION --repository-name $REPO_NAME --image-ids "$IMAGES_TO_DELETE" || true
+
+# aws lambda update-function-code --function-name word2pdf-lambda \
+#   --image-uri 005256505030.dkr.ecr.us-east-1.amazonaws.com/word2pdf-lambda:0.0.1

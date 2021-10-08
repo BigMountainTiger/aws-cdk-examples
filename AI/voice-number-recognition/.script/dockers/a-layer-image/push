@@ -1,0 +1,36 @@
+#!/bin/bash
+
+cd dockers/voice-recognizer
+
+TAG="0.0.1"
+ACCT=660079349745
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACCT}.dkr.ecr.us-east-1.amazonaws.com
+
+push() {
+  docker build -f ${DOCKERFILE} -t ${IMG_NAME} . 
+  docker image prune -f
+
+  docker tag ${IMG_NAME} ${IMG}
+  docker push ${IMG}
+}
+
+# Build Python Layer
+REPO_NAME="voice-recognizer-python"
+DOCKERFILE="Dockerfile-Layer-Python"
+IMG_NAME=${REPO_NAME}:${TAG}
+IMG=${ACCT}.dkr.ecr.us-east-1.amazonaws.com/${IMG_NAME}
+
+push
+
+# Build the function / final lambda layer
+REPO_NAME="voice-recognizer"
+DOCKERFILE="Dockerfile-Layer-Function"
+IMG_NAME=${REPO_NAME}:${TAG}
+IMG=${ACCT}.dkr.ecr.us-east-1.amazonaws.com/${IMG_NAME}
+
+push
+
+# Update the lambda
+FUNCTION_NAME="Voice-Number-DOCKER-STACK-Lambda"
+aws lambda update-function-code --function-name ${FUNCTION_NAME} --image-uri ${IMG}

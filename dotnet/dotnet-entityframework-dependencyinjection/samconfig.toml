@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "sam-app-HelloWorld"
+s3_bucket = "sam.huge.head.li"
+s3_prefix = "sam-app-HelloWorld"
+region = "us-east-1"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"

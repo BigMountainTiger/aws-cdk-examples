@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cdk deploy Voice-Number-DOCKER-STACK

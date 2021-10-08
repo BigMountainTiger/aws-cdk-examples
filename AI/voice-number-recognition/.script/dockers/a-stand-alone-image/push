@@ -1,0 +1,24 @@
+#!/bin/bash
+
+.script/dockers/a-stand-alone-image/build-img
+
+REPO_NAME=voice-recognizer
+TAG="0.0.1"
+FUNCTION_NAME="Voice-Number-DOCKER-STACK-Lambda"
+ACCT=660079349745
+IMG=${ACCT}.dkr.ecr.us-east-1.amazonaws.com/${REPO_NAME}:${TAG}
+
+docker tag ${REPO_NAME}:${TAG} ${IMG}
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACCT}.dkr.ecr.us-east-1.amazonaws.com
+
+docker push ${IMG}
+
+# Update the lambda
+aws lambda update-function-code --function-name ${FUNCTION_NAME} --image-uri ${IMG}
+
+
+# ECR_REGION=us-east-1
+# IMAGES_TO_DELETE=$( aws ecr list-images --region $ECR_REGION --repository-name $REPO_NAME --filter "tagStatus=UNTAGGED" --query 'imageIds[*]' --output json )
+# aws ecr batch-delete-image --region $ECR_REGION --repository-name $REPO_NAME --image-ids "$IMAGES_TO_DELETE" || true
+

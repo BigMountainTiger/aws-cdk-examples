@@ -1,0 +1,12 @@
+{
+  "name": "lambda",
+  "version": "1.0.0",
+  "description": "slack notification lambda",
+  "author": "Song Li",
+  "private": true,
+  "dependencies": {
+    "@slack/web-api": "^5.12.0",
+    "axios": "^0.20.0",
+    "dotenv": "^8.2.0"
+  }
+}

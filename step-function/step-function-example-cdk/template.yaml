@@ -1,0 +1,194 @@
+Description: STEP-FUNCTION-EXAMPLE-CDK-STACK
+Resources:
+  STEPFUNCTIONEXAMPLELAMBDAROLE477C0E8B:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      Description: STEP_FUNCTION_EXAMPLE_LAMBDA_ROLE
+      RoleName: STEP_FUNCTION_EXAMPLE_LAMBDA_ROLE
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-EXAMPLE-CDK-STACK/STEP_FUNCTION_EXAMPLE_LAMBDA_ROLE/Resource
+  STEPFUNCTIONEXAMPLELAMBDAROLEDefaultPolicyBDA90706:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: STEPFUNCTIONEXAMPLELAMBDAROLEDefaultPolicyBDA90706
+      Roles:
+        - Ref: STEPFUNCTIONEXAMPLELAMBDAROLE477C0E8B
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-EXAMPLE-CDK-STACK/STEP_FUNCTION_EXAMPLE_LAMBDA_ROLE/DefaultPolicy/Resource
+  STEPFUNCTIONEXAMPLESUMLAMBDAD78B1F2E:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParametersaab31fecf501dced1b598cef7a6436f396a35063b46840a132806a456777ae60S3Bucket94FAF41F
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersaab31fecf501dced1b598cef7a6436f396a35063b46840a132806a456777ae60S3VersionKey235C72F5
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersaab31fecf501dced1b598cef7a6436f396a35063b46840a132806a456777ae60S3VersionKey235C72F5
+      Handler: app.lambda_handler
+      Role:
+        Fn::GetAtt:
+          - STEPFUNCTIONEXAMPLELAMBDAROLE477C0E8B
+          - Arn
+      Runtime: python3.8
+      Description: STEP_FUNCTION_EXAMPLE_SUM_LAMBDA
+      FunctionName: STEP_FUNCTION_EXAMPLE_SUM_LAMBDA
+      MemorySize: 256
+      Timeout: 15
+    DependsOn:
+      - STEPFUNCTIONEXAMPLELAMBDAROLEDefaultPolicyBDA90706
+      - STEPFUNCTIONEXAMPLELAMBDAROLE477C0E8B
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-EXAMPLE-CDK-STACK/STEP_FUNCTION_EXAMPLE_SUM_LAMBDA/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/step-function-example-cdk/lambdas/sum-lambda
+      aws:asset:property: Code
+  STEPFUNCTIONEXAMPLESQUARELAMBDA300E726E:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParametersbbe373f017d1ec7da9c7dfba9b915f62a3a3c0a2d8d77d5cb86106d9e6204a05S3BucketE5856BD0
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersbbe373f017d1ec7da9c7dfba9b915f62a3a3c0a2d8d77d5cb86106d9e6204a05S3VersionKeyB3BD5D4E
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersbbe373f017d1ec7da9c7dfba9b915f62a3a3c0a2d8d77d5cb86106d9e6204a05S3VersionKeyB3BD5D4E
+      Handler: app.lambda_handler
+      Role:
+        Fn::GetAtt:
+          - STEPFUNCTIONEXAMPLELAMBDAROLE477C0E8B
+          - Arn
+      Runtime: python3.8
+      Description: STEP_FUNCTION_EXAMPLE_SQUARE_LAMBDA
+      FunctionName: STEP_FUNCTION_EXAMPLE_SQUARE_LAMBDA
+      MemorySize: 256
+      Timeout: 15
+    DependsOn:
+      - STEPFUNCTIONEXAMPLELAMBDAROLEDefaultPolicyBDA90706
+      - STEPFUNCTIONEXAMPLELAMBDAROLE477C0E8B
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-EXAMPLE-CDK-STACK/STEP_FUNCTION_EXAMPLE_SQUARE_LAMBDA/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/step-function-example-cdk/lambdas/square-lambda
+      aws:asset:property: Code
+  STEPFUNCTIONEXAMPLESTEPFUNCTIONRole8107AFC8:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - states.
+                    - Ref: AWS::Region
+                    - .amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-EXAMPLE-CDK-STACK/STEP_FUNCTION_EXAMPLE_STEP_FUNCTION/Role/Resource
+  STEPFUNCTIONEXAMPLESTEPFUNCTIONRoleDefaultPolicyAB281963:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - STEPFUNCTIONEXAMPLESUMLAMBDAD78B1F2E
+                - Arn
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - STEPFUNCTIONEXAMPLESQUARELAMBDA300E726E
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: STEPFUNCTIONEXAMPLESTEPFUNCTIONRoleDefaultPolicyAB281963
+      Roles:
+        - Ref: STEPFUNCTIONEXAMPLESTEPFUNCTIONRole8107AFC8
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-EXAMPLE-CDK-STACK/STEP_FUNCTION_EXAMPLE_STEP_FUNCTION/Role/DefaultPolicy/Resource
+  STEPFUNCTIONEXAMPLESTEPFUNCTION8142DB74:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn:
+        Fn::GetAtt:
+          - STEPFUNCTIONEXAMPLESTEPFUNCTIONRole8107AFC8
+          - Arn
+      DefinitionString:
+        Fn::Join:
+          - ""
+          - - '{"StartAt":"STEP_FUNCTION_EXAMPLE_STEP_1_SUM","States":{"STEP_FUNCTION_EXAMPLE_STEP_1_SUM":{"Next":"STEP_FUNCTION_EXAMPLE_STEP_WAIT","Type":"Task","InputPath":"$","OutputPath":"$.Payload","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::lambda:invoke","Parameters":{"FunctionName":"
+            - Fn::GetAtt:
+                - STEPFUNCTIONEXAMPLESUMLAMBDAD78B1F2E
+                - Arn
+            - '","Payload.$":"$"}},"STEP_FUNCTION_EXAMPLE_STEP_WAIT":{"Type":"Wait","Seconds":3,"Next":"STEP_FUNCTION_EXAMPLE_STEP_1_SQUARE"},"STEP_FUNCTION_EXAMPLE_STEP_1_SQUARE":{"End":true,"Type":"Task","InputPath":"$.Payload","OutputPath":"$.Payload","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::lambda:invoke","Parameters":{"FunctionName":"
+            - Fn::GetAtt:
+                - STEPFUNCTIONEXAMPLESQUARELAMBDA300E726E
+                - Arn
+            - '","Payload.$":"$"}}},"TimeoutSeconds":300}'
+      StateMachineName: STEP_FUNCTION_EXAMPLE_STEP_FUNCTION
+    DependsOn:
+      - STEPFUNCTIONEXAMPLESTEPFUNCTIONRoleDefaultPolicyAB281963
+      - STEPFUNCTIONEXAMPLESTEPFUNCTIONRole8107AFC8
+    Metadata:
+      aws:cdk:path: STEP-FUNCTION-EXAMPLE-CDK-STACK/STEP_FUNCTION_EXAMPLE_STEP_FUNCTION/Resource
+Parameters:
+  AssetParametersaab31fecf501dced1b598cef7a6436f396a35063b46840a132806a456777ae60S3Bucket94FAF41F:
+    Type: String
+    Description: S3 bucket for asset "aab31fecf501dced1b598cef7a6436f396a35063b46840a132806a456777ae60"
+  AssetParametersaab31fecf501dced1b598cef7a6436f396a35063b46840a132806a456777ae60S3VersionKey235C72F5:
+    Type: String
+    Description: S3 key for asset version "aab31fecf501dced1b598cef7a6436f396a35063b46840a132806a456777ae60"
+  AssetParametersaab31fecf501dced1b598cef7a6436f396a35063b46840a132806a456777ae60ArtifactHashF2983081:
+    Type: String
+    Description: Artifact hash for asset "aab31fecf501dced1b598cef7a6436f396a35063b46840a132806a456777ae60"
+  AssetParametersbbe373f017d1ec7da9c7dfba9b915f62a3a3c0a2d8d77d5cb86106d9e6204a05S3BucketE5856BD0:
+    Type: String
+    Description: S3 bucket for asset "bbe373f017d1ec7da9c7dfba9b915f62a3a3c0a2d8d77d5cb86106d9e6204a05"
+  AssetParametersbbe373f017d1ec7da9c7dfba9b915f62a3a3c0a2d8d77d5cb86106d9e6204a05S3VersionKeyB3BD5D4E:
+    Type: String
+    Description: S3 key for asset version "bbe373f017d1ec7da9c7dfba9b915f62a3a3c0a2d8d77d5cb86106d9e6204a05"
+  AssetParametersbbe373f017d1ec7da9c7dfba9b915f62a3a3c0a2d8d77d5cb86106d9e6204a05ArtifactHashD96AF613:
+    Type: String
+    Description: Artifact hash for asset "bbe373f017d1ec7da9c7dfba9b915f62a3a3c0a2d8d77d5cb86106d9e6204a05"
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# docker run --rm word2pdf-lambda:0.0.1
+
+# docker run -v /home/song/Sandbox/aws-cdk-examples/docker-lambda/python/result:/app/result:rw --rm word2pdf-lambda:0.0.1
+
+docker run -v /home/song/Sandbox/aws-cdk-examples/docker-lambda/python/result:/app/result:rw -v ~/.aws:/root/.aws:ro -p 9000:8080 --rm word2pdf-lambda:0.0.1
