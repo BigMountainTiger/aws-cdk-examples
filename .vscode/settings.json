@@ -14,5 +14,6 @@
     "**/dotnet-pipeline/**/obj": true,
     "**/dotnet-entityframework-dependencyinjection/**/bin": true,
     "**/dotnet-entityframework-dependencyinjection/**/obj": true
-  }
+  },
+  "python.pythonPath": "AI/aws-transcribe/sdk-python/.venv/bin/python"
 }
