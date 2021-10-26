@@ -1,0 +1,13 @@
+{
+  "name": "dynamo-lambda-concurrent",
+  "version": "0.1.0",
+  "author": {
+    "name": "Song Li"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-apigateway": "^1.129.0",
+    "@aws-cdk/aws-iam": "^1.129.0",
+    "@aws-cdk/aws-lambda": "^1.129.0",
+    "@aws-cdk/core": "1.127.0"
+  }
+}
