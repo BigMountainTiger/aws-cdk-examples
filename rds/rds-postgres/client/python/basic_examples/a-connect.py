@@ -1,7 +1,7 @@
 import psycopg2
 from pprint import pprint
 
-CONSTR = 'postgres://postgres:Password123@database-1.cw18weh1liqq.us-east-1.rds.amazonaws.com:5432/StudentDB'
+CONSTR = 'postgres://postgres:Password123@db.bigmountaintiger.com:5432/StudentDB'
 
 def connect():
 

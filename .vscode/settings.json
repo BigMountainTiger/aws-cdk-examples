@@ -15,5 +15,5 @@
     "**/dotnet-entityframework-dependencyinjection/**/bin": true,
     "**/dotnet-entityframework-dependencyinjection/**/obj": true
   },
-  "python.pythonPath": "AI/aws-transcribe/sdk-python/.venv/bin/python"
+  "python.pythonPath": "rds/rds-postgres/client/python/e-3.9/bin/python3.9"
 }

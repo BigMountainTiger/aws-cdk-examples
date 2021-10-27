@@ -37,7 +37,7 @@ class RdsPostgresCdkStack extends cdk.Stack {
       backupRetention: cdk.Duration.days(1),
       engine: rds.DatabaseInstanceEngine.postgres({ version: rds.PostgresEngineVersion.VER_12_4}),
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.MICRO),
-      allocatedStorage: 20,
+      allocatedStorage: 8,
       credentials: rds.Credentials.fromPassword('postgres', cdk.SecretValue.plainText('Password123')),
       vpc: vpc,
       securityGroups: [security_group],
