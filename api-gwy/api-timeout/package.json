@@ -1,0 +1,14 @@
+{
+  "name": "api-timeout",
+  "version": "0.1.0",
+  "author": {
+    "name": "Song Li"
+  },
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/aws-apigateway": "^1.133.0",
+    "@aws-cdk/aws-iam": "^1.133.0",
+    "@aws-cdk/aws-lambda": "^1.133.0",
+    "@aws-cdk/core": "1.133.0"
+  }
+}
