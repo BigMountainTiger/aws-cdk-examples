@@ -1,0 +1,1 @@
+This is to demonstrate that when API Gateway times out, the lambda will be still running until finishes or its own timeout.

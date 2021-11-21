@@ -1,0 +1,237 @@
+Resources:
+  ApiTimeoutStackLAMBDAROLE08DD0F44:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      RoleName: ApiTimeoutStack-LAMBDA-ROLE
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-LAMBDA-ROLE/Resource
+  ApiTimeoutStackLAMBDAROLEDefaultPolicy32554A3F:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: ApiTimeoutStackLAMBDAROLEDefaultPolicy32554A3F
+      Roles:
+        - Ref: ApiTimeoutStackLAMBDAROLE08DD0F44
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-LAMBDA-ROLE/DefaultPolicy/Resource
+  ApiTimeoutStackAPILambdaF594BF5B:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters4ebcc795f7a1b7f4b596256917f0cb1ba82a674a68825ddd9a80c09297d07733S3Bucket9E87E080
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters4ebcc795f7a1b7f4b596256917f0cb1ba82a674a68825ddd9a80c09297d07733S3VersionKey8F09F7B0
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters4ebcc795f7a1b7f4b596256917f0cb1ba82a674a68825ddd9a80c09297d07733S3VersionKey8F09F7B0
+      Role:
+        Fn::GetAtt:
+          - ApiTimeoutStackLAMBDAROLE08DD0F44
+          - Arn
+      FunctionName: ApiTimeoutStack-API-Lambda
+      Handler: app.lambdaHandler
+      MemorySize: 1024
+      Runtime: python3.9
+      Timeout: 120
+    DependsOn:
+      - ApiTimeoutStackLAMBDAROLEDefaultPolicy32554A3F
+      - ApiTimeoutStackLAMBDAROLE08DD0F44
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-API-Lambda/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/api-timeout/lambdas/api_lambda
+      aws:asset:property: Code
+  ApiTimeoutStackAPILambdaApiAccessPermissionB49EF6B5:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - ApiTimeoutStackAPILambdaF594BF5B
+          - Arn
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-API-Lambda/ApiAccessPermission
+  ApiTimeoutStackAPID970960E:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: ApiTimeoutStack-API
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: ApiTimeoutStack-API
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-API/Resource
+  ApiTimeoutStackAPICloudWatchRole1119BEFC:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-API/CloudWatchRole/Resource
+  ApiTimeoutStackAPIAccountDC041950:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - ApiTimeoutStackAPICloudWatchRole1119BEFC
+          - Arn
+    DependsOn:
+      - ApiTimeoutStackAPID970960E
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-API/Account
+  ApiTimeoutStackAPIDeployment15244A0A0c052a68f007fa74b97bf5d4a6db6e26:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: ApiTimeoutStackAPID970960E
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - ApiTimeoutStackAPIPOST445D324A
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-API/Deployment/Resource
+  ApiTimeoutStackAPIDeploymentStageprod83C830B5:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: ApiTimeoutStackAPID970960E
+      DeploymentId:
+        Ref: ApiTimeoutStackAPIDeployment15244A0A0c052a68f007fa74b97bf5d4a6db6e26
+      StageName: prod
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-API/DeploymentStage.prod/Resource
+  ApiTimeoutStackAPIPOSTApiPermissionApiTimeoutStackApiTimeoutStackAPI929C3DC2POST3B0BE015:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - ApiTimeoutStackAPILambdaF594BF5B
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: ApiTimeoutStackAPID970960E
+            - /
+            - Ref: ApiTimeoutStackAPIDeploymentStageprod83C830B5
+            - /POST/
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-API/Default/POST/ApiPermission.ApiTimeoutStackApiTimeoutStackAPI929C3DC2.POST..
+  ApiTimeoutStackAPIPOSTApiPermissionTestApiTimeoutStackApiTimeoutStackAPI929C3DC2POST6A295780:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - ApiTimeoutStackAPILambdaF594BF5B
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: ApiTimeoutStackAPID970960E
+            - /test-invoke-stage/POST/
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-API/Default/POST/ApiPermission.Test.ApiTimeoutStackApiTimeoutStackAPI929C3DC2.POST..
+  ApiTimeoutStackAPIPOST445D324A:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId:
+        Fn::GetAtt:
+          - ApiTimeoutStackAPID970960E
+          - RootResourceId
+      RestApiId:
+        Ref: ApiTimeoutStackAPID970960E
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - ApiTimeoutStackAPILambdaF594BF5B
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: ApiTimeoutStack/ApiTimeoutStack-API/Default/POST/Resource
+Parameters:
+  AssetParameters4ebcc795f7a1b7f4b596256917f0cb1ba82a674a68825ddd9a80c09297d07733S3Bucket9E87E080:
+    Type: String
+    Description: S3 bucket for asset "4ebcc795f7a1b7f4b596256917f0cb1ba82a674a68825ddd9a80c09297d07733"
+  AssetParameters4ebcc795f7a1b7f4b596256917f0cb1ba82a674a68825ddd9a80c09297d07733S3VersionKey8F09F7B0:
+    Type: String
+    Description: S3 key for asset version "4ebcc795f7a1b7f4b596256917f0cb1ba82a674a68825ddd9a80c09297d07733"
+  AssetParameters4ebcc795f7a1b7f4b596256917f0cb1ba82a674a68825ddd9a80c09297d07733ArtifactHash3877B94E:
+    Type: String
+    Description: Artifact hash for asset "4ebcc795f7a1b7f4b596256917f0cb1ba82a674a68825ddd9a80c09297d07733"
+Outputs:
+  ApiTimeoutStackAPIEndpoint6B1E631C:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: ApiTimeoutStackAPID970960E
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: ApiTimeoutStackAPIDeploymentStageprod83C830B5
+          - /
+
