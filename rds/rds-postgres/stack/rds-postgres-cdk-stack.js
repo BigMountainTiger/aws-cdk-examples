@@ -30,7 +30,7 @@ class RdsPostgresCdkStack extends cdk.Stack {
 
     const RDS_DATABASE_NAME = `${id}-RDS-DATABASE`;
     const instance = new rds.DatabaseInstance(this, RDS_DATABASE_NAME, {
-      databaseName: 'StudentDB',
+      databaseName: 'ExperimentDB',
       instanceIdentifier: 'Database-1',
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       deleteAutomatedBackups: true,
