@@ -6,14 +6,25 @@ const createDB = (context, id, props) => {
   const VPC_NAME = `${id}-VPC`;
 
   // Use the default VPC
-  const vpc = ec2.Vpc.fromLookup(context, VPC_NAME, {
-    isDefault: true
+  // const vpc = ec2.Vpc.fromLookup(context, VPC_NAME, {
+  //   isDefault: true
+  // });
+
+  const vpc = new ec2.Vpc(context, VPC_NAME, {
+    maxAZs: 2,
+    subnetConfiguration: [
+      {
+        cidrMask: 24,
+        name: 'PUBLIC-SUBNET-CONFIG',
+        subnetType: ec2.SubnetType.PUBLIC
+      }
+    ]
   });
 
   const SECURITY_GROUP_NAME = `${id}-VPC-SECURITY-GROUP`;
   const security_group = new ec2.SecurityGroup(context, SECURITY_GROUP_NAME, {
     vpc: vpc,
-    securityGroupName:SECURITY_GROUP_NAME,
+    securityGroupName: SECURITY_GROUP_NAME,
     allowAllOutbound: false
   });
 
@@ -26,7 +37,7 @@ const createDB = (context, id, props) => {
     removalPolicy: cdk.RemovalPolicy.DESTROY,
     deleteAutomatedBackups: true,
     backupRetention: cdk.Duration.days(1),
-    engine: rds.DatabaseInstanceEngine.sqlServerEx( { version: rds.SqlServerEngineVersion.VER_12 }),
+    engine: rds.DatabaseInstanceEngine.sqlServerEx({ version: rds.SqlServerEngineVersion.VER_12 }),
     instanceType: ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.MICRO),
     allocatedStorage: 20,
     credentials: rds.Credentials.fromPassword('sqluser', cdk.SecretValue.plainText('Password123')),
