@@ -33,7 +33,7 @@ const createDB = (context, id, props) => {
   const RDS_DATABASE_NAME = `${id}-RDS-DATABASE`;
   const instance = new rds.DatabaseInstance(context, RDS_DATABASE_NAME, {
     instanceIdentifier: 'Database-1',
-    // databaseName: 'Student',
+    databaseName: 'Experiment',
     removalPolicy: cdk.RemovalPolicy.DESTROY,
     deleteAutomatedBackups: true,
     backupRetention: cdk.Duration.days(1),

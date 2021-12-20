@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# pymssql can be used to access sql server database
+# https://www.pymssql.org/
+
+PYTHONPATH=""
+PYTHONPATH="/home/song/Sandbox/aws-cdk-examples/rds/client/python/example_sqlserver:$PYTHONPATH"
+
+export PYTHONPATH
