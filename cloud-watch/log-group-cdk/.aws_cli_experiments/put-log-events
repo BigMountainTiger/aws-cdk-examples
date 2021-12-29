@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# https://docs.aws.amazon.com/cli/latest/reference/logs/put-log-events.html
+
+# Except the first log entry, the sequence-token is needed to keep adding log entries
+# This indicates that a log source should have its own log stream, so it knows the next sequence-token. 
+
+GROUP_NAME="EXPERIMENT-LOG-GROUP"
+STREAM_NAME="EXPERIMENT-LOG-STREAM-61489"
+
+timestamp=$(($(date +%s%N)/1000000))
+
+aws logs put-log-events \
+  --log-group-name ${GROUP_NAME} \
+  --log-stream-name ${STREAM_NAME} \
+  --sequence-token 49615675145399632527823877992577953159589164042141302882 \
+  --log-events "[{ \"timestamp\": ${timestamp}, \"message\": \"Example Event 1\" }]"
+
+echo "Done"
