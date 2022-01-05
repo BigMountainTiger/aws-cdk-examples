@@ -1,0 +1,23 @@
+https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-cli.html
+
+dotnet new -i Amazon.Lambda.Templates
+dotnet new lambda.EmptyFunction --name MyFunction
+
+dotnet lambda deploy-function
+dotnet lambda deploy-function MyFunction
+
+dotnet lambda invoke-function MyFunction \
+  --cli-binary-format raw-in-base64-out \
+  --payload "Just Checking If Everything is OK"
+
+The following does not work because the lambda expect a json
+aws lambda invoke \
+  --function-name MyFunction \
+  --payload "Just Checking If Everything is OK" \
+  /dev/stdout
+
+
+Clean up
+aws logs delete-log-group --log-group-name /aws/lambda/MyFunction
+aws lambda delete-function --function-name MyFunction
+It is easier just go to the aws console to delete the role associated to the lamdba
