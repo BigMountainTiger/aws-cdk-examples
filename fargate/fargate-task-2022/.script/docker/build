@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd docker/fargate-experiment
+
+repository=fargate-experiment:1.0.0
+docker build -t ${repository} -f Dockerfile .

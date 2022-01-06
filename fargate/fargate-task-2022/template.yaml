@@ -1,0 +1,370 @@
+Resources:
+  FargateTask2022StackS3BUCKET5FBDAD0A:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: test.bucket.huge.head.li
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-S3-BUCKET/Resource
+  FargateTask2022StackFARGATETASK202290171AE3:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: FARGATE-TASK-2022
+      RetentionInDays: 1
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-FARGATE-TASK-2022/Resource
+  FargateTask2022StackVPCD518FC87:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: FargateTask2022Stack-VPC
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/Resource
+  FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet1Subnet17067109:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/24
+      VpcId:
+        Ref: FargateTask2022StackVPCD518FC87
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: PUBLIC-SUBNET-CONFIG
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet1
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet1/Subnet
+  FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet1RouteTableAA4F1005:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: FargateTask2022StackVPCD518FC87
+      Tags:
+        - Key: Name
+          Value: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet1
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet1/RouteTable
+  FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet1RouteTableAssociation3AA29292:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet1RouteTableAA4F1005
+      SubnetId:
+        Ref: FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet1Subnet17067109
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet1/RouteTableAssociation
+  FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet1DefaultRoute7742823F:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet1RouteTableAA4F1005
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: FargateTask2022StackVPCIGW21B67CC7
+    DependsOn:
+      - FargateTask2022StackVPCVPCGW6CF3FD29
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet1/DefaultRoute
+  FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet2Subnet5F75852A:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.1.0/24
+      VpcId:
+        Ref: FargateTask2022StackVPCD518FC87
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: PUBLIC-SUBNET-CONFIG
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet2
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet2/Subnet
+  FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet2RouteTable5B234873:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: FargateTask2022StackVPCD518FC87
+      Tags:
+        - Key: Name
+          Value: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet2
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet2/RouteTable
+  FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet2RouteTableAssociationED6EF727:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet2RouteTable5B234873
+      SubnetId:
+        Ref: FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet2Subnet5F75852A
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet2/RouteTableAssociation
+  FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet2DefaultRoute3DB8920F:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet2RouteTable5B234873
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: FargateTask2022StackVPCIGW21B67CC7
+    DependsOn:
+      - FargateTask2022StackVPCVPCGW6CF3FD29
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/PUBLIC-SUBNET-CONFIGSubnet2/DefaultRoute
+  FargateTask2022StackVPCIGW21B67CC7:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: FargateTask2022Stack-VPC
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/IGW
+  FargateTask2022StackVPCVPCGW6CF3FD29:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: FargateTask2022StackVPCD518FC87
+      InternetGatewayId:
+        Ref: FargateTask2022StackVPCIGW21B67CC7
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-VPC/VPCGW
+  FargateTask2022StackCLUSTER89E52C86:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: FargateTask2022Stack-CLUSTER
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-CLUSTER/Resource
+  FargateTask2022StackREPOSITORY54373F44:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: fargate-experiment
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-REPOSITORY/Resource
+  FargateTask2022StackTASKROLED456BDFE:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+      Description: FargateTask2022Stack-TASK-ROLE
+      RoleName: FargateTask2022Stack-TASK-ROLE
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-TASK-ROLE/Resource
+  FargateTask2022StackTASKROLEDefaultPolicy8587F33B:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+              - s3:DeleteObject
+              - s3:ListBucket
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: FargateTask2022StackTASKROLEDefaultPolicy8587F33B
+      Roles:
+        - Ref: FargateTask2022StackTASKROLED456BDFE
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-TASK-ROLE/DefaultPolicy/Resource
+  FargateTask2022StackFARGATE516F4FD0:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Essential: true
+          Image:
+            Fn::Join:
+              - ""
+              - - Fn::Select:
+                    - 4
+                    - Fn::Split:
+                        - ":"
+                        - Fn::GetAtt:
+                            - FargateTask2022StackREPOSITORY54373F44
+                            - Arn
+                - .dkr.ecr.
+                - Fn::Select:
+                    - 3
+                    - Fn::Split:
+                        - ":"
+                        - Fn::GetAtt:
+                            - FargateTask2022StackREPOSITORY54373F44
+                            - Arn
+                - "."
+                - Ref: AWS::URLSuffix
+                - /
+                - Ref: FargateTask2022StackREPOSITORY54373F44
+                - :1.0.0
+          Name: FargateTask2022Stack-CONTAINER
+      Cpu: "256"
+      ExecutionRoleArn:
+        Fn::GetAtt:
+          - FargateTask2022StackFARGATEExecutionRole977F0017
+          - Arn
+      Family: FargateTask2022StackFargateTask2022StackFARGATE8CED21C8
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      TaskRoleArn:
+        Fn::GetAtt:
+          - FargateTask2022StackTASKROLED456BDFE
+          - Arn
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-FARGATE/Resource
+  FargateTask2022StackFARGATEExecutionRole977F0017:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-FARGATE/ExecutionRole/Resource
+  FargateTask2022StackFARGATEExecutionRoleDefaultPolicy3474FEF1:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - ecr:BatchCheckLayerAvailability
+              - ecr:GetDownloadUrlForLayer
+              - ecr:BatchGetImage
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - FargateTask2022StackREPOSITORY54373F44
+                - Arn
+          - Action: ecr:GetAuthorizationToken
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: FargateTask2022StackFARGATEExecutionRoleDefaultPolicy3474FEF1
+      Roles:
+        - Ref: FargateTask2022StackFARGATEExecutionRole977F0017
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-FARGATE/ExecutionRole/DefaultPolicy/Resource
+  FargateTask2022StackTASKLAUNCHERLAMBDAROLE524B3AC0:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      Description: FargateTask2022Stack-TASK-LAUNCHER-LAMBDA_ROLE
+      RoleName: FargateTask2022Stack-TASK-LAUNCHER-LAMBDA_ROLE
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-TASK-LAUNCHER-LAMBDA_ROLE/Resource
+  FargateTask2022StackTASKLAUNCHERLAMBDAROLEDefaultPolicy21507A53:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - ecs:RunTask
+              - iam:PassRole
+              - tag:GetResources
+              - ec2:DescribeSecurityGroups
+              - ec2:DescribeSubnets
+              - ec2:DescribeVpcs
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: FargateTask2022StackTASKLAUNCHERLAMBDAROLEDefaultPolicy21507A53
+      Roles:
+        - Ref: FargateTask2022StackTASKLAUNCHERLAMBDAROLE524B3AC0
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-TASK-LAUNCHER-LAMBDA_ROLE/DefaultPolicy/Resource
+  FargateTask2022StackTASKLAUNCHERABCBE506:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: aed361782b3e2eaccf7edc416e234b5f41a1ba932caa351a7dfeb8aa73274591.zip
+      Role:
+        Fn::GetAtt:
+          - FargateTask2022StackTASKLAUNCHERLAMBDAROLE524B3AC0
+          - Arn
+      Description: FargateTask2022Stack-TASK-LAUNCHER
+      FunctionName: FargateTask2022Stack-TASK-LAUNCHER
+      Handler: app.lambdaHandler
+      MemorySize: 128
+      Runtime: nodejs12.x
+      Timeout: 15
+    DependsOn:
+      - FargateTask2022StackTASKLAUNCHERLAMBDAROLEDefaultPolicy21507A53
+      - FargateTask2022StackTASKLAUNCHERLAMBDAROLE524B3AC0
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-TASK-LAUNCHER/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/fargate/fargate-task-2022/lambdas/task-launcher
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+Parameters:
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+
