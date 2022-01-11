@@ -284,7 +284,7 @@ Resources:
         - Ref: FargateTask2022StackFARGATEExecutionRole977F0017
     Metadata:
       aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-FARGATE/ExecutionRole/DefaultPolicy/Resource
-  FargateTask2022StackTASKLAUNCHERLAMBDAROLE524B3AC0:
+  FargateTask2022StackFALLBACKLAMBDAROLEEC9257DC:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -294,11 +294,228 @@ Resources:
             Principal:
               Service: lambda.amazonaws.com
         Version: "2012-10-17"
-      Description: FargateTask2022Stack-TASK-LAUNCHER-LAMBDA_ROLE
-      RoleName: FargateTask2022Stack-TASK-LAUNCHER-LAMBDA_ROLE
+      Description: FALLBACK-LAMBDA_ROLE
+      RoleName: FALLBACK-LAMBDA_ROLE
     Metadata:
-      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-TASK-LAUNCHER-LAMBDA_ROLE/Resource
-  FargateTask2022StackTASKLAUNCHERLAMBDAROLEDefaultPolicy21507A53:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-FALLBACK-LAMBDA_ROLE/Resource
+  FargateTask2022StackFALLBACKLAMBDAROLEDefaultPolicy03491487:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: FargateTask2022StackFALLBACKLAMBDAROLEDefaultPolicy03491487
+      Roles:
+        - Ref: FargateTask2022StackFALLBACKLAMBDAROLEEC9257DC
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-FALLBACK-LAMBDA_ROLE/DefaultPolicy/Resource
+  FargateTask2022StackFALLBACKLAMBDA888B0C89:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: 2848e1f11cc5b17cc3e81829f0c4397a9e6afa850f410069e9aacbcebc4a9fed.zip
+      Role:
+        Fn::GetAtt:
+          - FargateTask2022StackFALLBACKLAMBDAROLEEC9257DC
+          - Arn
+      Description: FargateTask2022Stack-FALLBACK-LAMBDA
+      FunctionName: FargateTask2022Stack-FALLBACK-LAMBDA
+      Handler: app.lambdaHandler
+      MemorySize: 128
+      Runtime: nodejs12.x
+      Timeout: 15
+    DependsOn:
+      - FargateTask2022StackFALLBACKLAMBDAROLEDefaultPolicy03491487
+      - FargateTask2022StackFALLBACKLAMBDAROLEEC9257DC
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-FALLBACK-LAMBDA/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/fargate/fargate-task-2022/lambdas/fallback-lambda
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+  STEPFARGATETASKSecurityGroupFFA2E41C:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: FargateTask2022Stack/STEP_FARGATE_TASK/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId:
+        Ref: FargateTask2022StackVPCD518FC87
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/STEP_FARGATE_TASK/SecurityGroup/Resource
+  TESTSTATEMACHINERole0DD5CE0B:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - states.
+                    - Ref: AWS::Region
+                    - .amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/TEST_STATE_MACHINE/Role/Resource
+  TESTSTATEMACHINERoleDefaultPolicy31FBA322:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: ecs:RunTask
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Fn::Select:
+                      - 1
+                      - Fn::Split:
+                          - ":"
+                          - Ref: FargateTask2022StackFARGATE516F4FD0
+                  - ":"
+                  - Fn::Select:
+                      - 2
+                      - Fn::Split:
+                          - ":"
+                          - Ref: FargateTask2022StackFARGATE516F4FD0
+                  - ":"
+                  - Fn::Select:
+                      - 3
+                      - Fn::Split:
+                          - ":"
+                          - Ref: FargateTask2022StackFARGATE516F4FD0
+                  - ":"
+                  - Fn::Select:
+                      - 4
+                      - Fn::Split:
+                          - ":"
+                          - Ref: FargateTask2022StackFARGATE516F4FD0
+                  - ":"
+                  - Fn::Select:
+                      - 0
+                      - Fn::Split:
+                          - /
+                          - Fn::Select:
+                              - 5
+                              - Fn::Split:
+                                  - ":"
+                                  - Ref: FargateTask2022StackFARGATE516F4FD0
+                  - /
+                  - Fn::Select:
+                      - 1
+                      - Fn::Split:
+                          - /
+                          - Fn::Select:
+                              - 5
+                              - Fn::Split:
+                                  - ":"
+                                  - Ref: FargateTask2022StackFARGATE516F4FD0
+          - Action:
+              - ecs:StopTask
+              - ecs:DescribeTasks
+            Effect: Allow
+            Resource: "*"
+          - Action: iam:PassRole
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - FargateTask2022StackTASKROLED456BDFE
+                  - Arn
+              - Fn::GetAtt:
+                  - FargateTask2022StackFARGATEExecutionRole977F0017
+                  - Arn
+          - Action:
+              - events:PutTargets
+              - events:PutRule
+              - events:DescribeRule
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":events:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :rule/StepFunctionsGetEventsForECSTaskRule
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - FargateTask2022StackFALLBACKLAMBDA888B0C89
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: TESTSTATEMACHINERoleDefaultPolicy31FBA322
+      Roles:
+        - Ref: TESTSTATEMACHINERole0DD5CE0B
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/TEST_STATE_MACHINE/Role/DefaultPolicy/Resource
+  TESTSTATEMACHINECA4E344A:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn:
+        Fn::GetAtt:
+          - TESTSTATEMACHINERole0DD5CE0B
+          - Arn
+      DefinitionString:
+        Fn::Join:
+          - ""
+          - - '{"StartAt":"STEP_FARGATE_TASK","States":{"STEP_FARGATE_TASK":{"End":true,"Catch":[{"ErrorEquals":["States.ALL"],"Next":"STEP_END_LAMBDA"}],"Type":"Task","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::ecs:runTask.sync","Parameters":{"Cluster":"
+            - Fn::GetAtt:
+                - FargateTask2022StackCLUSTER89E52C86
+                - Arn
+            - '","TaskDefinition":"FargateTask2022StackFargateTask2022StackFARGATE8CED21C8","NetworkConfiguration":{"AwsvpcConfiguration":{"AssignPublicIp":"ENABLED","Subnets":["'
+            - Ref: FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet1Subnet17067109
+            - '","'
+            - Ref: FargateTask2022StackVPCPUBLICSUBNETCONFIGSubnet2Subnet5F75852A
+            - '"],"SecurityGroups":["'
+            - Fn::GetAtt:
+                - STEPFARGATETASKSecurityGroupFFA2E41C
+                - GroupId
+            - '"]}},"Overrides":{"ContainerOverrides":[{"Name":"FargateTask2022Stack-CONTAINER","Environment":[{"Name":"value1","Value":"This is the value 1"}]}]},"LaunchType":"FARGATE"}},"STEP_END_LAMBDA":{"End":true,"Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::lambda:invoke","Parameters":{"FunctionName":"
+            - Fn::GetAtt:
+                - FargateTask2022StackFALLBACKLAMBDA888B0C89
+                - Arn
+            - '","Payload.$":"$"}}},"TimeoutSeconds":600}'
+      StateMachineName: TEST_STATE_MACHINE
+    DependsOn:
+      - TESTSTATEMACHINERoleDefaultPolicy31FBA322
+      - TESTSTATEMACHINERole0DD5CE0B
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/TEST_STATE_MACHINE/Resource
+  FargateTask2022StackECSTASKLAUNCHERLAMBDAROLED74B034E:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      Description: ECS_TASK-LAUNCHER-LAMBDA_ROLE
+      RoleName: ECS_TASK-LAUNCHER-LAMBDA_ROLE
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-ECS_TASK-LAUNCHER-LAMBDA_ROLE/Resource
+  FargateTask2022StackECSTASKLAUNCHERLAMBDAROLEDefaultPolicy5BE9837F:
     Type: AWS::IAM::Policy
     Properties:
       PolicyDocument:
@@ -319,12 +536,12 @@ Resources:
             Effect: Allow
             Resource: "*"
         Version: "2012-10-17"
-      PolicyName: FargateTask2022StackTASKLAUNCHERLAMBDAROLEDefaultPolicy21507A53
+      PolicyName: FargateTask2022StackECSTASKLAUNCHERLAMBDAROLEDefaultPolicy5BE9837F
       Roles:
-        - Ref: FargateTask2022StackTASKLAUNCHERLAMBDAROLE524B3AC0
+        - Ref: FargateTask2022StackECSTASKLAUNCHERLAMBDAROLED74B034E
     Metadata:
-      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-TASK-LAUNCHER-LAMBDA_ROLE/DefaultPolicy/Resource
-  FargateTask2022StackTASKLAUNCHERABCBE506:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-ECS_TASK-LAUNCHER-LAMBDA_ROLE/DefaultPolicy/Resource
+  FargateTask2022StackECSTASKLAUNCHERB7D57C9E:
     Type: AWS::Lambda::Function
     Properties:
       Code:
@@ -333,20 +550,77 @@ Resources:
         S3Key: aed361782b3e2eaccf7edc416e234b5f41a1ba932caa351a7dfeb8aa73274591.zip
       Role:
         Fn::GetAtt:
-          - FargateTask2022StackTASKLAUNCHERLAMBDAROLE524B3AC0
+          - FargateTask2022StackECSTASKLAUNCHERLAMBDAROLED74B034E
           - Arn
-      Description: FargateTask2022Stack-TASK-LAUNCHER
-      FunctionName: FargateTask2022Stack-TASK-LAUNCHER
+      Description: FargateTask2022Stack-ECS-TASK-LAUNCHER
+      FunctionName: FargateTask2022Stack-ECS-TASK-LAUNCHER
       Handler: app.lambdaHandler
       MemorySize: 128
       Runtime: nodejs12.x
       Timeout: 15
     DependsOn:
-      - FargateTask2022StackTASKLAUNCHERLAMBDAROLEDefaultPolicy21507A53
-      - FargateTask2022StackTASKLAUNCHERLAMBDAROLE524B3AC0
+      - FargateTask2022StackECSTASKLAUNCHERLAMBDAROLEDefaultPolicy5BE9837F
+      - FargateTask2022StackECSTASKLAUNCHERLAMBDAROLED74B034E
     Metadata:
-      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-TASK-LAUNCHER/Resource
-      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/fargate/fargate-task-2022/lambdas/task-launcher
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-ECS-TASK-LAUNCHER/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/fargate/fargate-task-2022/lambdas/ecs-task-launcher
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+  FargateTask2022StackSFNTASKLAUNCHERLAMBDAROLED92D89F5:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      Description: SFN_TASK-LAUNCHER-LAMBDA_ROLE
+      RoleName: SFN_TASK-LAUNCHER-LAMBDA_ROLE
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-SFN_TASK-LAUNCHER-LAMBDA_ROLE/Resource
+  FargateTask2022StackSFNTASKLAUNCHERLAMBDAROLEDefaultPolicyCB6A7ED6:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - states:StartExecution
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: FargateTask2022StackSFNTASKLAUNCHERLAMBDAROLEDefaultPolicyCB6A7ED6
+      Roles:
+        - Ref: FargateTask2022StackSFNTASKLAUNCHERLAMBDAROLED92D89F5
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-SFN_TASK-LAUNCHER-LAMBDA_ROLE/DefaultPolicy/Resource
+  FargateTask2022StackSFNTASKLAUNCHERC0C3218A:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: 01df27a047b0ebf5ca83db89e8499fc34c6d9225fa8d3ead52f1e004dd508c24.zip
+      Role:
+        Fn::GetAtt:
+          - FargateTask2022StackSFNTASKLAUNCHERLAMBDAROLED92D89F5
+          - Arn
+      Description: FargateTask2022Stack-SFN-TASK-LAUNCHER
+      FunctionName: FargateTask2022Stack-SFN-TASK-LAUNCHER
+      Handler: app.lambdaHandler
+      MemorySize: 128
+      Runtime: nodejs12.x
+      Timeout: 15
+    DependsOn:
+      - FargateTask2022StackSFNTASKLAUNCHERLAMBDAROLEDefaultPolicyCB6A7ED6
+      - FargateTask2022StackSFNTASKLAUNCHERLAMBDAROLED92D89F5
+    Metadata:
+      aws:cdk:path: FargateTask2022Stack/FargateTask2022Stack-SFN-TASK-LAUNCHER/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/fargate/fargate-task-2022/lambdas/sfn-launcher
       aws:asset:is-bundled: false
       aws:asset:property: Code
 Parameters:
