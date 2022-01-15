@@ -1,0 +1,10 @@
+{
+  "name": "fargate-experiment",
+  "version": "1.0.0",
+  "description": "A test node project",
+  "author": "Song Li",
+  "private": true,
+  "dependencies": {
+    "aws-sdk": "^2.1052.0"
+  }
+}

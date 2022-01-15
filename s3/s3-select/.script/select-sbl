@@ -1,0 +1,26 @@
+#!/bin/bash
+
+QUERY() {
+
+  BUCKET="mlg-snowpipe"
+  FILE="sbl_delta.txt"
+
+  # If a file name is given other than "/dev/stdout". The result will be written into a file
+  aws s3api select-object-content --profile awsmelior \
+  --bucket "${BUCKET}" \
+  --key ${FILE} \
+  --expression "$1" \
+  --expression-type "SQL" \
+  --input-serialization "$2" \
+  --output-serialization '{"CSV": {"FieldDelimiter": ","}}' /dev/stdout
+
+}
+
+echo "GET HEADER"
+echo
+
+# https://stackoverflow.com/questions/55858368/s3-select-retrieve-headers-in-the-csv
+QUERY "SELECT * FROM s3object s LIMIT 2" \
+  '{"CSV": {"FieldDelimiter": ",", "FileHeaderInfo": "NONE"}}'
+
+
