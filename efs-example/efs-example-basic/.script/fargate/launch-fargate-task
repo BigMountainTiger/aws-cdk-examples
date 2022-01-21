@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DEFINITION="EFSExampleBASICEFSExampleBASICFARGATETASKDEFINITIONFDC45A5A"
+CLUSTER="EFS-Example-BASIC-CLUSTER"
+SUBNETS="subnet-0684d8250ee430972,subnet-02c907e159c5c0fae,subnet-05632c98337f7377a"
+SECURITY_GROUPS="sg-0b08830b461169577,sg-0f16367ce52f44ba5"
+
+task_raw=$(aws ecs run-task \
+    --task-definition ${DEFINITION} \
+    --launch-type FARGATE \
+    --cluster ${CLUSTER} \
+    --network-configuration \
+      "awsvpcConfiguration={subnets=[${SUBNETS}],securityGroups=[${SECURITY_GROUPS}],assignPublicIp=ENABLED}")
+
+taskArn=$(echo $task_raw | jq '.tasks[0].taskArn')
+echo -e "Task Started\n$taskArn"

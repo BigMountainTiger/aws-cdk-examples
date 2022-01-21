@@ -1,0 +1,9 @@
+{
+  "name": "efs-experiment",
+  "version": "1.0.0",
+  "author": "Song Li",
+  "private": true,
+  "dependencies": {
+    "aws-sdk": "^2.1052.0"
+  }
+}

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+repository=efs-experiment:1.0.0
+arn=275118158658.dkr.ecr.us-east-1.amazonaws.com
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $arn
+
+docker tag $repository $arn/$repository
+docker push $arn/$repository
