@@ -1,0 +1,7 @@
+#!/bin/bash
+
+path="/home/song/Sandbox/aws-cdk-examples/efs-example/efs-example-basic/docker/efs-experiment"
+
+docker run -v $HOME/.aws:/root/.aws:ro \
+  -v ${path}:/lambda:rw \
+  --rm efs-experiment:1.0.0

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# lambda name is case sensitive
+aws lambda invoke --function-name EFS-Example-BASIC_EFS-TEST-lambda /dev/stdout
