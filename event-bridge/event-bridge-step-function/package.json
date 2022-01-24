@@ -1,0 +1,12 @@
+{
+  "name": "event-bridge-step-function",
+  "version": "0.1.0",
+  "author": {
+    "name": "Song Li"
+  },
+  "private": true,
+  "dependencies": {
+    "aws-cdk-lib": "2.8.0",
+    "constructs": "^10.0.0"
+  }
+}
