@@ -1,0 +1,5 @@
+#!/bin/bash
+
+docker run \
+  -e pythonentry='en-1.py' \
+  --rm experiment-1:0.0.1

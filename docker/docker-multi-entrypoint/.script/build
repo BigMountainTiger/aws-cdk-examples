@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd experiment
+
+docker build -t experiment-1:0.0.1 .
