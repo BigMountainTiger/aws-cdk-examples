@@ -5,6 +5,10 @@
 -- https://docs.snowflake.com/en/sql-reference/external-functions-data-format.html
 -- https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html
 
+
+-- Step by step intruction
+-- https://docs.snowflake.com/en/sql-reference/external-functions-creating-aws-ui.html
+
 SHOW integrations;
 SHOW external functions;
 

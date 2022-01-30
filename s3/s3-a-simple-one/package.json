@@ -1,0 +1,12 @@
+{
+  "name": "s3-a-simple-one",
+  "version": "0.1.0",
+  "author": {
+    "name": "Song Li"
+  },
+  "private": true,
+  "dependencies": {
+    "aws-cdk-lib": "2.10.0",
+    "constructs": "^10.0.0"
+  }
+}
