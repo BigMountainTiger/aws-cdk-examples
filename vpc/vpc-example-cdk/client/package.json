@@ -4,6 +4,6 @@
   "author": "Song Li",
   "private": true,
   "dependencies": {
-    "aws-sdk": "^2.740.0"
+    "aws-sdk": "^2.814.0"
   }
 }
