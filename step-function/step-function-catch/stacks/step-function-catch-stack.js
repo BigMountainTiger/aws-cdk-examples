@@ -24,7 +24,7 @@ class StepFunctionCatchStack extends cdk.Stack {
       return role;
     })();
 
-    const create_lambda = (name, path) => {
+    const create_javascript_lambda = (name, path) => {
       const lambda_name = `${id}_${name}`;
 
       return new lambda.Function(this, lambda_name, {
@@ -33,14 +33,86 @@ class StepFunctionCatchStack extends cdk.Stack {
         description: lambda_name,
         timeout: cdk.Duration.seconds(15),
         role: role,
-        code: lambda.Code.asset(path),
+        code: lambda.Code.fromAsset(path),
         memorySize: 128,
         handler: 'app.lambdaHandler'
       });
     };
 
-    const raise_lambda = create_lambda('RAISE_LAMBDA', './lambdas/raise-lambda');
-    const catch_lambda = create_lambda('CATCH_LAMBDA', './lambdas/catch-lambda');
+    const create_python_lambda = (name, path) => {
+      const lambda_name = `${id}_${name}`;
+
+      return new lambda.Function(this, lambda_name, {
+        runtime: lambda.Runtime.PYTHON_3_9,
+        functionName: lambda_name,
+        description: lambda_name,
+        timeout: cdk.Duration.seconds(30),
+        role: role,
+        code: lambda.Code.fromAsset(path),
+        handler: 'app.lambda_handler'
+      });
+
+    };
+
+    const raise_lambda = create_javascript_lambda('RAISE_LAMBDA', './lambdas/raise-lambda');
+    const catch_lambda = create_python_lambda('CATCH_LAMBDA', './lambdas/catch-lambda');
+    const success_lambda = create_python_lambda('SUCCESS_LAMBDA', './lambdas/success-lambda');
+
+    (() => {
+
+      const raise_task = (() => {
+        const NAME = `${id}-RAISE-TASK`;
+
+        return new tasks.LambdaInvoke(this, NAME, {
+          lambdaFunction: raise_lambda,
+          retryOnServiceExceptions: false,
+          inputPath: '$',
+          outputPath: '$'
+        });
+
+      })();
+
+      const catch_task = (() => {
+        const NAME = `${id}-CATCH-TASK`;
+
+        return new tasks.LambdaInvoke(this, NAME, {
+          lambdaFunction: catch_lambda,
+          retryOnServiceExceptions: false,
+          inputPath: '$',
+          outputPath: '$'
+        });
+
+      })();
+
+      const success_task = (() => {
+        const NAME = `${id}-SUCCESS-TASK`;
+
+        return new tasks.LambdaInvoke(this, NAME, {
+          lambdaFunction: success_lambda,
+          retryOnServiceExceptions: false,
+          outputPath: '$',
+          payload: sfn.TaskInput.fromObject({
+            'Payload.$': '$',
+            'Input.$': '$$',
+            'Invocation': 'Data ingestion completed'
+          })
+        });
+
+      })();
+
+      // Default - catch all
+      raise_task.addCatch(catch_task);
+      raise_task.next(success_task);
+      
+
+      const NAME = `Experiment_STEP_FUNCTION`;
+      new sfn.StateMachine(this, `${id}-${NAME}`, {
+        stateMachineName: NAME,
+        definition: sfn.Chain.start(raise_task),
+        timeout: cdk.Duration.minutes(5)
+      });
+
+    })();
 
   }
 }
