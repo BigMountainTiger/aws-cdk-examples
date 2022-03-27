@@ -106,3 +106,5 @@ dist
 # CDK output files
 cdk.out/
 
+package-lock.json
+

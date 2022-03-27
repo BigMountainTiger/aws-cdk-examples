@@ -1,0 +1,6 @@
+autopep8==1.6.0
+certifi==2021.10.8
+elasticsearch==7.13.4
+pycodestyle==2.8.0
+toml==0.10.2
+urllib3==1.26.9
