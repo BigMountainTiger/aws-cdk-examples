@@ -1,0 +1,37 @@
+https://towardsdatascience.com/how-to-run-a-real-time-pipeline-in-aws-kinesis-using-pyspark-structured-streaming-1b6bc5e6edc9
+https://medium.com/road-to-data-engineering/stream-data-from-kinesis-to-databricks-with-pyspark-813c516b4233
+
+The first run:
+https://search.maven.org/artifact/org.apache.spark/spark-streaming-kinesis-asl_2.12
+https://stackoverflow.com/questions/57118214/unable-to-create-a-stream-in-spark-streaming-using-kinesis-stream
+Spark Streaming's Kinesis libraries not found in class path. Try one of the following.
+
+  1. Include the Streaming's Kinesis library and its dependencies with in the
+     spark-submit command as
+
+     $ bin/spark-submit --packages org.apache.spark:spark-streaming-kinesis-asl:3.2.1 ...
+
+  2. Download the JAR of the artifact from Maven Central http://search.maven.org/,
+     Group Id = org.apache.spark, Artifact Id = spark-streaming-kinesis-asl-assembly, Version = 3.2.1.
+     Then, include the jar in the spark-submit command as
+
+     $ bin/spark-submit --jars <spark-streaming-kinesis-asl-assembly.jar> ...
+
+-----------------------------
+The following submit worked:
+spark-submit --master local[2] --packages org.apache.spark:spark-streaming-kinesis-asl_2.12:3.1.3\
+    spark-example/b_spark_streaming_example.py
+
+
+https://stackoverflow.com/questions/24519660/why-does-starting-streamingcontext-fail-with-illegalargumentexception-requirem
+https://spark.apache.org/docs/latest/streaming-programming-guide.html#output-operations
+https://python.hotexamples.com/examples/pyspark.streaming.kinesis/KinesisUtils/createStream/python-kinesisutils-createstream-method-examples.html
+https://stackoverflow.com/questions/35567440/spark-not-able-to-fetch-events-from-amazon-kinesis
+
+
+Spark-streaming with Kinesis requires permissions to Kinesis and Dynamo
+The IAM role on the EC2s need to have access to both
+
+Need to remember to delete the dynamo table after testing
+
+

@@ -1,0 +1,18 @@
+{
+  "name": "graghql-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Song Li",
+  "license": "ISC",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}

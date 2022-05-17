@@ -1,0 +1,10 @@
+https://stackoverflow.com/questions/66142536/cdk-how-to-get-apigateway-key-value-ie-x-api-key-20-chars
+
+1. Need to add { apiKeyRequired: true } in every mapping. It is false by default
+https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html
+
+API Key - an alphanumeric string between 30 and 128 characters, for example, apikey1234abcdefghij0123456789
+Header - x-api-key
+Need a usage plan - https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-apigateway.UsagePlan.html
+and the usage plan needs to associate to the deployment stage
+

@@ -1,0 +1,17 @@
+References
+https://gist.github.com/skorfmann/6941326b2dd75f52cb67e1853c5f8601
+
+Private API Gateway with the AWS CDK
+1. Lambda
+2. Private Api Gateway
+3. VPC Endpoint
+NB: In order to access the Api Gateway through the public DNS of the VPC endpoint, a curl request has to have the api id as header. See also here
+
+Test
+Create a EC2 in the public subnet
+curl -i -H "x-apigw-api-id: <api-id>" https://vpce-<vpce-id>.execute-api.<region>.vpce.amazonaws.com/
+
+SUCCESS Example:
+curl -i -H "x-apigw-api-id: fgl4cf6765" https://vpce-097468dae72b0bb67.execute-api.us-east-1.amazonaws.com/prod/
+OR
+curl https://fgl4cf6765-vpce-097468dae72b0bb67.execute-api.us-east-1.amazonaws.com/prod/

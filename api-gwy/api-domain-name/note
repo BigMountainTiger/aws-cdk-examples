@@ -1,0 +1,5 @@
+Need to create a HTTPs certificate
+
+https://aws.amazon.com/certificate-manager/pricing/
+Go to ACM (AWS Certificate Manager)
+AWS provides free certificate if the domain is owned by you

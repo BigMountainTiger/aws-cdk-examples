@@ -1,0 +1,12 @@
+{
+  "name": "api-apikey-example",
+  "version": "0.1.0",
+  "author": {
+    "name": "Song Li"
+  },
+  "private": true,
+  "dependencies": {
+    "aws-cdk-lib": "2.24.1",
+    "constructs": "^10.0.0"
+  }
+}

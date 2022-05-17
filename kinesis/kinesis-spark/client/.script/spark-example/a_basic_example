@@ -1,0 +1,3 @@
+#!/bin/bash
+
+spark-submit --master local[2] spark-example/a_basic_example.py

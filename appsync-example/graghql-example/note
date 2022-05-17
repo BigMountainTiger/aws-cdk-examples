@@ -1,0 +1,18 @@
+https://www.digitalocean.com/community/tutorials/a-practical-graphql-getting-started-guide-with-nodejs
+
+npm install express express-graphql graphql
+npm i --save-dev nodemon
+
+
+Run - if use postman, the following is how to post the request JSON
+{ "query": "{ hello }" }
+
+Example with easy data
+https://www.fullstacklabs.co/blog/express-graphql-server
+
+The hello-world.js implemented the basic Example
+The index.js implemented some more realistic examples on query and mutations.
+
+To run the example
+npm start
+and go to localhost:4000/graphql in the browser
