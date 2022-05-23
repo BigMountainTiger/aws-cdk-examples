@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cdk destroy FargateAlbExample-ECR-Stack -f

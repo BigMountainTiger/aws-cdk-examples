@@ -1,0 +1,8 @@
+#!/bin/bash
+
+.script/docker/build
+
+TAG=1.0.0
+REPOSITORY=simple-app
+
+docker run --rm ${REPOSITORY}:${TAG}

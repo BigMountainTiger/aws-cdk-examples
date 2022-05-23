@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd docker/simple-app
+
+TAG=1.0.0
+REPOSITORY=simple-app
+
+# docker system prune -a -f
+docker build -t ${REPOSITORY}:${TAG} -f Dockerfile .

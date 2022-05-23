@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cdk deploy FargateAlbExampleStack --require-approval never

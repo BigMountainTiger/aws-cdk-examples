@@ -1,0 +1,11 @@
+#!/bin/bash
+
+.script/docker/build
+
+REPOSITORY=fargate-alb-experiment:1.0.0
+ARN=275118158658.dkr.ecr.us-east-1.amazonaws.com
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ARN}
+
+docker tag ${REPOSITORY} ${ARN}/${REPOSITORY}
+docker push ${ARN}/${REPOSITORY}

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cdk destroy FargateAlbExampleStack -f

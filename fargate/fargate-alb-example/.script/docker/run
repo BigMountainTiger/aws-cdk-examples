@@ -1,0 +1,8 @@
+#!/bin/bash
+
+.script/docker/build
+
+TAG=1.0.0
+REPOSITORY=fargate-alb-experiment
+
+docker run -p 8080:8080 --rm ${REPOSITORY}:${TAG}
