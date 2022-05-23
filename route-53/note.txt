@@ -1,0 +1,7 @@
+Register a domain
+SSL/TLS - ACM (Amazon Certification Manager) - https://aws.amazon.com/certificate-manager/
+
+ACM is regional
+For certificates provided by ACM, this means you must revalidate each domain name in the certificate for each region.
+You cannot copy a certificate between regions
+https://docs.aws.amazon.com/acm/latest/userguide/acm-regions.html

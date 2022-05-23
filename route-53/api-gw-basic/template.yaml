@@ -1,0 +1,247 @@
+Resources:
+  APIGWBasicSTACKLAMBDAROLE38FA88C9:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      RoleName: API-GW-Basic-STACK-LAMBDA-ROLE
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-LAMBDA-ROLE/Resource
+  APIGWBasicSTACKLAMBDAROLEDefaultPolicyB6A66AB2:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: APIGWBasicSTACKLAMBDAROLEDefaultPolicyB6A66AB2
+      Roles:
+        - Ref: APIGWBasicSTACKLAMBDAROLE38FA88C9
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-LAMBDA-ROLE/DefaultPolicy/Resource
+  APIGWBasicSTACKExampleLmabdaEF18DAB6:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: ea68e45a9a10e16601a4660f414556a2611b8e09cb1423bc7d8b1f1ec638052c.zip
+      Role:
+        Fn::GetAtt:
+          - APIGWBasicSTACKLAMBDAROLE38FA88C9
+          - Arn
+      FunctionName: API-GW-Basic-STACK-Example-Lmabda
+      Handler: app.lambdaHandler
+      MemorySize: 128
+      Runtime: python3.9
+      Timeout: 5
+    DependsOn:
+      - APIGWBasicSTACKLAMBDAROLEDefaultPolicyB6A66AB2
+      - APIGWBasicSTACKLAMBDAROLE38FA88C9
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-Example-Lmabda/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/route-53/api-gw-basic/lambdas/example_lambda
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+  APIGWBasicSTACKExampleLmabdaApiAccessPermission0223E3E9:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APIGWBasicSTACKExampleLmabdaEF18DAB6
+          - Arn
+      Principal: apigateway.amazonaws.com
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-Example-Lmabda/ApiAccessPermission
+  APIGWBasicSTACKAPI4B95B095:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: API-GW-Basic-STACK-API
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: API-GW-Basic-STACK-API
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-API/Resource
+  APIGWBasicSTACKAPICloudWatchRoleAAC8578B:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-API/CloudWatchRole/Resource
+  APIGWBasicSTACKAPIAccountE40385A1:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - APIGWBasicSTACKAPICloudWatchRoleAAC8578B
+          - Arn
+    DependsOn:
+      - APIGWBasicSTACKAPI4B95B095
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-API/Account
+  APIGWBasicSTACKAPIDeployment667B3D9F5f8ac067a7fdfd441545170f63a7a554:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: APIGWBasicSTACKAPI4B95B095
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - APIGWBasicSTACKAPIgetGET4E2691A3
+      - APIGWBasicSTACKAPIgetC9A67B1E
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-API/Deployment/Resource
+  APIGWBasicSTACKAPIDeploymentStageprodC34A39B4:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: APIGWBasicSTACKAPI4B95B095
+      DeploymentId:
+        Ref: APIGWBasicSTACKAPIDeployment667B3D9F5f8ac067a7fdfd441545170f63a7a554
+      StageName: prod
+    DependsOn:
+      - APIGWBasicSTACKAPIAccountE40385A1
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-API/DeploymentStage.prod/Resource
+  APIGWBasicSTACKAPIgetC9A67B1E:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - APIGWBasicSTACKAPI4B95B095
+          - RootResourceId
+      PathPart: get
+      RestApiId:
+        Ref: APIGWBasicSTACKAPI4B95B095
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-API/Default/get/Resource
+  APIGWBasicSTACKAPIgetGETApiPermissionAPIGWBasicSTACKAPIGWBasicSTACKAPI1F1B02CDGETget06DA1443:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APIGWBasicSTACKExampleLmabdaEF18DAB6
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: APIGWBasicSTACKAPI4B95B095
+            - /
+            - Ref: APIGWBasicSTACKAPIDeploymentStageprodC34A39B4
+            - /GET/get
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-API/Default/get/GET/ApiPermission.APIGWBasicSTACKAPIGWBasicSTACKAPI1F1B02CD.GET..get
+  APIGWBasicSTACKAPIgetGETApiPermissionTestAPIGWBasicSTACKAPIGWBasicSTACKAPI1F1B02CDGETget84F3BB9D:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - APIGWBasicSTACKExampleLmabdaEF18DAB6
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: APIGWBasicSTACKAPI4B95B095
+            - /test-invoke-stage/GET/get
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-API/Default/get/GET/ApiPermission.Test.APIGWBasicSTACKAPIGWBasicSTACKAPI1F1B02CD.GET..get
+  APIGWBasicSTACKAPIgetGET4E2691A3:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId:
+        Ref: APIGWBasicSTACKAPIgetC9A67B1E
+      RestApiId:
+        Ref: APIGWBasicSTACKAPI4B95B095
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - APIGWBasicSTACKExampleLmabdaEF18DAB6
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: API-GW-Basic-STACK/API-GW-Basic-STACK-API/Default/get/GET/Resource
+Outputs:
+  APIGWBasicSTACKAPIEndpointCC09838D:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: APIGWBasicSTACKAPI4B95B095
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: APIGWBasicSTACKAPIDeploymentStageprodC34A39B4
+          - /
+Parameters:
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+
