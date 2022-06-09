@@ -13,7 +13,8 @@
     "**/dotnet-pipeline/**/bin": true,
     "**/dotnet-pipeline/**/obj": true,
     "**/dotnet-entityframework-dependencyinjection/**/bin": true,
-    "**/dotnet-entityframework-dependencyinjection/**/obj": true
+    "**/dotnet-entityframework-dependencyinjection/**/obj": true,
+    "**/__pycache__": true
   },
   "python.pythonPath": "rds/client/python/env-3.9/bin/python"
 }

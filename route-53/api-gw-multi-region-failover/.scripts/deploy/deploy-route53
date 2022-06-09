@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cdk deploy API-GW-Basic-ROUTE53-STACK --require-approval never

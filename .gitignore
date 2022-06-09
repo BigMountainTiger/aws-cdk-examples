@@ -108,3 +108,13 @@ cdk.out/
 
 package-lock.json
 
+__pycache__/
+
+# The virtualenv for CDK
+.env-cdk
+.env-3.8
+
+# Terraform
+.terraform/
+.terraform.*
+terraform.*

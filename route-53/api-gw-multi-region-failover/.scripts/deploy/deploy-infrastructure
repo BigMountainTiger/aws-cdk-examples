@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cdk deploy API-GW-Basic-INFRASTRUCTURE-STACK --require-approval never

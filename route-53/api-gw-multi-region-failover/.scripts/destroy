@@ -1,0 +1,21 @@
+#!/bin/bash
+
+export AWS_DEFAULT_REGION
+
+# Destroy the route53 resources
+cdk destroy API-GW-Basic-ROUTE53-STACK -f
+
+# Destroy the infrastructure
+cdk destroy API-GW-Basic-INFRASTRUCTURE-STACK -f
+
+# Destroy the API gateway in each region
+function destroy {
+    REGION=$1
+    AWS_DEFAULT_REGION=${REGION}
+
+    echo "Destroying the stack in the region ${REGION}"
+    cdk destroy API-GW-Basic-STACK -f
+} 
+
+destroy "us-east-1"
+destroy "us-east-2"

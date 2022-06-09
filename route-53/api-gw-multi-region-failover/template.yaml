@@ -35,7 +35,7 @@ Resources:
       Code:
         S3Bucket:
           Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
-        S3Key: ea68e45a9a10e16601a4660f414556a2611b8e09cb1423bc7d8b1f1ec638052c.zip
+        S3Key: b8c97887d27f21532d8bb43ef9ee5da41944ac96ecb3d40cb49c7bf9832c4390.zip
       Role:
         Fn::GetAtt:
           - APIGWBasicSTACKLAMBDAROLE38FA88C9

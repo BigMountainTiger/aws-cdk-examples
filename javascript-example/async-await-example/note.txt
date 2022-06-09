@@ -1,0 +1,7 @@
+1. Javascript code can run in different functions. As long as the code access the same data, the result can be correct
+2. A promise can resolve and reject, it can flattern chained callbacks (by then() and catch()). Exceptions in promise, if happens in callbacks,
+    they will not be caught in the catch() function
+3. async and await is equivalent to promise and callbacks
+4. await can only be used in async functions
+5. An async function always returns a promise, it is either "awaitted" or processed by then() function
+6. If await a non-async function, it still equivalent to the then() function.

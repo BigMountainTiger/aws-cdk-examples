@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export AWS_DEFAULT_REGION="us-east-2"
+cdk deploy API-GW-Basic-STACK --require-approval never

@@ -5,3 +5,39 @@ ACM is regional
 For certificates provided by ACM, this means you must revalidate each domain name in the certificate for each region.
 You cannot copy a certificate between regions
 https://docs.aws.amazon.com/acm/latest/userguide/acm-regions.html
+
+
+The infrastructure stack deploy the resources not related to any region
+The "api-gw-basic-stack.js" is deployed to each region applicable
+
+.env needs to have the following informaton
+CERT_ARN_US_EAST_1="arn:aws:acm:us-east-1......"
+CERT_ARN_US_EAST_2="arn:aws:acm:us-east-2......"
+
+HOSTED_ZONE_ID="Z02554531QBY8CJDVYIPW"
+-------------------------------------------------
+The certificate is required to independently obtained for each region
+
+
+Reference:
+https://bahr.dev/2022/04/08/multi-region-active-active-cdk/
+
+Simulate a fail-over
+1. Create health check for the API deployed to each region
+2. Create fail over routing records on route 53
+3. "raise Exception('This is the artificial exception')" in the lambda to similate a failure
+Watch the DNS fail-over on the internet.
+In chrome, may need to clear the DNS cache and flush the socket pools - Type in "chrome://net-internals/#sockets" in the address bar
+
+
+Node BOTO3 => AWS SDK - https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/getting-started-nodejs.html
+
+Use async in javascript cdk
+https://www.matthewbonig.com/2019/10/02/cdk-the-wrong-way/
+
+This is how to getResources by tags and how to apply filers
+    const resources = await tag_api.getResources({
+      ResourceTypeFilters: ['apigateway:restapis'], TagFilters: [
+        { Key: tag.key, Values: [tag.value] }]
+    }).promise();
+
