@@ -1,0 +1,232 @@
+Resources:
+  CODEGURUProfilerLambdaSTACKLAMBDAROLEE6E6CEB0:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      RoleName: CODEGURU-Profiler-Lambda-STACK-LAMBDA-ROLE
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-LAMBDA-ROLE/Resource
+  CODEGURUProfilerLambdaSTACKLAMBDAROLEDefaultPolicyBCD91603:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: CODEGURUProfilerLambdaSTACKLAMBDAROLEDefaultPolicyBCD91603
+      Roles:
+        - Ref: CODEGURUProfilerLambdaSTACKLAMBDAROLEE6E6CEB0
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-LAMBDA-ROLE/DefaultPolicy/Resource
+  CODEGURUProfilerLambdaSTACKEXAMPLELAMBDA4C8B2594:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: c87d716d35d03b4a0f03367c89e9de78ed2e83e747a52aa2d770777e0499b8ab.zip
+      Role:
+        Fn::GetAtt:
+          - CODEGURUProfilerLambdaSTACKLAMBDAROLEE6E6CEB0
+          - Arn
+      Environment:
+        Variables:
+          AWS_LAMBDA_EXEC_WRAPPER: /opt/codeguru_profiler_lambda_exec
+          AWS_CODEGURU_PROFILER_GROUP_NAME: Test
+          AWS_CODEGURU_PROFILER_TARGET_REGION: us-east-1
+          AWS_CODEGURU_PROFILER_ENABLED: "TRUE"
+      FunctionName: EXAMPLE-LAMBDA
+      Handler: app.lambdaHandler
+      Layers:
+        - arn:aws:lambda:us-east-1:157417159150:layer:AWSCodeGuruProfilerPythonAgentLambdaLayer:11
+      Runtime: python3.8
+      Timeout: 15
+    DependsOn:
+      - CODEGURUProfilerLambdaSTACKLAMBDAROLEDefaultPolicyBCD91603
+      - CODEGURUProfilerLambdaSTACKLAMBDAROLEE6E6CEB0
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-EXAMPLE-LAMBDA/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/codeguru/codeguru-profiler-lambda/lambdas/AFunction
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+  CODEGURUProfilerLambdaSTACKEXAMPLEAPIGW41C20DF7:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: EXAMPLE-API-GW
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: EXAMPLE-API-GW
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-EXAMPLE-API-GW/Resource
+  CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWCloudWatchRole07B9D394:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-EXAMPLE-API-GW/CloudWatchRole/Resource
+  CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWAccount95D01FDB:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWCloudWatchRole07B9D394
+          - Arn
+    DependsOn:
+      - CODEGURUProfilerLambdaSTACKEXAMPLEAPIGW41C20DF7
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-EXAMPLE-API-GW/Account
+  CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWDeployment69212E995c8b6816bd349d9cde6dff8424386ca2:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: CODEGURUProfilerLambdaSTACKEXAMPLEAPIGW41C20DF7
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWGETFF48BF56
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-EXAMPLE-API-GW/Deployment/Resource
+  CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWDeploymentStageprodCA2B623B:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: CODEGURUProfilerLambdaSTACKEXAMPLEAPIGW41C20DF7
+      DeploymentId:
+        Ref: CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWDeployment69212E995c8b6816bd349d9cde6dff8424386ca2
+      StageName: prod
+    DependsOn:
+      - CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWAccount95D01FDB
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-EXAMPLE-API-GW/DeploymentStage.prod/Resource
+  CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWGETApiPermissionCODEGURUProfilerLambdaSTACKCODEGURUProfilerLambdaSTACKEXAMPLEAPIGW958A29E1GET31F08688:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - CODEGURUProfilerLambdaSTACKEXAMPLELAMBDA4C8B2594
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: CODEGURUProfilerLambdaSTACKEXAMPLEAPIGW41C20DF7
+            - /
+            - Ref: CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWDeploymentStageprodCA2B623B
+            - /GET/
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-EXAMPLE-API-GW/Default/GET/ApiPermission.CODEGURUProfilerLambdaSTACKCODEGURUProfilerLambdaSTACKEXAMPLEAPIGW958A29E1.GET..
+  CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWGETApiPermissionTestCODEGURUProfilerLambdaSTACKCODEGURUProfilerLambdaSTACKEXAMPLEAPIGW958A29E1GETA022A5E0:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - CODEGURUProfilerLambdaSTACKEXAMPLELAMBDA4C8B2594
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: CODEGURUProfilerLambdaSTACKEXAMPLEAPIGW41C20DF7
+            - /test-invoke-stage/GET/
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-EXAMPLE-API-GW/Default/GET/ApiPermission.Test.CODEGURUProfilerLambdaSTACKCODEGURUProfilerLambdaSTACKEXAMPLEAPIGW958A29E1.GET..
+  CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWGETFF48BF56:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId:
+        Fn::GetAtt:
+          - CODEGURUProfilerLambdaSTACKEXAMPLEAPIGW41C20DF7
+          - RootResourceId
+      RestApiId:
+        Ref: CODEGURUProfilerLambdaSTACKEXAMPLEAPIGW41C20DF7
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - CODEGURUProfilerLambdaSTACKEXAMPLELAMBDA4C8B2594
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: CODEGURU-Profiler-Lambda-STACK/CODEGURU-Profiler-Lambda-STACK-EXAMPLE-API-GW/Default/GET/Resource
+Outputs:
+  CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWEndpointFEA77984:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: CODEGURUProfilerLambdaSTACKEXAMPLEAPIGW41C20DF7
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: CODEGURUProfilerLambdaSTACKEXAMPLEAPIGWDeploymentStageprodCA2B623B
+          - /
+Parameters:
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+
