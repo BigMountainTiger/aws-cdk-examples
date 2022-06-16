@@ -17,11 +17,12 @@ class DynamoExcerciseStack extends cdk.Stack {
         writeCapacity: 1,
         tableName: NAME,
         partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
-        sortKey: { name: 'time', type: dynamodb.AttributeType.STRING },
-        RemovalPolicy: cdk.RemovalPolicy.DESTROY
+        sortKey: { name: 'entry_time', type: dynamodb.AttributeType.STRING }
+
       });
 
-      
+      dtb.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
+
     })();
 
   }
