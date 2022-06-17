@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sftp -i .key-pair/kp-huge-head-li-2022.pem ubuntu@example.bigmountaintiger.com

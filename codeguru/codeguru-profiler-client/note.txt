@@ -1,0 +1,5 @@
+https://docs.aws.amazon.com/codeguru/latest/profiler-ug/integrating-with-python.html
+https://github.com/aws/amazon-codeguru-profiler-python-agent
+
+Example --
+https://github.com/aws-samples/aws-codeguru-profiler-python-demo-application/tree/main/sample-demo-app
