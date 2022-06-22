@@ -3,6 +3,7 @@ const ec2 = require('aws-cdk-lib/aws-ec2');
 const ecr = require('aws-cdk-lib/aws-ecr');
 const ecs = require("aws-cdk-lib/aws-ecs");
 const elbv2 = require("aws-cdk-lib/aws-elasticloadbalancingv2");
+const application_autoscaling = require('aws-cdk-lib/aws-applicationautoscaling');
 
 const REPOSITORY_NAME = `fargate-alb-experiment`;
 
@@ -88,12 +89,24 @@ class FargateAlbExampleStack extends cdk.Stack {
       const NAME = `${id}-SERVICE`
       const service = new ecs.FargateService(this, NAME, {
         cluster: cluster,
+        serviceName: NAME,
         taskDefinition: fargateTaskDefinition,
         assignPublicIp: true,
         desiredCount: 1,
         securityGroups: [constainer_sg]
       });
 
+      const fas = service.autoScaleTaskCount({
+        minCapacity: 1,
+        maxCapacity: 3
+      });
+
+      // Test to scale fargate service by schedule
+      // fas.scaleOnSchedule('TEST-SCHEDULE', {
+      //   schedule: application_autoscaling.Schedule.cron({ hour: '13', minute: '50' }),
+      //   minCapacity: 2,
+      //   maxCapacity: 3
+      // });
 
       return service;
     })();

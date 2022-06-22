@@ -1,0 +1,5 @@
+#!/bin/bash
+
+aws ecs update-service --cluster FargateAlbExampleStack-CLUSTER \
+    --service FargateAlbExampleStack-SERVICE \
+    --force-new-deployment

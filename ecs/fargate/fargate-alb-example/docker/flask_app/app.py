@@ -1,4 +1,8 @@
 from flask import Flask, request, jsonify
+import socket
+
+def get_hostname():
+    return socket.gethostname()
 
 app = Flask(__name__)
 
@@ -6,7 +10,7 @@ app = Flask(__name__)
 @app.route('/')
 def message():
     return jsonify(
-        text='This is an example'
+        text=f'This is an example - {get_hostname()}'
     )
 
 
