@@ -3,4 +3,6 @@
 python3.10 -m venv .env-3.10
 source .env-3.10/bin/activate
 
+pip install fastapi
+pip install unicorn
 pip install codeguru_profiler_agent

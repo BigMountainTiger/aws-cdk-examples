@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+
+cdk destroy ECS-EC2-Basic-STACK -f
+cdk destroy ECS-EC2-Basic-ECR-STACK -f

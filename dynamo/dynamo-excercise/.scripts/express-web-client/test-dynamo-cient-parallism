@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd express-web-client
+
+node test-dynamo-cient-parallism.js
