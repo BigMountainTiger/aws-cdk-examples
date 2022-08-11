@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd lambdas/simple_lambda
+
+zip -r ../../simple_lambda.zip *

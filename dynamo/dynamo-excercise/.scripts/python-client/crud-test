@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd client
+cd python-client
 python crud_test.py
