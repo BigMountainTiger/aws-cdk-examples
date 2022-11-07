@@ -18,7 +18,9 @@
     "**/.terraform*": true,
     "**/terraform.*": true,
     "**/.go-build": true,
-    "**/.tf-zip": true
+    "**/.tf-zip": true,
+    "**/package-lock.json": true,
+    "**/.angular": true
   },
   "python.pythonPath": "rds/client/python/env-3.9/bin/python"
 }
