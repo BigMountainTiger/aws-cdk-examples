@@ -1,4 +1,0 @@
-#!/bin/bash
-
-cd client
-python edge_case_test.py

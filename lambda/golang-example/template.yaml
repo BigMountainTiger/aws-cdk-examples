@@ -1,0 +1,224 @@
+Resources:
+  GOLANGExampleStackLAMBDAROLE00C2B245:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      Description: GOLANG-Example-Stack-LAMBDA_ROLE
+      RoleName: GOLANG-Example-Stack-LAMBDA_ROLE
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-LAMBDA_ROLE/Resource
+  GOLANGExampleStackLAMBDAROLEDefaultPolicy5BB30B08:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: GOLANGExampleStackLAMBDAROLEDefaultPolicy5BB30B08
+      Roles:
+        - Ref: GOLANGExampleStackLAMBDAROLE00C2B245
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-LAMBDA_ROLE/DefaultPolicy/Resource
+  GOLANGExampleStacklambdaFECB72A0:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: 4658bdaa881543d11291f8683078395b4b31dfe8172800a04830394fe357361e.zip
+      Role:
+        Fn::GetAtt:
+          - GOLANGExampleStackLAMBDAROLE00C2B245
+          - Arn
+      Description: GOLANG-Example-Stack-lambda
+      FunctionName: GOLANG-Example-Stack-lambda
+      Handler: executable
+      MemorySize: 128
+      Runtime: go1.x
+      Timeout: 30
+    DependsOn:
+      - GOLANGExampleStackLAMBDAROLEDefaultPolicy5BB30B08
+      - GOLANGExampleStackLAMBDAROLE00C2B245
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-lambda/Resource
+      aws:asset:path: /home/song/Sandbox/aws-cdk-examples/lambda/golang-example/lambdas/golang_example/.go-build/executable.zip
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+  GOLANGExampleStackAGWYB1365E17:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: GOLANG-Example-Stack-AGWY
+      Name: GOLANG-Example-Stack-AGWY
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-AGWY/Resource
+  GOLANGExampleStackAGWYCloudWatchRole29088CE3:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-AGWY/CloudWatchRole/Resource
+  GOLANGExampleStackAGWYAccountFE517B8C:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - GOLANGExampleStackAGWYCloudWatchRole29088CE3
+          - Arn
+    DependsOn:
+      - GOLANGExampleStackAGWYB1365E17
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-AGWY/Account
+  GOLANGExampleStackAGWYDeploymentC4D309A8672fe3141032988cd2a3026ca9a83581:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: GOLANGExampleStackAGWYB1365E17
+      Description: GOLANG-Example-Stack-AGWY
+    DependsOn:
+      - GOLANGExampleStackAGWYGET996C6ED8
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-AGWY/Deployment/Resource
+  GOLANGExampleStackAGWYDeploymentStageprod9EE66C32:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: GOLANGExampleStackAGWYB1365E17
+      DeploymentId:
+        Ref: GOLANGExampleStackAGWYDeploymentC4D309A8672fe3141032988cd2a3026ca9a83581
+      StageName: prod
+    DependsOn:
+      - GOLANGExampleStackAGWYAccountFE517B8C
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-AGWY/DeploymentStage.prod/Resource
+  GOLANGExampleStackAGWYGETApiPermissionGOLANGExampleStackGOLANGExampleStackAGWY7807ACB0GET4A81DF72:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - GOLANGExampleStacklambdaFECB72A0
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: GOLANGExampleStackAGWYB1365E17
+            - /
+            - Ref: GOLANGExampleStackAGWYDeploymentStageprod9EE66C32
+            - /GET/
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-AGWY/Default/GET/ApiPermission.GOLANGExampleStackGOLANGExampleStackAGWY7807ACB0.GET..
+  GOLANGExampleStackAGWYGETApiPermissionTestGOLANGExampleStackGOLANGExampleStackAGWY7807ACB0GET64B21EBF:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - GOLANGExampleStacklambdaFECB72A0
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: GOLANGExampleStackAGWYB1365E17
+            - /test-invoke-stage/GET/
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-AGWY/Default/GET/ApiPermission.Test.GOLANGExampleStackGOLANGExampleStackAGWY7807ACB0.GET..
+  GOLANGExampleStackAGWYGET996C6ED8:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId:
+        Fn::GetAtt:
+          - GOLANGExampleStackAGWYB1365E17
+          - RootResourceId
+      RestApiId:
+        Ref: GOLANGExampleStackAGWYB1365E17
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - GOLANGExampleStacklambdaFECB72A0
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: GOLANG-Example-Stack/GOLANG-Example-Stack-AGWY/Default/GET/Resource
+Outputs:
+  GOLANGExampleStackAGWYEndpoint1ECF397E:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: GOLANGExampleStackAGWYB1365E17
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: GOLANGExampleStackAGWYDeploymentStageprod9EE66C32
+          - /
+Parameters:
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+

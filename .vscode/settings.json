@@ -10,11 +10,18 @@
     "**/asset.*": true,
     "**/dist": true,
     "**/.env-3.10": true,
+    "**/.env-3.11": true,
     "**/dotnet-pipeline/**/bin": true,
     "**/dotnet-pipeline/**/obj": true,
     "**/dotnet-entityframework-dependencyinjection/**/bin": true,
     "**/dotnet-entityframework-dependencyinjection/**/obj": true,
-    "**/__pycache__": true
+    "**/__pycache__": true,
+    "**/.terraform*": true,
+    "**/terraform.*": true,
+    "**/.go-build": true,
+    "**/.tf-zip": true,
+    "**/package-lock.json": true,
+    "**/.angular": true
   },
   "python.pythonPath": "rds/client/python/env-3.9/bin/python"
 }

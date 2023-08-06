@@ -1,0 +1,11 @@
+#!/bin/bash
+
+aws ecs run-task \
+    --task-definition EC2_TASK_DEFINITION \
+    --launch-type EC2 \
+    --cluster ECS-EC2-Basic-STACK-CLUSTER
+
+
+    # --network-configuration \
+    #   "awsvpcConfiguration={subnets=[subnet-0c9633368ed1baee5,subnet-0998a750484e7a36c],securityGroups=[sg-067f68024bcc5d4df],assignPublicIp=ENABLED}"
+

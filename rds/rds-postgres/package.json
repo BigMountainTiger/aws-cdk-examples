@@ -1,11 +1,8 @@
 {
-  "name": "rds-postgres-cdk",
+  "name": "rds-postgres-2023",
   "version": "0.1.0",
-  "author": "Song Li",
-  "private": true,
   "dependencies": {
-    "@aws-cdk/aws-ec2": "^1.130.0",
-    "@aws-cdk/aws-rds": "^1.130.0",
-    "@aws-cdk/core": "1.130.0"
+    "aws-cdk-lib": "2.89.0",
+    "constructs": "^10.0.0"
   }
 }

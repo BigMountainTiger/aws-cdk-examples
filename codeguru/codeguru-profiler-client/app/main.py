@@ -2,10 +2,18 @@ from codeguru_profiler_agent import Profiler
 from typing import Union
 from fastapi import FastAPI
 import asyncio
+import os, logging
+
+logger = logging.getLogger(__name__)
+
+if os.environ.get('CODE_GURU_PROFILE_ENABLED') == 'TRUE':
+    
+    Profiler(profiling_group_name='Test',
+             region_name='us-east-1').start()
+
+    print('Codeguru profiling enabled')
 
 
-Profiler(profiling_group_name='Test',
-         region_name='us-east-1').start()
 app = FastAPI()
 
 

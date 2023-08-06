@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cdk deploy ECS-EC2-Basic-ECR-STACK

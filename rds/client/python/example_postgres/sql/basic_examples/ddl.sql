@@ -24,7 +24,7 @@ drop function if exists public.get_students();
 
 -- public.get_students()
 CREATE OR REPLACE FUNCTION public.get_students()
- RETURNS TABLE(id int4, name varchar)
+ RETURNS table (like public.student)
  LANGUAGE plpgsql
 AS $function$
 BEGIN

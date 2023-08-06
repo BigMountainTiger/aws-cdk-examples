@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd lambdas/golang_example
+
+BUILD_DIR=".go-build"
+EXE="${BUILD_DIR}/executable"
+
+rm -rf ${BUILD_DIR}
+
+GOOS=linux go build -o ${EXE} .
+
+cd ${BUILD_DIR}
+
+zip "executable.zip" "executable"
+
+cd ..
+ls -l ${BUILD_DIR}

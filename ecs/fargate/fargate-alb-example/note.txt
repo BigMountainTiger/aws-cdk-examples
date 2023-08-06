@@ -1,0 +1,4 @@
+https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs-patterns.ApplicationLoadBalancedEc2Service.html
+https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ecs-patterns.ApplicationLoadBalancedFargateService.html
+
+https://idanlupinsky.com/blog/ecs-service-auto-scaling-with-the-cdk/

@@ -1,0 +1,23 @@
+https://angular.io/guide/setup-local
+
+1. Ceate the application
+https://angular.io/cli/new
+
+npm i -g @angular/cli
+ng new example-app --skip-git=true --skip-tests=true
+ng serve -o
+
+2. Generate module
+https://angular.io/cli/generate#module-command
+Add an eager module
+ng g m modules/common -m app.module
+Add a lazy module
+ng g m modules/common -m app.module --route common
+
+2. Add route
+https://angular.io/guide/lazy-loading-ngmodules
+forRoot() and forChild()
+https://stackoverflow.com/questions/40498081/routermodule-forrootroutes-vs-routermodule-forchildroutes#:~:text=forRoot%20creates%20a%20module%20that,not%20include%20the%20router%20service.
+
+
+

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd docker/fastapi_app
+
+TAG=1.0.0
+REPOSITORY=ec2-type-example
+
+# docker system prune -a -f
+docker build -t ${REPOSITORY}:${TAG} -f Dockerfile .

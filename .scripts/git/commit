@@ -3,3 +3,6 @@
 git reset --soft HEAD~
 git add-commit -m "Updated the aws-cdk-examples"
 git push -f
+
+sleep 1
+git log -2

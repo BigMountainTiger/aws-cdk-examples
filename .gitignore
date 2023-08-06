@@ -105,6 +105,7 @@ dist
 
 # CDK output files
 cdk.out/
+cdk.context.json
 
 package-lock.json
 
@@ -114,8 +115,11 @@ __pycache__/
 .env-cdk
 .env-3.8
 .env-3.10
+.env-3.11
 
 # Terraform
 .terraform/
 .terraform.*
 terraform.*
+
+.go-build

@@ -1,0 +1,1 @@
+https://dba.stackexchange.com/questions/135378/how-to-use-returns-table-with-an-existing-table-in-postgresql

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+.scripts/docker/build
+
+TAG=1.0.0
+REPOSITORY=ec2-type-example
+
+docker run -p 8000:8000 --rm ${REPOSITORY}:${TAG}

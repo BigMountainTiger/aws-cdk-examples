@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd python-client
+python init_data.py

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rm cdk.context.json -f
+cdk deploy ECS-EC2-Basic-STACK --require-approval never
